@@ -1,0 +1,23 @@
+.carousel {
+  @apply bg-base-100 rounded-2xl;
+
+  &-body {
+    @apply transition-transform duration-700;
+  }
+}
+
+.carousel-prev,
+.carousel-next {
+  @apply text-base-content/80 hover:text-base-content;
+}
+
+.carousel-prev.disabled,
+.carousel-next.disabled {
+  @apply text-base-content/30 pointer-events-none;
+}
+
+.carousel-pagination {
+  .carousel-dot {
+    @apply bg-base-content/25;
+  }
+}

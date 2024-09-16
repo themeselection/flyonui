@@ -1,0 +1,34 @@
+.modal {
+  @apply pointer-events-none fixed inset-0 z-[80] m-0 grid size-full justify-items-center p-4;
+}
+
+.modal-dialog {
+  @apply mx-auto w-full sm:max-w-lg;
+}
+
+.modal-content {
+  @apply pointer-events-auto flex flex-col rounded-lg;
+  max-height: calc(100vh - 2rem);
+}
+
+.modal-header {
+  @apply relative flex items-center justify-between p-6;
+  & + .modal-body {
+    padding-top: 0;
+  }
+}
+
+.modal-title {
+  @apply text-base-content/90 text-2xl font-semibold;
+}
+
+.modal-body {
+  @apply overflow-y-auto p-6 text-base font-normal [&::-webkit-scrollbar]:w-2;
+  & + .modal-footer {
+    padding-top: 0;
+  }
+}
+
+.modal-footer {
+  @apply flex items-center justify-end gap-3 p-6;
+}

@@ -1,0 +1,8 @@
+/* Remove focus */
+
+.no-focus {
+  &:focus,
+  &:focus-within {
+    @apply border-none shadow-none outline-0 ring-0;
+  }
+}

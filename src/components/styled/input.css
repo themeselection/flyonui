@@ -1,0 +1,376 @@
+input {
+  @apply bg-transparent;
+  &:focus {
+    @apply outline-0 outline-transparent;
+  }
+  &:focus-visible {
+    outline: unset;
+  }
+}
+
+.input {
+  @apply bg-base-100 border-base-content/40 text-base-content/80 placeholder:text-base-content/50 rounded-btn border;
+  @apply hover:border-base-content/60;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  &::file-selector-button {
+    @apply bg-base-content/20 text-base-content/90 rounded-s-btn disabled:bg-neutral/10 border-0 font-semibold uppercase no-underline;
+  }
+  &:focus,
+  &:focus-within {
+    @apply ring-primary shadow-primary/22 border-primary shadow-sm ring-1;
+  }
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:focus {
+    @apply bg-base-100 text-base-content/90;
+  }
+
+  &-floating {
+    @apply focus:placeholder:text-base-content/50 placeholder:text-transparent;
+  }
+
+  &-filled {
+    @apply bg-base-content/5 border-base-content/60 rounded-b-none rounded-t-md border-0 border-b placeholder:text-transparent;
+    @apply hover:border-base-content hover:border-0 hover:border-b focus-visible:outline-0;
+    &:focus,
+    &:focus-within {
+      @apply placeholder:text-base-content/50 border-primary shadow-none ring-0;
+    }
+
+    &:focus ~ .input-filled-focused,
+    &:focus-within ~ .input-filled-focused {
+      @apply bg-primary scale-100;
+    }
+  }
+
+  &[list]::-webkit-calendar-picker-indicator {
+    line-height: 1em;
+  }
+
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    @apply border-base-content/10 bg-neutral/10 text-base-content/50 pointer-events-none border-0;
+  }
+
+  &::-webkit-date-and-time-value {
+    text-align: inherit;
+  }
+}
+
+.input {
+  &.input-floating {
+    &.disabled,
+    &:disabled,
+    &[disabled] {
+      @apply bg-base-100 border;
+      & ~ .input-floating-label {
+        @apply text-base-content/50;
+      }
+    }
+  }
+
+  &.input-filled {
+    &.disabled,
+    &:disabled,
+    &[disabled] {
+      @apply border-b;
+      & ~ .input-filled-label {
+        @apply text-base-content/50;
+      }
+    }
+  }
+}
+
+.input-filled-label,
+.input-floating-label {
+  @apply text-base-content/80 pointer-events-none absolute start-0 w-full overflow-hidden text-ellipsis bg-transparent px-3 text-base transition-all ease-in;
+  @apply peer-focus:text-primary peer-[.input-lg]:text-lg peer-[.input-sm]:text-sm;
+}
+
+.input-filled-label {
+  @apply top-[0.8rem] peer-[.input-lg]:top-4 peer-[.input-sm]:top-2.5 peer-[.input-lg]:px-4 peer-[.input-sm]:px-2.5;
+
+  .peer:focus ~ &,
+  .peer:focus-within ~ &,
+  .peer:not(:placeholder-shown) ~ & {
+    @apply top-0.5 ms-3 w-fit p-0 text-xs;
+  }
+  .peer.input-lg:focus ~ &,
+  .peer.input-lg:focus-within ~ &,
+  .peer.input-lg:not(:placeholder-shown) ~ & {
+    @apply ms-4 text-sm;
+  }
+}
+
+.input.input-filled {
+  &.input-sm:focus,
+  &.input-sm:not(:placeholder-shown) {
+    @apply pt-2;
+  }
+  &:focus,
+  &.input-lg:focus,
+  &:not(:placeholder-shown),
+  &.input-lg:not(:placeholder-shown) {
+    @apply pt-3;
+  }
+}
+
+.input-floating-label {
+  @apply top-2 peer-[.input-lg]:top-[0.7rem] peer-[.input-sm]:top-[0.3rem] peer-[.input-lg]:px-4 peer-[.input-sm]:px-2.5;
+
+  .peer:focus ~ &,
+  .peer:focus-within ~ &,
+  .peer:not(:placeholder-shown) ~ & {
+    @apply bg-base-100 top-0 ms-2 w-fit -translate-y-1/2 px-1 text-xs;
+  }
+
+  .peer.input-lg:focus ~ &,
+  .peer.input-lg:focus-within ~ &,
+  .peer.input-lg:not(:placeholder-shown) ~ & {
+    @apply ms-3 text-sm;
+  }
+}
+
+/* Input group */
+
+.input-group {
+  @apply border-base-content/25 bg-base-100 rounded-btn relative flex w-full items-stretch border;
+  @apply has-[:hover]:border-base-content/60;
+  &:has(:focus),
+  &:has(:focus-within) {
+    @apply ring-primary shadow-primary/22 border-primary shadow-sm ring-1;
+  }
+  &:has(input.disabled),
+  &:has(input:disabled),
+  &:has(input[disabled]) {
+    @apply border-base-content/10 bg-neutral/10 text-base-content/50 pointer-events-none;
+  }
+  .input {
+    @apply border-0 bg-transparent;
+    &:focus,
+    &:focus-within {
+      @apply shadow-none ring-0;
+    }
+    &.disabled,
+    &:disabled,
+    &[disabled] {
+      @apply bg-transparent;
+    }
+  }
+}
+
+.input-group-filled {
+  @apply bg-base-content/5 border-base-content/60 relative flex w-full items-stretch rounded-t-md border-0 border-b;
+  @apply has-[:hover]:border-base-content/60;
+  &:focus ~ .input-filled-focused,
+  &:focus-within ~ .input-filled-focused {
+    @apply bg-primary scale-100;
+  }
+  .input {
+    @apply border-0 bg-transparent;
+    &.disabled,
+    &:disabled,
+    &[disabled] {
+      @apply bg-transparent;
+    }
+  }
+}
+
+/* input group text */
+.input-group-text {
+  @apply text-base-content/90 flex items-center px-3 font-normal;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  &:first-child {
+    @apply rounded-s-btn pe-0;
+  }
+  &:last-child {
+    @apply rounded-e-btn ps-0;
+  }
+}
+
+/* File input */
+.input[type="file"].input-floating {
+  &::file-selector-button {
+    @apply bg-base-100 border-base-content/25 border-e;
+  }
+}
+
+/* State  */
+.input.is-valid,
+.validate .input:valid {
+  @apply border-success;
+  &:focus,
+  &:focus-within {
+    @apply ring-success shadow-success/22 ring-1;
+  }
+  &.input-filled:focus,
+  &.input-filled:focus-within {
+    @apply border-success shadow-none ring-0;
+  }
+
+  & ~ .input-floating-label,
+  & ~ .input-filled-label {
+    @apply text-success;
+  }
+  &:focus ~ .input-filled-focused,
+  &:focus-within ~ .input-filled-focused {
+    @apply bg-success scale-100;
+  }
+}
+
+/* This style the top right side label for floating and filled */
+.label:has(+ * > .is-valid) > *,
+/*This style the bottom start and end side label for floating and filled  */
+.label ~ *:has(> .is-valid) ~ .label .label-text-alt,
+/* This style the top start and end side label for floating and default */
+.label:has(~ .is-valid) > *,
+/* When .label is immediately followed by .is-valid */
+.is-valid ~ .label,
+.is-valid ~ .label .label-text,
+/* When using JS for form validation */
+.validate .label:has(+ * > .input:valid) > *,
+.validate .label:has(+ * > .input:valid),
+.validate .label ~ *:has(> .input:valid) ~ .label .label-text-alt,
+.validate .label:has(~ .input:valid) > *,
+.validate .label:has(~ .input:valid),
+.validate .input:valid ~  .label,
+.validate .input:valid ~  .label .label-text {
+  @apply text-success;
+}
+
+.input:focus.is-valid ~ .input-floating-label,
+.input:focus.is-valid ~ .input-filled-label {
+  @apply text-success;
+}
+
+.input.is-invalid,
+.validate .input:invalid {
+  @apply border-error;
+  &:focus,
+  &:focus-within {
+    @apply ring-error shadow-error/22 ring-1;
+  }
+  &.input-filled:focus,
+  &.input-filled:focus-within {
+    @apply border-error shadow-none ring-0;
+  }
+  & ~ .input-floating-label,
+  & ~ .input-filled-label {
+    @apply text-error;
+  }
+  &:focus ~ .input-filled-focused,
+  &:focus-within ~ .input-filled-focused {
+    @apply bg-error scale-100;
+  }
+}
+
+/* This style the top right side label for floating and filled */
+.label:has(+ * > .is-invalid) > *,
+/*This style the bottom start and end side label for floating and filled  */
+.label ~ *:has(> .is-invalid) ~ .label .label-text-alt,
+/* This style the top start and end side label for floating and default */
+.label:has(~ .is-invalid) > *,
+/* When .is-invalid is general .label */
+.is-invalid ~ .label,
+.is-invalid ~ .label .label-text,
+/* When using JS for form validation */
+.validate .label:has(+ * > .input:invalid) > *,
+.validate .label:has(+ * > .input:invalid),
+.validate .label ~ *:has(> .input:invalid) ~ .label .label-text-alt,
+.validate .label:has(~ .input:invalid) > *,
+.validate .input:invalid ~ .label,
+.validate .input:invalid ~ .label .label-text {
+  @apply text-error;
+}
+
+.input:focus.is-invalid ~ .input-floating-label,
+.input:focus.is-invalid ~ .input-filled-label {
+  @apply text-error;
+}
+
+/* State text */
+
+.success-message {
+  @apply text-success hidden;
+}
+
+/* .valid is a child class and when .message is parent. */
+*:has(> .is-valid) ~ .success-message,
+.validate *:has(> .input:valid) ~ .success-message,
+/* Both parent. */
+.is-valid ~ .success-message,
+.validate .input:valid ~ .success-message {
+  @apply block;
+}
+
+.error-message {
+  @apply text-error hidden;
+}
+
+*:has(> .is-invalid) ~ .error-message,
+.validate *:has(> .input:invalid) ~ .error-message,
+/* Both parent. */
+.is-invalid ~ .error-message,
+.validate .input:invalid ~ .error-message {
+  @apply block;
+}
+
+/* Input group State */
+
+.validate .input-group > .input:valid,
+.input-group > .input:valid,
+.validate .input-group > .input:invalid,
+.input-group > .input:invalid,
+.validate .input-group > * > .input:valid,
+.input-group > * > .input:valid,
+.validate .input-group > * > .input:invalid,
+.input-group > * > .input:invalid,
+.input-group > .input.is-valid,
+.input-group > .input.is-invalid,
+.input-group > * > .input.is-valid,
+.input-group > * > .input.is-invalid {
+  @apply border-0 focus-within:ring-0 focus:ring-0;
+}
+
+.input-group {
+  &:has(.is-valid),
+  .validate &:has(.input:valid) {
+    @apply border-success;
+    &:has(:focus),
+    &:has(:focus-within) {
+      @apply ring-success shadow-success/22 border-success shadow-sm ring-1;
+    }
+  }
+  &:has(.is-invalid),
+  .validate &:has(.input:invalid) {
+    @apply border-error;
+    &:has(:focus),
+    &:has(:focus-within) {
+      @apply ring-error shadow-error/22 border-error shadow-sm ring-1;
+    }
+  }
+}
+
+.input-group-filled {
+  &:has(.is-valid),
+  .validate &:has(.input:valid) {
+    @apply border-success;
+    &:focus ~ .input-filled-focused,
+    &:focus-within ~ .input-filled-focused {
+      @apply bg-success scale-100;
+    }
+  }
+  &:has(.is-invalid),
+  .validate &:has(.input:invalid) {
+    @apply border-error;
+    &:focus ~ .input-filled-focused,
+    &:focus-within ~ .input-filled-focused {
+      @apply bg-error scale-100;
+    }
+  }
+}

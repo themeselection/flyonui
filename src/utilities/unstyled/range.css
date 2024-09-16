@@ -1,0 +1,36 @@
+.range {
+  &-sm {
+    @apply h-5;
+    &::-webkit-slider-runnable-track {
+      @apply h-1;
+    }
+    &::-moz-range-track {
+      @apply h-1;
+    }
+    &::-webkit-slider-thumb {
+      @apply size-5;
+      --filler-offset: 0.5rem;
+    }
+    &::-moz-range-thumb {
+      @apply size-5;
+      --filler-offset: 0.5rem;
+    }
+  }
+  &-lg {
+    @apply h-8;
+    &::-webkit-slider-runnable-track {
+      @apply h-4;
+    }
+    &::-moz-range-track {
+      @apply h-4;
+    }
+    &::-webkit-slider-thumb {
+      @apply size-8;
+      --filler-offset: 1rem;
+    }
+    &::-moz-range-thumb {
+      @apply size-8;
+      --filler-offset: 1rem;
+    }
+  }
+}

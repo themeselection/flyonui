@@ -1,0 +1,21 @@
+.chat {
+  &-bubble {
+    @apply rounded-box;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+
+  &-receiver .chat-bubble {
+    @apply bg-base-100 text-base-content/90 rounded-es-none;
+    &:before {
+      inset-inline-start: -0.749rem;
+    }
+  }
+
+  &-sender .chat-bubble {
+    @apply bg-primary text-primary-content rounded-ee-none;
+    &:before {
+      inset-inline-start: 99.9%;
+    }
+  }
+}

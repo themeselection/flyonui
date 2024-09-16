@@ -1,0 +1,21 @@
+.card-side {
+  @apply flex-shrink-0 flex-row items-stretch;
+  :where(figure:first-child) {
+    @apply overflow-hidden;
+    border-start-start-radius: inherit;
+    border-start-end-radius: unset;
+    border-end-start-radius: inherit;
+    border-end-end-radius: unset;
+  }
+  :where(figure:last-child) {
+    @apply overflow-hidden;
+    border-start-start-radius: unset;
+    border-start-end-radius: inherit;
+    border-end-start-radius: unset;
+    border-end-end-radius: inherit;
+  }
+  & figure > * {
+    @apply h-full w-full object-cover;
+    max-width: unset;
+  }
+}

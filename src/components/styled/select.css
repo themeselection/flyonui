@@ -1,0 +1,225 @@
+.select {
+  @apply bg-base-100 border-base-content/40 text-base-content/80 rounded-btn border text-base;
+  @apply hover:border-base-content/60;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' viewBox='0 0 24 24'><path fill='none' stroke='%239293AE' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 9l6 6l6-6'/></svg>");
+  background-size: 1.3em;
+  background-position: calc(100% - 1rem) center;
+  background-repeat: no-repeat;
+
+  &:focus,
+  &:focus-within {
+    @apply ring-primary shadow-primary/22 border-primary shadow-sm ring-1;
+
+    & ~ .select-floating-label,
+    & ~ .select-filled-label {
+      @apply text-primary;
+    }
+
+    &.is-valid ~ .select-floating-label,
+    &.is-valid ~ .select-filled-label {
+      @apply text-success;
+    }
+
+    &.is-invalid ~ .select-floating-label,
+    &.is-invalid ~ .select-filled-label {
+      @apply text-error;
+    }
+  }
+
+  &-filled {
+    @apply bg-base-content/5 border-base-content/60 rounded-b-none rounded-t-md border-0 border-b pt-2.5 placeholder:text-transparent;
+
+    &.input-sm {
+      @apply pt-1.5;
+    }
+
+    option {
+      @apply bg-base-100;
+    }
+
+    &:focus,
+    &:focus-within {
+      @apply border-primary shadow-none ring-0;
+    }
+
+    &:focus ~ .select-filled-focused,
+    &:focus-within ~ .select-filled-focused {
+      @apply bg-primary scale-100;
+    }
+  }
+
+  &:focus-visible {
+    outline: unset;
+  }
+
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    @apply bg-neutral/10 text-base-content/50 border-base-content/10 placeholder-base-content/50 pointer-events-none border-0;
+  }
+
+  &-multiple,
+  &[multiple],
+  &[size]&:not([size="1"]) {
+    @apply [&::-webkit-scrollbar-track]:bg-base-200 [&::-webkit-scrollbar-thumb]:bg-secondary/50 hover:[&::-webkit-scrollbar-thumb]:bg-secondary/80 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar]:w-2;
+    background-image: none;
+  }
+}
+
+.select {
+  &.select-floating {
+    &.disabled,
+    &:disabled,
+    &[disabled] {
+      @apply bg-base-100 border;
+    }
+    & ~ .select-floating-label {
+      @apply text-base-content/50;
+    }
+  }
+
+  &.select-filled {
+    &.disabled,
+    &:disabled,
+    &[disabled] {
+      @apply border-b;
+    }
+    & ~ .select-filled-label {
+      @apply text-base-content/50;
+    }
+  }
+}
+
+[dir="rtl"] .select {
+  background-position: calc(0% + 1.3em) center;
+}
+
+.select-floating-label {
+  @apply text-base-content/80 bg-base-100 text-xs;
+
+  .select.select-floating.select-lg ~ & {
+    @apply text-sm;
+  }
+}
+
+.select-filled-label {
+  @apply text-base-content/80 text-xs;
+
+  .select.select-filled.select-lg ~ & {
+    @apply text-sm;
+  }
+}
+
+/* select group */
+
+.input-group {
+  .select {
+    @apply border-0;
+    &:focus,
+    &:focus-within {
+      @apply shadow-none ring-0;
+    }
+  }
+}
+
+/* State style */
+.select.is-valid,
+.validate .select:valid {
+  @apply border-success;
+  &:focus,
+  &:focus-within {
+    @apply ring-success shadow-success/22 ring-1;
+  }
+  &.select-filled:focus,
+  &.select-filled:focus-within {
+    @apply border-success shadow-none ring-0;
+  }
+
+  & ~ .select-floating-label,
+  & ~ .select-filled-label {
+    @apply text-success;
+  }
+  &:focus ~ .select-filled-focused,
+  &:focus-within ~ .select-filled-focused {
+    @apply bg-success scale-100;
+  }
+}
+
+.select:focus.is-valid ~ .select-floating-label,
+.validate .select:focus:is-valid ~ .select-floating-label,
+.select:focus.is-valid ~ .select-filled-label,
+.validate .select:focus:is-valid ~ .select-filled-label {
+  @apply text-success;
+}
+
+.select:focus.is-invalid ~ .select-floating-label,
+.validate .select:focus:is-invalid ~ .select-floating-label,
+.select:focus.is-invalid ~ .select-filled-label,
+.validate .select:focus:is-invalid ~ .select-filled-label {
+  @apply text-error;
+}
+
+.select.is-invalid,
+.validate .select:invalid {
+  @apply border-error;
+  &:focus,
+  &:focus-within {
+    @apply ring-error shadow-error/22 ring-1;
+  }
+  &.select-filled:focus,
+  &.select-filled:focus-within {
+    @apply border-error shadow-none ring-0;
+  }
+  & ~ .select-floating-label,
+  & ~ .select-filled-label {
+    @apply text-error;
+  }
+  &:focus ~ .select-filled-focused,
+  &:focus-within ~ .select-filled-focused {
+    @apply bg-error scale-100;
+  }
+}
+
+/* Label state */
+/* main style is in select.css  */
+
+/* This style the top right side label for floating and filled */
+.validate .label:has(+ * > .select:valid) > *,
+.validate .label:has(+ * > .select:valid),
+/*This style the bottom start and end side label for floating and filled  */
+.validate .label ~ *:has(> .select:valid) ~ .label .label-text-alt,
+/* This style the top start and end side label for floating and default */
+.validate .label:has(~ .select:valid) > *,
+.validate .label:has(~ .select:valid),
+.validate .label:has(~ .select:valid) :where(.label-text),
+/* When .is-valid is immediately followed by .label */
+.validate .select:valid ~  .label {
+  @apply text-success;
+}
+
+/* This style the top right side label for floating and filled */
+.validate .label:has(+ * > .select:invalid) > *,
+.validate .label:has(+ * > .select:invalid),
+/*This style the bottom start and end side label for floating and filled  */
+.validate .label ~ *:has(> .select:invalid) ~ .label .label-text-alt,
+/* This style the top start and end side label for floating and default */
+.validate .label:has(~ .select:invalid) > *,
+.validate .label:has(~ .select:invalid),
+.validate .label:has(~ .select:invalid) :where(.label-text),
+/* When .is-invalid is .label */
+.validate .select:invalid ~ .label {
+  @apply text-error;
+}
+
+/* Helper text */
+/* main style is in select.css  */
+
+.validate *:has(> .select:valid) ~ .success-message,
+.validate .select:valid ~ .success-message {
+  @apply block;
+}
+
+.validate *:has(> .select:invalid) ~ .error-message,
+.validate .select:invalid ~ .error-message {
+  @apply block;
+}

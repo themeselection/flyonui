@@ -1,0 +1,17 @@
+.card-compact {
+  .card-header {
+    @apply p-4;
+    & + .card-body {
+      padding-top: 0;
+    }
+  }
+  .card-footer {
+    @apply p-4 pt-0;
+  }
+  .card-body {
+    @apply p-4;
+  }
+  .card-title {
+    @apply mb-1;
+  }
+}

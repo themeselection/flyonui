@@ -1,0 +1,37 @@
+.modal-top {
+  @apply place-items-start;
+}
+.modal-top-start {
+  @apply justify-start;
+}
+.modal-top-end {
+  @apply justify-end;
+}
+.modal-middle {
+  @apply place-items-center;
+}
+.modal-middle-start {
+  @apply place-items-center justify-start;
+}
+.modal-middle-end {
+  @apply place-items-center justify-end;
+}
+.modal-bottom {
+  @apply place-items-end;
+}
+.modal-bottom-start {
+  @apply place-items-end justify-start;
+}
+.modal-bottom-end {
+  @apply place-items-end justify-end;
+}
+
+.modal-dialog-sm {
+  @apply max-w-sm;
+}
+.modal-dialog-lg {
+  @apply max-w-3xl;
+}
+.modal-dialog-xl {
+  @apply max-w-5xl;
+}

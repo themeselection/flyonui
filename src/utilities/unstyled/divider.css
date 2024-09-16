@@ -1,0 +1,6 @@
+.divider-horizontal {
+  @apply flex-col before:h-full before:w-px before:border-e before:border-t-0 after:h-full after:w-px after:border-e after:border-t-0;
+}
+.divider-vertical {
+  @apply flex-row before:h-px before:w-full after:h-px after:w-full;
+}

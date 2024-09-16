@@ -1,0 +1,14 @@
+.badge {
+  &-xs {
+    @apply h-4 px-1.5 text-xs;
+  }
+  &-sm {
+    @apply h-5 px-2 text-xs;
+  }
+  &-lg {
+    @apply h-7 px-3.5 text-base;
+  }
+  &-xl {
+    @apply h-8 px-4 text-lg;
+  }
+}

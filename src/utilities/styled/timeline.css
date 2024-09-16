@@ -1,0 +1,43 @@
+/* vertical */
+.timeline-vertical > li > hr {
+  @apply w-[1.5px];
+}
+:where(.timeline-vertical:has(.timeline-middle) > li > hr) {
+  &:first-child {
+    @apply rounded-b-tooltip rounded-t-none;
+  }
+  &:last-child {
+    @apply rounded-t-tooltip rounded-b-none;
+  }
+}
+:where(.timeline-vertical:not(:has(.timeline-middle)) :first-child > hr:last-child) {
+  @apply rounded-t-tooltip rounded-b-none;
+}
+:where(.timeline-vertical:not(:has(.timeline-middle)) :last-child > hr:first-child) {
+  @apply rounded-b-tooltip rounded-t-none;
+}
+.timeline-vertical.timeline-trimmed > li > hr {
+  @apply w-px;
+}
+
+/* horizontal */
+.timeline-horizontal > li > hr {
+  @apply h-[1.5px] min-h-0;
+}
+:where(.timeline-horizontal:has(.timeline-middle) > li > hr) {
+  &:first-child {
+    @apply rounded-e-tooltip rounded-s-none;
+  }
+  &:last-child {
+    @apply rounded-s-tooltip rounded-e-none;
+  }
+}
+:where(.timeline-horizontal:not(:has(.timeline-middle)) :first-child > hr:last-child) {
+  @apply rounded-s-tooltip rounded-e-none;
+}
+:where(.timeline-horizontal:not(:has(.timeline-middle)) :last-child > hr:first-child) {
+  @apply rounded-e-tooltip rounded-s-none;
+}
+.timeline-horizontal.timeline-trimmed > li > hr {
+  @apply h-px;
+}

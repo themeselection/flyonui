@@ -1,0 +1,12 @@
+[type="radio"].radio,
+[type="radio"].radio-inset {
+  &.radio-xs {
+    @apply size-4;
+  }
+  &.radio-sm {
+    @apply size-5;
+  }
+  &.radio-lg {
+    @apply size-8;
+  }
+}

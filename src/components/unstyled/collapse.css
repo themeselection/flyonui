@@ -1,0 +1,3 @@
+.collapse:not(td):not(tr):not(colgroup) {
+  @apply visible;
+}

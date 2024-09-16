@@ -1,0 +1,81 @@
+.card {
+  @apply rounded-box bg-base-100 border-base-content/40 text-base-content/80;
+  box-shadow: var(--card-shadow, 0px 2px 4px 0px oklch(var(--bs) / 0.26));
+  border-width: var(--card-border, 0px);
+
+  /* header */
+  &-header {
+    @apply rounded-t-box;
+    padding: var(--padding-card, 1.5rem);
+
+    & + .card-body {
+      padding-top: 0;
+    }
+  }
+
+  &-body {
+    padding: var(--padding-card, 1.5rem);
+    & + .card-footer {
+      padding-top: 0;
+    }
+  }
+
+  &-footer {
+    @apply rounded-b-box pt-0;
+    padding: var(--padding-card, 1.5rem);
+  }
+
+  :where(figure:first-child) {
+    @apply overflow-hidden;
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+    border-end-start-radius: unset;
+    border-end-end-radius: unset;
+  }
+  :where(figure:last-child) {
+    @apply overflow-hidden;
+    border-start-start-radius: unset;
+    border-start-end-radius: unset;
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
+  }
+
+  &.image-full {
+    &:before {
+      @apply rounded-box z-10;
+
+      background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.58) 100%);
+    }
+  }
+  &.image-full > &-body {
+    @apply text-neutral-content z-20;
+  }
+  &.image-full {
+    :where(figure) {
+      @apply overflow-hidden;
+      border-radius: inherit;
+    }
+  }
+
+  & .alert {
+    @apply rounded-none;
+    &:first-child {
+      @apply rounded-t-box;
+    }
+    &:last-child {
+      @apply rounded-b-box;
+    }
+  }
+}
+
+.card-group {
+  @apply rounded-box border-base-content/40;
+  --cd-shadow: theme(colors.base-shadow/0.26);
+  box-shadow: var(--card-shadow, 0px 2px 4px 0px var(--cd-shadow));
+  border-width: var(--card-border, 0px);
+  & > .card {
+    @apply rounded-none;
+    --card-shadow: none;
+    --card-border: 0;
+  }
+}

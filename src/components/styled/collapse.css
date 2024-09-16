@@ -1,0 +1,9 @@
+.nested-collapse-wrapper .collapse.open.nested-collapse,
+.nested-collapse-wrapper .collapse-toggle.open.nested-collapse {
+  @apply bg-base-content/10;
+}
+
+.nested-collapse-wrapper .collapse.open > .collapse-icon,
+.nested-collapse-wrapper .collapse-toggle.open > .collapse-icon {
+  @apply rotate-180;
+}

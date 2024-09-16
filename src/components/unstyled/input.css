@@ -1,0 +1,30 @@
+.input {
+  @apply h-9.5 w-full shrink appearance-none px-3 text-base font-normal;
+
+  /* For file input  */
+  &::file-selector-button {
+    @apply me-4 inline-flex h-full shrink-0 cursor-pointer select-none flex-wrap items-center justify-center px-4 text-center text-sm;
+    line-height: 1em;
+  }
+
+  &-filled {
+    @apply h-12 text-base;
+  }
+}
+.input-filled-focused {
+  @apply relative -top-px z-10 block h-0.5 w-full scale-0 transition-transform delay-0 duration-150 ease-out;
+}
+
+.input[type="number"]::-webkit-inner-spin-button {
+  @apply -my-1 -me-1;
+}
+.input-sm[type="number"]::-webkit-inner-spin-button {
+  @apply my-0 me-0;
+}
+.input-lg[type="number"]::-webkit-inner-spin-button {
+  @apply -my-1 me-3;
+}
+
+.input[type="file"] {
+  @apply px-0;
+}

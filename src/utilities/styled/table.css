@@ -1,0 +1,9 @@
+.table-xs :where(th, td) {
+  @apply px-2 py-1;
+}
+.table-sm :where(th, td) {
+  @apply px-3 py-2;
+}
+.table-lg :where(th, td) {
+  @apply px-6 py-4;
+}

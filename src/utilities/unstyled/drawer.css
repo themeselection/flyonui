@@ -1,0 +1,16 @@
+.drawer-start {
+  @apply start-0 top-0 -translate-x-full rtl:translate-x-full;
+  /* Reset for responsive */
+  inset-inline-end: calc(100vw - 23.45rem);
+}
+.drawer-end {
+  @apply end-0 top-0 translate-x-full rtl:-translate-x-full;
+  /* Reset for responsive */
+  inset-inline-start: calc(100vw - 23.45rem);
+}
+.drawer-top {
+  @apply inset-x-0 top-0 max-h-60 max-w-none -translate-y-full;
+}
+.drawer-bottom {
+  @apply inset-x-0 bottom-0 max-h-60 max-w-none translate-y-full;
+}

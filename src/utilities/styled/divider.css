@@ -1,0 +1,6 @@
+.divider-horizontal {
+  @apply mx-4 my-0 h-auto w-4;
+}
+.divider-vertical {
+  @apply mx-0 my-4 h-4 w-auto before:h-px before:w-full before:flex-grow before:border-e-0 before:border-t before:content-[''] after:flex after:h-px after:w-full after:flex-grow after:border-e-0 after:border-t after:content-[''];
+}

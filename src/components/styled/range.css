@@ -1,0 +1,83 @@
+.range {
+  appearance: none;
+  -webkit-appearance: none;
+  --range-shdw: theme(colors.base-content);
+  @apply overflow-hidden rounded-full bg-transparent;
+  &:focus-visible::-webkit-slider-thumb {
+    --focus-shadow: 0 0 0 6px theme(colors.base-100) inset, 0 0 0 2rem var(--range-shdw) inset;
+  }
+  &:focus-visible::-moz-range-thumb {
+    --focus-shadow: 0 0 0 6px theme(colors.base-100) inset, 0 0 0 2rem var(--range-shdw) inset;
+  }
+  &::-webkit-slider-runnable-track {
+    @apply bg-neutral/10 h-2 w-full rounded-full;
+  }
+  &::-moz-range-track {
+    @apply bg-base-content/10 h-2 w-full rounded-full;
+  }
+  &::-webkit-slider-thumb {
+    @apply bg-base-100 relative size-6 rounded-full border-none transition-all duration-150 ease-in-out;
+    appearance: none;
+    -webkit-appearance: none;
+    top: 50%;
+    color: var(--range-shdw);
+    transform: translateY(-50%);
+    --filler-size: 100rem;
+    --filler-offset: 0.6rem;
+    box-shadow:
+      0 0 0 3px var(--range-shdw) inset,
+      var(--focus-shadow, 0 0),
+      calc(var(--filler-size) * -1 - var(--filler-offset)) 0 0 var(--filler-size);
+  }
+  &::-moz-range-thumb {
+    @apply bg-base-100 relative size-6 rounded-full border-none transition-all duration-150 ease-in-out;
+    top: 50%;
+    color: var(--range-shdw);
+    --filler-size: 100rem;
+    --filler-offset: 0.5rem;
+    box-shadow:
+      0 0 0 3px var(--range-shdw) inset,
+      var(--focus-shadow, 0 0),
+      calc(var(--filler-size) * -1 - var(--filler-offset)) 0 0 var(--filler-size);
+  }
+  &-primary {
+    --range-shdw: theme(colors.primary);
+  }
+  &-secondary {
+    --range-shdw: theme(colors.secondary);
+  }
+  &-accent {
+    --range-shdw: theme(colors.accent);
+  }
+  &-success {
+    --range-shdw: theme(colors.success);
+  }
+  &-warning {
+    --range-shdw: theme(colors.warning);
+  }
+  &-info {
+    --range-shdw: theme(colors.info);
+  }
+  &-error {
+    --range-shdw: theme(colors.error);
+  }
+
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    @apply pointer-events-none opacity-30;
+  }
+}
+
+[dir="rtl"] .range::-webkit-slider-thumb {
+  transform: translateY(-50%) scaleX(-1);
+}
+
+[dir="rtl"] .range::-moz-range-thumb {
+  transform: translateY(-50%) scaleX(-1);
+}
+
+[dir="rtl"] .range::-webkit-slider-runnable-track,
+[dir="rtl"] .range::-moz-range-track {
+  direction: rtl;
+}

@@ -1,0 +1,29 @@
+.mockup {
+  &-code {
+    @apply relative overflow-x-auto overflow-y-hidden;
+    pre[data-prefix] {
+      &:before {
+        content: attr(data-prefix);
+        @apply inline-block text-right;
+      }
+    }
+  }
+  &-window {
+    @apply relative overflow-x-auto overflow-y-hidden;
+    pre[data-prefix] {
+      &:before {
+        content: attr(data-prefix);
+        @apply inline-block text-right;
+      }
+    }
+  }
+  &-browser {
+    @apply relative overflow-x-auto overflow-y-hidden;
+    pre[data-prefix] {
+      &:before {
+        content: attr(data-prefix);
+        @apply inline-block text-right;
+      }
+    }
+  }
+}

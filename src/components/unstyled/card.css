@@ -1,0 +1,52 @@
+.card {
+  @apply relative flex flex-col;
+  &:focus {
+    @apply outline-none;
+  }
+  &-body {
+    @apply flex flex-auto flex-col text-base font-normal;
+  }
+
+  &-actions {
+    @apply flex flex-wrap items-start gap-3;
+  }
+
+  &-title {
+    @apply text-base-content/90 text-2xl font-semibold;
+  }
+
+  & figure {
+    @apply flex items-center justify-center;
+
+    & > * {
+      @apply w-full;
+    }
+  }
+
+  &.image-full {
+    @apply grid;
+    &:before {
+      @apply relative;
+      content: "";
+    }
+    &:before,
+    & > * {
+      @apply col-start-1 row-start-1;
+    }
+    & > figure img {
+      @apply h-full object-cover;
+    }
+  }
+
+  &.image-full > &-body {
+    @apply relative;
+  }
+}
+
+.card-group {
+  @apply divide-neutral/30 divide-y overflow-hidden sm:flex sm:flex-row sm:divide-x sm:divide-y-0 sm:rtl:divide-x-reverse;
+
+  & > .card {
+    @apply flex-[1_0_0%];
+  }
+}

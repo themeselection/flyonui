@@ -1,0 +1,91 @@
+.progress {
+  --progress-color: theme(colors.neutral);
+  @apply bg-base-200 h-1.5;
+
+  &-label {
+    @apply border-base-content/25 border;
+  }
+
+  &-stripped {
+    background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.15) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.15) 50%,
+      rgba(255, 255, 255, 0.15) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 0.75rem 0.75rem;
+  }
+
+  &-animated {
+    animation: progress-bar-stripes 1s linear infinite;
+  }
+
+  &-bar {
+    @apply bg-base-content text-base-100;
+  }
+  &-neutral {
+    @apply bg-neutral text-neutral-content;
+  }
+  &-primary {
+    @apply bg-primary text-primary-content;
+    --progress-color: theme(colors.primary);
+  }
+  &-secondary {
+    @apply bg-secondary text-secondary-content;
+    --progress-color: theme(colors.secondary);
+  }
+  &-accent {
+    @apply bg-accent text-accent-content;
+    --progress-color: theme(colors.accent);
+  }
+  &-info {
+    @apply bg-info text-info-content;
+    --progress-color: theme(colors.info);
+  }
+  &-success {
+    @apply bg-success text-success-content;
+    --progress-color: theme(colors.success);
+  }
+  &-warning {
+    @apply bg-warning text-warning-content;
+    --progress-color: theme(colors.warning);
+  }
+  &-error {
+    @apply bg-error text-error-content;
+    --progress-color: theme(colors.error);
+  }
+}
+/* progress indeterminate */
+.progress-indeterminate {
+  @apply w-full;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, var(--progress-color) 50%);
+  background-size: 50% 100%;
+  background-repeat: no-repeat;
+  animation: indeterminate-progress 4s infinite ease-in-out;
+}
+
+@keyframes indeterminate-progress {
+  0% {
+    background-position-x: -75%;
+  }
+  50% {
+    background-position-x: 125%;
+  }
+  100% {
+    background-position-x: -75%;
+  }
+}
+
+@keyframes progress-bar-stripes {
+  0% {
+    background-position-x: 0.75rem;
+  }
+}
+/* progress step */
+.progress-step {
+  @apply text-base-100 bg-base-content/10;
+}

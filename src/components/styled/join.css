@@ -1,0 +1,15 @@
+.join {
+  @apply rounded-btn;
+  .btn {
+    @apply shadow-none;
+  }
+  & > :where(*:not(:first-child)) {
+    @apply my-0 -ms-px;
+    &:is(.btn) {
+      @apply ms-[calc(var(--border-btn)*-1)];
+    }
+  }
+  &-item:focus {
+    @apply isolate;
+  }
+}

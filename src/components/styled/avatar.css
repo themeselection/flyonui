@@ -1,0 +1,13 @@
+.avatar-group {
+  @apply flex;
+  :where(.avatar) {
+    img {
+      @apply border-base-100 h-full w-full rounded-full border-2 object-cover;
+    }
+    &.placeholder {
+      & > div {
+        @apply border-base-100 rounded-full border-2;
+      }
+    }
+  }
+}

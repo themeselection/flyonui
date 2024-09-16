@@ -1,0 +1,107 @@
+.tabs-lifted > .tab:focus-visible {
+  border-end-end-radius: 0;
+  border-end-start-radius: 0;
+}
+.tab {
+  @apply text-base-content/90;
+  --tab-bg: theme(colors.base-100);
+  --tab-border-color: theme(colors.base-content/0.1);
+  padding-inline-start: var(--tab-padding, 1rem);
+  padding-inline-end: var(--tab-padding, 1rem);
+
+  &.tab-active:not([disabled]) {
+    @apply border-primary text-primary text-opacity-100;
+  }
+  &:focus,
+  &:focus-visible {
+    @apply outline-none;
+  }
+  /* disabled */
+  &[disabled] {
+    @apply text-base-content border-base-content pointer-events-none border-opacity-30 text-opacity-40;
+  }
+  @media (hover: hover) {
+    &[disabled]:hover {
+      @apply text-base-content border-base-content/10 pointer-events-none text-opacity-40;
+    }
+  }
+}
+.tabs-bordered > .tab {
+  @apply border-base-content/10 [@media(hover:hover)]:hover:border-primary/30 [@media(hover:hover)]:hover:text-primary;
+  border-style: solid;
+  border-bottom-width: calc(var(--tab-border, 1px) + 1px);
+}
+.tabs-lifted > .tab {
+  @apply [@media(hover:hover)]:hover:border-primary/30 [@media(hover:hover)]:hover:text-primary;
+  border: var(--tab-border, 1px) solid transparent;
+  border-width: 0 0 var(--tab-border, 1px) 0;
+  border-radius: var(--tab-radius, 0.375rem);
+  border-bottom-color: var(--tab-border-color);
+  padding-inline-start: var(--tab-padding, 1rem);
+  padding-inline-end: var(--tab-padding, 1rem);
+  padding-top: var(--tab-border, 1px);
+  &.tab-active:not([disabled]) {
+    background-color: var(--tab-bg);
+    border-width: var(--tab-border, 1px) var(--tab-border, 1px) 0 var(--tab-border, 1px);
+    border-color: var(--tab-border-color);
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+    padding-inline-start: calc(var(--tab-padding, 1rem) - var(--tab-border, 1px));
+    padding-inline-end: calc(var(--tab-padding, 1rem) - var(--tab-border, 1px));
+    padding-bottom: var(--tab-border, 1px);
+    padding-top: 0;
+    &:before {
+      z-index: 1;
+      content: "";
+      display: block;
+      position: absolute;
+      width: calc(100% + var(--tab-radius, 0.375rem) * 2);
+      height: var(--tab-radius, 0.375rem);
+      bottom: 0;
+      background-size: var(--tab-radius, 0.375rem);
+      background-position:
+        top left,
+        top right;
+      background-repeat: no-repeat;
+      --tab-grad: calc(69% - var(--tab-border, 1px));
+      --radius-start: radial-gradient(
+        circle at top left,
+        transparent var(--tab-grad),
+        var(--tab-border-color) calc(var(--tab-grad) + 0.25px),
+        var(--tab-border-color) calc(var(--tab-grad) + var(--tab-border, 1px)),
+        var(--tab-bg) calc(var(--tab-grad) + var(--tab-border, 1px) + 0.25px)
+      );
+      --radius-end: radial-gradient(
+        circle at top right,
+        transparent var(--tab-grad),
+        var(--tab-border-color) calc(var(--tab-grad) + 0.25px),
+        var(--tab-border-color) calc(var(--tab-grad) + var(--tab-border, 1px)),
+        var(--tab-bg) calc(var(--tab-grad) + var(--tab-border, 1px) + 0.25px)
+      );
+      background-image: var(--radius-start), var(--radius-end);
+    }
+
+    &:first-child:before {
+      background-image: var(--radius-end);
+      background-position: top right;
+      [dir="rtl"] & {
+        background-image: var(--radius-start);
+        background-position: top left;
+      }
+    }
+    &:last-child:before {
+      background-image: var(--radius-start);
+      background-position: top left;
+      [dir="rtl"] & {
+        background-image: var(--radius-end);
+        background-position: top right;
+      }
+    }
+  }
+}
+.tabs-lifted > .tab-active:not([disabled]) + .tabs-lifted .tab-active:not([disabled]) {
+  &:before {
+    background-image: var(--radius-end);
+    background-position: top right;
+  }
+}

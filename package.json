@@ -1,0 +1,119 @@
+{
+  "name": "flyonui",
+  "version": "1.0.0-beta",
+  "description": "The most easiest, free and open-source Tailwind CSS component library with semantic classes.",
+  "author": "ThemeSelection",
+  "license": "MIT",
+  "homepage": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/themeslection/flyonui.git"
+  },
+  "bugs": {
+    "url": "issues_url"
+  },
+  "keywords": [
+    "flyonui",
+    "flyon",
+    "html",
+    "design-system",
+    "css",
+    "components",
+    "ui-library",
+    "javascript",
+    "typescript",
+    "framework",
+    "tailwind",
+    "tailwindcss",
+    "theming",
+    "postcss",
+    "ui",
+    "design",
+    "tailwind examples",
+    "tailwind components",
+    "tailwind components library",
+    "tailwind elements",
+    "tailwind library",
+    "tailwind sections",
+    "tailwind css",
+    "tailwind ui"
+  ],
+  "main": "src/index.js",
+  "typings": "src/index.d.ts",
+  "types": "src/index.d.ts",
+  "files": [
+    "src/lib/**/*.js",
+    "dist/**/*.js",
+    "dist/js/**/*.ts",
+    "dist/{themes,styled,unstyled,full}.css",
+    "src/js/",
+    "src/index.js",
+    "src/theming/*.js",
+    "src/theming/*.d.ts",
+    "src/index.d.ts",
+    "./plugin.js",
+    "./dts-config.js",
+    "./tsconfig.json",
+    "./webpack.config.js",
+    "./flyonui.d.ts",
+    "./flyonui.js",
+    "./LICENSE",
+    "./THIRD_PARTY_LICENSES",
+    "./README.md"
+  ],
+  "engines": {
+    "node": ">=16.9.0"
+  },
+  "browserslist": [
+    "> 7%"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "branches": [
+      "main"
+    ]
+  },
+  "scripts": {
+    "init": "npm install && npm run build",
+    "pretty": "prettier --write \"./**/*.{ts,tsx,json}\"  --ignore-path .prettierignore",
+    "prettier": "prettier --write '**/*.{md,html,css,js,jsx,ts,tsx}' --config .prettierrc --ignore-path .prettierignore",
+    "watch": "npm-run-all --parallel watch:*",
+    "watch:js": "webpack --watch",
+    "watch:src": "node src/watch",
+    "build": "npm-run-all --parallel build:*",
+    "build:src": "node src/build",
+    "build:js": "webpack --mode production",
+    "generate-dts": "dts-bundle-generator --config dts-config.js",
+    "dist": "npm run build && npm run generate-dts",
+    "publish:alpha": "npm publish --tag=alpha",
+    "alpha": "npm run release -- --alpha && npm publish --tag=alpha"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "@types/dropzone": "^5.7.8",
+    "commit-and-tag-version": "^12.0.0",
+    "dts-bundle-generator": "^9.0.0",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.35",
+    "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.0.0",
+    "prejss-cli": "0.3.3",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.5",
+    "source-map-loader": "^5.0.0",
+    "tailwindcss": "^3.4.6",
+    "terser-webpack-plugin": "^5.3.9",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.5.4",
+    "watch": "^1.0.2",
+    "webpack": "^5.90.2",
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.2",
+    "css-selector-tokenizer": "^0.8",
+    "culori": "^4.0.1",
+    "picocolors": "^1",
+    "postcss-js": "^4"
+  }
+}

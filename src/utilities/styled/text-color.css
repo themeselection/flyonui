@@ -1,0 +1,86 @@
+.text-bg {
+  &-primary {
+    @apply text-primary-content bg-primary;
+  }
+  &-secondary {
+    @apply text-secondary-content bg-secondary;
+  }
+  &-accent {
+    @apply text-accent-content bg-accent;
+  }
+  &-neutral {
+    @apply text-neutral-content bg-neutral;
+  }
+
+  /* btn with state colors */
+  &-info {
+    @apply text-info-content bg-info;
+  }
+  &-success {
+    @apply text-success-content bg-success;
+  }
+  &-warning {
+    @apply text-warning-content bg-warning;
+  }
+  &-error {
+    @apply text-error-content bg-error;
+  }
+
+  /* Soft state */
+
+  &-soft-primary {
+    @apply text-primary bg-primary/20;
+  }
+  &-soft-secondary {
+    @apply text-secondary bg-secondary/20;
+  }
+  &-soft-accent {
+    @apply text-accent bg-accent/20;
+  }
+  &-soft-neutral {
+    @apply text-neutral bg-neutral/20;
+  }
+
+  /* btn with state colors */
+  &-soft-info {
+    @apply text-info bg-info/20;
+  }
+  &-soft-success {
+    @apply text-success bg-success/20;
+  }
+  &-soft-warning {
+    @apply text-warning bg-warning/20;
+  }
+  &-soft-error {
+    @apply text-error bg-error/20;
+  }
+}
+
+.text-border {
+  &-primary {
+    @apply text-primary bg-base-100 border-primary border;
+  }
+  &-secondary {
+    @apply text-secondary bg-base-100 border-secondary border;
+  }
+  &-accent {
+    @apply text-accent bg-base-100 border-accent border;
+  }
+  &-neutral {
+    @apply text-neutral bg-base-100 border-neutral border;
+  }
+
+  /* btn with state colors */
+  &-info {
+    @apply text-info bg-base-100 border-info border;
+  }
+  &-success {
+    @apply text-success bg-base-100 border-success border;
+  }
+  &-warning {
+    @apply text-warning bg-base-100 border-warning border;
+  }
+  &-error {
+    @apply text-error bg-base-100 border-error border;
+  }
+}

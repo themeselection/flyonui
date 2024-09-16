@@ -1,0 +1,40 @@
+.dropdown-menu {
+  @apply bg-base-100 rounded-box space-y-0.5 shadow-lg;
+}
+
+.dropdown-item {
+  @apply text-base-content/90 rounded-btn bg-transparent no-underline decoration-0;
+
+  &:hover,
+  &:focus,
+  &:focus-within,
+  &:focus-visible {
+    @apply bg-neutral/10 outline-none;
+  }
+
+  &.active,
+  &:active {
+    @apply bg-primary/10 text-primary;
+  }
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    @apply bg-neutral/5 text-base-content/50 pointer-events-none;
+  }
+
+  & > .label {
+    @apply text-base-content/80 py-1 text-base;
+    &-text {
+      @apply text-base-content/90;
+    }
+  }
+}
+
+.dropdown-header,
+.dropdown-footer {
+  @apply text-base-content/80 border-base-content/10;
+}
+
+.dropdown-title {
+  @apply text-base-content/50 text-xs font-medium;
+}

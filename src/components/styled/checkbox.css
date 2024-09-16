@@ -1,0 +1,204 @@
+.checkbox {
+  --chkbg: theme(colors.neutral);
+  --chkfg: theme(colors.neutral-content);
+  @apply border-base-content/40 rounded-btn bg-base-100 relative size-6 cursor-pointer appearance-none border-[1.5px];
+
+  &:focus {
+    box-shadow: none;
+  }
+  &:focus-visible {
+    @apply outline-neutral/30 outline outline-2 outline-offset-0;
+  }
+  &:checked,
+  &[checked="true"],
+  &[aria-checked="true"] {
+    @apply bg-no-repeat shadow-sm;
+    border-color: var(--chkbg);
+    animation: checkmark var(--animation-input, 0.2s) ease-out;
+    background-color: var(--chkbg);
+    background-image: linear-gradient(-45deg, transparent 66%, var(--chkbg) 66.99%),
+      linear-gradient(45deg, transparent 77%, var(--chkbg) 77.99%),
+      linear-gradient(-45deg, var(--chkbg) 41%, transparent 41.99%),
+      linear-gradient(45deg, var(--chkbg) 34%, var(--chkfg) 34.99%, var(--chkfg) 40%, transparent 40.99%),
+      linear-gradient(-45deg, var(--chkfg) 47%, var(--chkbg) 47.99%);
+  }
+  &:indeterminate {
+    @apply bg-no-repeat shadow-sm;
+    background-color: var(--chkbg);
+    border-color: var(--chkbg);
+    animation: checkmark var(--animation-input, 0.2s) ease-out;
+    background-image: linear-gradient(90deg, transparent 80%, var(--chkbg) 80%),
+      linear-gradient(-90deg, transparent 80%, var(--chkbg) 80%),
+      linear-gradient(0deg, var(--chkbg) 45%, var(--chkfg) 45%, var(--chkfg) 55%, var(--chkbg) 55%);
+  }
+  &-primary {
+    --chkbg: theme(colors.primary);
+    --chkfg: theme(colors.primary-content);
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      &:focus-visible {
+        @apply outline-primary/30;
+      }
+    }
+  }
+  &-secondary {
+    --chkbg: theme(colors.secondary);
+    --chkfg: theme(colors.secondary-content);
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      &:focus-visible {
+        @apply outline-secondary/30;
+      }
+    }
+  }
+  &-accent {
+    --chkbg: theme(colors.accent);
+    --chkfg: theme(colors.accent-content);
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      &:focus-visible {
+        @apply outline-accent/30;
+      }
+    }
+  }
+
+  /* State color */
+  &-info {
+    --chkbg: theme(colors.info);
+    --chkfg: theme(colors.info-content);
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      &:focus-visible {
+        @apply outline-info/30;
+      }
+    }
+  }
+  &-success {
+    --chkbg: theme(colors.success);
+    --chkfg: theme(colors.success-content);
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      &:focus-visible {
+        @apply outline-success/30;
+      }
+    }
+  }
+  &-warning {
+    --chkbg: theme(colors.warning);
+    --chkfg: theme(colors.warning-content);
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      &:focus-visible {
+        @apply outline-warning/30;
+      }
+    }
+  }
+  &-error {
+    --chkbg: theme(colors.error);
+    --chkfg: theme(colors.error-content);
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      &:focus-visible {
+        @apply outline-error/30;
+      }
+    }
+  }
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    @apply bg-base-100 pointer-events-none opacity-40;
+    &:not(checked) {
+      @apply bg-neutral;
+    }
+  }
+}
+
+@keyframes checkmark {
+  0% {
+    background-position-y: 5px;
+  }
+  50% {
+    background-position-y: -2px;
+  }
+  100% {
+    background-position-y: 0;
+  }
+}
+
+/* Backward compatibility */
+.checkbox-mark {
+  @apply hidden;
+}
+
+/* State style */
+.checkbox.is-valid,
+.validate .checkbox:valid {
+  --chkbg: theme(colors.success);
+  --chkfg: theme(colors.success-content);
+  @apply !border-success;
+  &:focus-visible {
+    @apply !outline-success/30;
+  }
+}
+
+.checkbox.is-invalid,
+.validate .checkbox:invalid {
+  --chkbg: theme(colors.error);
+  --chkfg: theme(colors.error-content);
+  @apply !border-error;
+  &:focus-visible {
+    @apply !outline-error/30;
+  }
+}
+
+/* Label state */
+/* main style is in checkbox.css  */
+
+/* This style the top right side label for floating and filled */
+.validate .label:has(+ * > .checkbox:valid)>*,
+/*This style the bottom start and end side label for floating and filled  */
+.validate .label~*:has(> .checkbox:valid)~.label .label-text-alt,
+/* This style the top start and end side label for floating and default */
+.validate .label:has(~ .checkbox:valid)>*,
+.validate .label:has(~ .checkbox:valid) :where(.label-text),
+/* When .is-valid is immediately followed by .label */
+.validate .checkbox:valid~.label,
+.validate .checkbox:valid~.label .label-text {
+  @apply text-success;
+}
+
+/* This style the top right side label for floating and filled */
+.validate .label:has(+ * > .checkbox:invalid)>*,
+/*This style the bottom start and end side label for floating and filled  */
+.validate .label~*:has(> .checkbox:invalid)~.label .label-text-alt,
+/* This style the top start and end side label for floating and default */
+.validate .label:has(~ .checkbox:invalid)>*,
+.validate .label:has(~ .checkbox:invalid) :where(.label-text),
+/* When .is-invalid is immediately followed by .label */
+.validate .checkbox:invalid~.label,
+.validate .checkbox:invalid~.label .label-text {
+  @apply text-error;
+}
+
+/* Helper text */
+/* main style is in checkbox.css  */
+.validate *:has(> .checkbox:valid) ~ .success-message,
+.validate .label ~ *:has(> .checkbox:valid) ~ * > .success-message,
+.validate .checkbox:valid ~ * > .success-message,
+.validate .checkbox:valid ~ .success-message {
+  @apply block;
+}
+
+.validate *:has(> .checkbox:invalid) ~ .error-message,
+.validate .label ~ *:has(> .checkbox:invalid) ~ * > .error-message,
+.validate .checkbox:invalid ~ * > .error-message,
+.validate .checkbox:invalid ~ .error-message {
+  @apply block;
+}

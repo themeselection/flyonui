@@ -1,0 +1,21 @@
+.menu {
+  @apply flex flex-col flex-wrap gap-0.5;
+  :where(li ul) {
+    @apply relative whitespace-nowrap;
+  }
+  :where(li:not(.menu-title) > *:not(ul, .collapse, .menu-title, .btn)) {
+    @apply grid grid-flow-col content-start items-center gap-2;
+    grid-auto-columns: minmax(auto, max-content) auto max-content;
+    user-select: none;
+  }
+
+  :where(li > .menu-dropdown:not(.menu-dropdown-show)) {
+    @apply hidden;
+  }
+}
+:where(.menu li) {
+  @apply relative flex shrink-0 flex-col flex-wrap items-stretch;
+  .badge {
+    @apply justify-self-end;
+  }
+}

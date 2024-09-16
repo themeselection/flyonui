@@ -1,0 +1,647 @@
+.btn {
+  @apply rounded-btn gap-2 border-current font-medium no-underline duration-200 ease-out;
+  border-width: var(--border-btn, 1px);
+  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  @media (prefers-reduced-motion: no-preference) {
+    animation: button-pop var(--animation-btn, 0.25s) ease-out;
+  }
+  &:active:hover,
+  &:active:focus {
+    animation: button-pop 0s ease-out;
+    transform: scale(var(--btn-focus-scale, 0.97));
+  }
+
+  /* default btn */
+  & {
+    @apply text-base-content outline-base-content no-underline shadow;
+    background-color: oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity));
+    --tw-bg-opacity: 1;
+
+    border-color: oklch(var(--btn-color, var(--b2)) / var(--tw-border-opacity));
+    --tw-border-opacity: 1;
+
+    @supports not (color: oklch(0% 0 0)) {
+      background-color: var(--btn-color, var(--fallback-b2));
+      border-color: var(--btn-color, var(--fallback-b2));
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        @apply shadow-md;
+        @supports (color: color-mix(in oklab, black, black)) {
+          background-color: color-mix(
+            in oklab,
+            oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%,
+            black
+          );
+          border-color: color-mix(
+            in oklab,
+            oklch(var(--btn-color, var(--b2)) / var(--tw-border-opacity, 1)) 90%,
+            black
+          );
+        }
+        @supports not (color: oklch(0% 0 0)) {
+          background-color: var(--btn-color, var(--fallback-b2));
+          border-color: var(--btn-color, var(--fallback-b2));
+        }
+      }
+    }
+    &-active {
+      @supports (color: color-mix(in oklab, black, black)) {
+        background-color: color-mix(in oklab, oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%, black);
+        border-color: color-mix(in oklab, oklch(var(--btn-color, var(--b2)) / var(--tw-border-opacity, 1)) 90%, black);
+      }
+    }
+    &:focus-visible {
+      @apply outline outline-2 outline-offset-0;
+      @supports (color: color-mix(in oklab, black, black)) {
+        background-color: color-mix(in oklab, oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity, 1)) 90%, black);
+        border-color: color-mix(in oklab, oklch(var(--btn-color, var(--b2)) / var(--tw-border-opacity, 1)) 90%, black);
+      }
+      @supports not (color: oklch(0% 0 0)) {
+        background-color: var(--btn-color, var(--fallback-b2));
+        border-color: var(--btn-color, var(--fallback-b2));
+      }
+    }
+  }
+  /* brand colors */
+  &-primary {
+    @apply text-primary-content outline-primary/30;
+    @supports (color: oklch(0% 0 0)) {
+      --btn-color: var(--p);
+    }
+    @supports not (color: oklch(0% 0 0)) {
+      --btn-color: var(--fallback-p);
+    }
+  }
+  &-secondary {
+    @apply text-secondary-content outline-secondary/30;
+    @supports (color: oklch(0% 0 0)) {
+      --btn-color: var(--s);
+    }
+    @supports not (color: oklch(0% 0 0)) {
+      --btn-color: var(--fallback-s);
+    }
+  }
+  &-accent {
+    @apply text-accent-content outline-accent/30;
+    @supports (color: oklch(0% 0 0)) {
+      --btn-color: var(--a);
+    }
+    @supports not (color: oklch(0% 0 0)) {
+      --btn-color: var(--fallback-a);
+    }
+  }
+
+  /* btn with state colors */
+  &-info {
+    @apply text-info-content outline-info/30;
+    @supports (color: oklch(0% 0 0)) {
+      --btn-color: var(--in);
+    }
+    @supports not (color: oklch(0% 0 0)) {
+      --btn-color: var(--fallback-in);
+    }
+  }
+  &-success {
+    @apply text-success-content outline-success/30;
+    @supports (color: oklch(0% 0 0)) {
+      --btn-color: var(--su);
+    }
+    @supports not (color: oklch(0% 0 0)) {
+      --btn-color: var(--fallback-su);
+    }
+  }
+  &-warning {
+    @apply text-warning-content outline-warning/30;
+    @supports (color: oklch(0% 0 0)) {
+      --btn-color: var(--wa);
+    }
+    @supports not (color: oklch(0% 0 0)) {
+      --btn-color: var(--fallback-wa);
+    }
+  }
+  &-error {
+    @apply text-error-content outline-error/30;
+    @supports (color: oklch(0% 0 0)) {
+      --btn-color: var(--er);
+    }
+    @supports not (color: oklch(0% 0 0)) {
+      --btn-color: var(--fallback-er);
+    }
+  }
+
+  /* glass */
+  &.glass {
+    @apply shadow-none outline-current hover:shadow-none;
+    @media (hover: hover) {
+      &:hover {
+        --glass-opacity: 25%;
+        --glass-border-opacity: 15%;
+      }
+    }
+    &.btn-active {
+      --glass-opacity: 25%;
+      --glass-border-opacity: 15%;
+    }
+  }
+
+  /* soft */
+  &-soft {
+    @apply text-base-content bg-neutral/20 border-none shadow-none hover:shadow-none;
+
+    @media (hover: hover) {
+      &:hover {
+        @apply bg-neutral/30;
+      }
+    }
+    &.btn-active {
+      @apply bg-neutral/30;
+    }
+    &:focus-visible {
+      @apply bg-neutral/30 outline-neutral/50;
+    }
+
+    &.btn-primary {
+      @apply text-primary bg-primary/20 outline-primary/50;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-primary/30;
+        }
+      }
+      &.btn-active {
+        @apply bg-primary/30;
+      }
+      &:focus-visible {
+        @apply bg-primary/30 outline-primary/50;
+      }
+    }
+    &.btn-secondary {
+      @apply text-secondary bg-secondary/20 outline-secondary/50;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-secondary/30;
+        }
+      }
+      &.btn-active {
+        @apply bg-secondary/30;
+      }
+      &:focus-visible {
+        @apply bg-secondary/30 outline-secondary/50;
+      }
+    }
+    &.btn-accent {
+      @apply text-accent bg-accent/20 outline-accent/50;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-accent/30;
+        }
+      }
+      &.btn-active {
+        @apply bg-accent/30;
+      }
+      &:focus-visible {
+        @apply bg-accent/30 outline-accent/50;
+      }
+    }
+
+    &.btn-success {
+      @apply text-success bg-success/20 outline-success/50;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-success/30;
+        }
+      }
+      &.btn-active {
+        @apply bg-success/30;
+      }
+      &:focus-visible {
+        @apply bg-success/30 outline-success/50;
+      }
+    }
+
+    &.btn-info {
+      @apply text-info bg-info/20 outline-info/50;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-info/30;
+        }
+      }
+      &.btn-active {
+        @apply bg-info/30;
+      }
+      &:focus-visible {
+        @apply bg-info/30 outline-info/50;
+      }
+    }
+    &.btn-warning {
+      @apply text-warning bg-warning/20 outline-warning/50;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-warning/30;
+        }
+      }
+      &.btn-active {
+        @apply bg-warning/30;
+      }
+      &:focus-visible {
+        @apply bg-warning/30 outline-warning/50;
+      }
+    }
+    &.btn-error {
+      @apply text-error bg-error/20 outline-error/50;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-error/30;
+        }
+      }
+      &.btn-active {
+        @apply bg-error/30;
+      }
+      &:focus-visible {
+        @apply bg-error/30 outline-error/50;
+      }
+    }
+  }
+
+  /* outline */
+  &-outline {
+    @apply text-base-content border-current bg-transparent shadow-none hover:shadow-none;
+    @media (hover: hover) {
+      &:hover {
+        @apply bg-base-content/10 border-base-content;
+      }
+    }
+    &.btn-active {
+      @apply bg-base-content/10 border-base-content;
+    }
+    &:focus-visible {
+      @apply bg-base-content/10 outline-1 outline-current;
+    }
+    &.btn-primary {
+      @apply text-primary;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-primary/10 border-primary;
+        }
+      }
+
+      &.btn-active {
+        @apply bg-primary/10 border-primary;
+      }
+      &:focus-visible {
+        @apply bg-primary/10;
+      }
+    }
+    &.btn-secondary {
+      @apply text-secondary;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-secondary/10 border-secondary;
+        }
+      }
+      &.btn-active {
+        @apply bg-secondary/10 border-secondary;
+      }
+      &:focus-visible {
+        @apply bg-secondary/10;
+      }
+    }
+    &.btn-accent {
+      @apply text-accent;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-accent/10 border-accent;
+        }
+      }
+      &.btn-active {
+        @apply bg-accent/10 border-accent;
+      }
+      &:focus-visible {
+        @apply bg-accent/10;
+      }
+    }
+
+    &.btn-success {
+      @apply text-success;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-success/10 border-success;
+        }
+      }
+      &.btn-active {
+        @apply bg-success/10 border-success;
+      }
+      &:focus-visible {
+        @apply bg-success/10;
+      }
+    }
+
+    &.btn-info {
+      @apply text-info;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-info/10 border-info;
+        }
+      }
+      &.btn-active {
+        @apply bg-info/10 border-info;
+      }
+      &:focus-visible {
+        @apply bg-info/10;
+      }
+    }
+    &.btn-warning {
+      @apply text-warning;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-warning/10 border-warning;
+        }
+      }
+      &.btn-active {
+        @apply bg-warning/10 border-warning;
+      }
+      &:focus-visible {
+        @apply bg-warning/10;
+      }
+    }
+    &.btn-error {
+      @apply text-error;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-error/10 border-error;
+        }
+      }
+      &.btn-active {
+        @apply bg-error/10 border-error;
+      }
+      &:focus-visible {
+        @apply bg-error/10;
+      }
+    }
+  }
+
+  /* text */
+  &-text {
+    @apply text-base-content border-transparent bg-transparent shadow-none hover:shadow-none;
+    @media (hover: hover) {
+      &:hover {
+        @apply bg-base-content/10 border-transparent;
+      }
+    }
+    &.btn-active {
+      @apply bg-base-content/10 border-transparent;
+    }
+    &:focus-visible {
+      @apply bg-base-content/10 border-transparent outline-current;
+    }
+    &.btn-primary {
+      @apply text-primary;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-primary/10;
+        }
+      }
+
+      &.btn-active {
+        @apply bg-primary/10;
+      }
+      &:focus-visible {
+        @apply bg-primary/10;
+      }
+    }
+    &.btn-secondary {
+      @apply text-secondary;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-secondary/10;
+        }
+      }
+      &.btn-active {
+        @apply bg-secondary/10;
+      }
+      &:focus-visible {
+        @apply bg-secondary/10;
+      }
+    }
+    &.btn-accent {
+      @apply text-accent;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-accent/10;
+        }
+      }
+      &.btn-active {
+        @apply bg-accent/10;
+      }
+      &:focus-visible {
+        @apply bg-accent/10;
+      }
+    }
+
+    &.btn-success {
+      @apply text-success;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-success/10;
+        }
+      }
+      &.btn-active {
+        @apply bg-success/10;
+      }
+      &:focus-visible {
+        @apply bg-success/10;
+      }
+    }
+
+    &.btn-info {
+      @apply text-info;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-info/10;
+        }
+      }
+      &.btn-active {
+        @apply bg-info/10;
+      }
+      &:focus-visible {
+        @apply bg-info/10;
+      }
+    }
+    &.btn-warning {
+      @apply text-warning;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-warning/10;
+        }
+      }
+      &.btn-active {
+        @apply bg-warning/10;
+      }
+      &:focus-visible {
+        @apply bg-warning/10;
+      }
+    }
+    &.btn-error {
+      @apply text-error;
+      @media (hover: hover) {
+        &:hover {
+          @apply bg-error/10;
+        }
+      }
+      &.btn-active {
+        @apply bg-error/10;
+      }
+      &:focus-visible {
+        @apply bg-error/10;
+      }
+    }
+  }
+
+  /* Gradient */
+  &-gradient {
+    @apply text-base-content border-base-200 outline-base-200/30 border-2 bg-transparent shadow;
+    transition: all 0.4s ease-in-out;
+    background-size: 200% auto;
+    --dark-shade: color-mix(in oklab, oklch(var(--light-shade, var(--b2)) / var(--tw-bg-opacity, 1)) 80%, black);
+    background-image: linear-gradient(
+      102deg,
+      oklch(var(--light-shade, var(--b2)) / var(--tw-bg-opacity)) 0%,
+      var(--dark-shade) 51%,
+      oklch(var(--light-shade, var(--b2)) / var(--tw-bg-opacity)) 100%
+    );
+
+    @media (hover: hover) {
+      &:hover {
+        @apply border-base-200 shadow-md;
+        background-position: right center;
+      }
+    }
+
+    &:focus-visible {
+      @apply outline outline-2 outline-offset-0;
+      border-color: transparent;
+      background-image: linear-gradient(
+        102deg,
+        oklch(var(--light-shade, var(--b2)) / var(--tw-bg-opacity)) 0%,
+        var(--dark-shade) 51%,
+        oklch(var(--light-shade, var(--b2)) / var(--tw-bg-opacity)) 100%
+      );
+    }
+
+    &.btn-primary {
+      @apply text-primary-content border-primary shadow-primary/26 hover:shadow-primary/20;
+      @supports (color: oklch(0% 0 0)) {
+        --light-shade: var(--p);
+      }
+      &:focus-visible {
+        @apply outline-primary/30;
+        border-color: transparent;
+      }
+    }
+    &.btn-secondary {
+      @apply text-secondary-content border-secondary shadow-secondary/26 hover:shadow-secondary/20;
+      @supports (color: oklch(0% 0 0)) {
+        --light-shade: var(--s);
+      }
+      &:focus-visible {
+        @apply outline-secondary/30;
+        border-color: transparent;
+      }
+    }
+    &.btn-accent {
+      @apply text-accent-content border-accent shadow-accent/26 hover:shadow-accent/20;
+      @supports (color: oklch(0% 0 0)) {
+        --light-shade: var(--a);
+      }
+      &:focus-visible {
+        @apply outline-accent/30;
+        border-color: transparent;
+      }
+    }
+
+    /* btn with state colors */
+    &.btn-info {
+      @apply text-info-content border-info shadow-info/26 hover:shadow-info/20;
+      @supports (color: oklch(0% 0 0)) {
+        --light-shade: var(--in);
+      }
+      &:focus-visible {
+        @apply outline-info/30;
+        border-color: transparent;
+      }
+    }
+    &.btn-success {
+      @apply text-success-content border-success shadow-success/26 hover:shadow-success/20;
+      @supports (color: oklch(0% 0 0)) {
+        --light-shade: var(--su);
+      }
+      &:focus-visible {
+        @apply outline-success/30;
+        border-color: transparent;
+      }
+    }
+    &.btn-warning {
+      @apply text-warning-content border-warning shadow-warning/26 hover:shadow-warning/20;
+      @supports (color: oklch(0% 0 0)) {
+        --light-shade: var(--wa);
+      }
+      &:focus-visible {
+        @apply outline-warning/30;
+        border-color: transparent;
+      }
+    }
+    &.btn-error {
+      @apply text-error-content border-error shadow-error/26 hover:shadow-error/20;
+      @supports (color: oklch(0% 0 0)) {
+        --light-shade: var(--er);
+      }
+      &:focus-visible {
+        @apply outline-error/30;
+        border-color: transparent;
+      }
+    }
+  }
+
+  /* disabled */
+  &.btn-disabled,
+  &[disabled],
+  &:disabled {
+    @apply opacity-50 shadow-none;
+  }
+  @media (hover: hover) {
+    &-disabled:hover,
+    &[disabled]:hover,
+    &:disabled:hover {
+      @apply opacity-50 shadow-none;
+    }
+  }
+}
+/* radio input and checkbox as button */
+.btn:is(input[type="checkbox"]:checked),
+.btn:is(input[type="radio"]:checked) {
+  @apply border-primary bg-primary text-primary-content;
+  @media (hover: hover) {
+    &:hover {
+      @supports (color: color-mix(in oklab, black, black)) {
+        background-color: color-mix(in oklab, theme(colors.primary) 90%, black);
+        border-color: color-mix(in oklab, theme(colors.primary) 90%, black);
+      }
+    }
+  }
+  &:focus-visible {
+    @apply outline-primary;
+  }
+}
+
+@keyframes button-pop {
+  0% {
+    transform: scale(var(--btn-focus-scale, 0.98));
+  }
+  40% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

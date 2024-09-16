@@ -1,0 +1,17 @@
+.link {
+  @apply inline-block cursor-pointer underline;
+  &-hover {
+    @apply no-underline [@media(hover:hover)]:hover:underline;
+  }
+  &-animated {
+    @apply relative no-underline before:pointer-events-none before:absolute before:bottom-0 before:start-0 before:h-px before:w-full before:bg-current before:transition-transform before:duration-300 before:ease-in-out before:content-[''];
+  }
+  &-animated::before {
+    transform-origin: 100% 50%;
+    transform: scale3d(0, 1, 1);
+  }
+  &-animated:hover::before {
+    transform-origin: 0% 50%;
+    transform: scale3d(1, 1, 1);
+  }
+}

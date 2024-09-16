@@ -1,0 +1,4 @@
+.badge {
+  @apply inline-flex h-6 items-center justify-center gap-1.5 px-3 text-center text-sm font-normal;
+  width: fit-content;
+}

@@ -1,0 +1,25 @@
+.dropdown-menu {
+  @apply z-10 mt-2 text-nowrap p-2 text-base opacity-0 transition-[opacity,margin] duration-300;
+}
+
+.dropdown-item {
+  @apply clear-both flex w-full items-center gap-x-2 px-4 py-2.5;
+  text-align: inherit;
+}
+
+.dropdown-header,
+.dropdown-footer {
+  @apply static flex items-center px-4 py-2.5;
+}
+
+.dropdown-header {
+  @apply rounded-t-box -m-2 mb-2 border-b;
+}
+
+.dropdown-footer {
+  @apply rounded-b-box -mx-2 !-mb-2 border-t;
+}
+
+.dropdown-title {
+  @apply block px-5 py-1.5 uppercase;
+}

@@ -1,0 +1,13 @@
+.tooltip {
+  @apply inline-block text-center;
+
+  &-content {
+    @apply invisible absolute inline-block p-2 opacity-0;
+    width: max-content;
+    z-index: 20;
+  }
+
+  &-body {
+    @apply px-3 py-1 leading-5;
+  }
+}

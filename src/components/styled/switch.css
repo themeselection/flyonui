@@ -1,0 +1,384 @@
+.switch {
+  --tglbg: theme(colors.base-300);
+  --handleoffset: 1.35rem;
+  --handleoffsetcalculator: calc(var(--handleoffset) * -1);
+  --switchhandleborder: 0 0;
+
+  @apply w-11.5 h-6 cursor-pointer appearance-none overflow-hidden rounded-full;
+  background-color: theme(colors.base-100);
+
+  transition:
+    background,
+    box-shadow var(--animation-input, 0.2s) ease-out;
+  box-shadow:
+    var(--handleoffsetcalculator) 0 0 4px var(--tglbg) inset,
+    0 0 0 4px var(--tglbg) inset,
+    var(--switchhandleborder);
+
+  [dir="rtl"] & {
+    --handleoffsetcalculator: calc(var(--handleoffset) * 1);
+  }
+
+  &:focus-visible {
+    @apply outline-neutral/30 outline outline-2 outline-offset-0;
+  }
+
+  &:checked,
+  &[checked="true"],
+  &[aria-checked="true"] {
+    background-image: none;
+    --handleoffsetcalculator: var(--handleoffset);
+    @apply text-neutral;
+    [dir="rtl"] & {
+      --handleoffsetcalculator: calc(var(--handleoffset) * -1);
+    }
+  }
+  &:indeterminate {
+    @apply text-neutral;
+    box-shadow:
+      calc(var(--handleoffset) / 2) 0 0 3px var(--tglbg) inset,
+      calc(var(--handleoffset) / -2) 0 0 3px var(--tglbg) inset,
+      0 0 0 3px var(--tglbg) inset;
+    [dir="rtl"] & {
+      box-shadow:
+        calc(var(--handleoffset) / 2) 0 0 3px var(--tglbg) inset,
+        calc(var(--handleoffset) / -2) 0 0 3px var(--tglbg) inset,
+        0 0 0 3px var(--tglbg) inset;
+    }
+  }
+  &-primary {
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      --tglbg: theme(colors.primary);
+      &:focus-visible {
+        @apply outline-primary/30;
+      }
+    }
+  }
+  &-secondary {
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      --tglbg: theme(colors.secondary);
+      &:focus-visible {
+        @apply outline-secondary/30;
+      }
+    }
+  }
+  &-accent {
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      --tglbg: theme(colors.accent);
+      &:focus-visible {
+        @apply outline-accent/30;
+      }
+    }
+  }
+
+  /* State color */
+  &-info {
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      --tglbg: theme(colors.info);
+      &:focus-visible {
+        @apply outline-info/30;
+      }
+    }
+  }
+  &-success {
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      --tglbg: theme(colors.success);
+      &:focus-visible {
+        @apply outline-success/30;
+      }
+    }
+  }
+  &-warning {
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      --tglbg: theme(colors.warning);
+      &:focus-visible {
+        @apply outline-warning/30;
+      }
+    }
+  }
+  &-error {
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      --tglbg: theme(colors.error);
+      &:focus-visible {
+        @apply outline-error/30;
+      }
+    }
+  }
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    @apply pointer-events-none bg-transparent opacity-40;
+  }
+
+  /* outline  */
+  &-outline {
+    --tglbg: theme(colors.base-100);
+    @apply border-neutral bg-neutral border;
+
+    box-shadow:
+      var(--handleoffsetcalculator) 0 0 3px var(--tglbg) inset,
+      0 0 0 3px var(--tglbg) inset,
+      var(--switchhandleborder);
+
+    &:focus-visible {
+      @apply outline-neutral/30 outline outline-2 outline-offset-0;
+    }
+
+    &:checked,
+    &[checked="true"],
+    &[aria-checked="true"] {
+      background-image: none;
+      --handleoffsetcalculator: var(--handleoffset);
+      [dir="rtl"] & {
+        --handleoffsetcalculator: calc(var(--handleoffset) * -1);
+      }
+    }
+
+    &.switch-primary {
+      &:checked,
+      &[checked="true"],
+      &[aria-checked="true"] {
+        --tglbg: theme(colors.base-100);
+        @apply border-primary bg-primary;
+        &:focus-visible {
+          @apply outline-primary/30;
+        }
+      }
+    }
+    &.switch-secondary {
+      &:checked,
+      &[checked="true"],
+      &[aria-checked="true"] {
+        --tglbg: theme(colors.base-100);
+        @apply border-secondary bg-secondary;
+        &:focus-visible {
+          @apply outline-secondary/30;
+        }
+      }
+    }
+    &.switch-accent {
+      &:checked,
+      &[checked="true"],
+      &[aria-checked="true"] {
+        --tglbg: theme(colors.base-100);
+        @apply border-accent bg-accent;
+        &:focus-visible {
+          @apply outline-accent/30;
+        }
+      }
+    }
+
+    /* State color */
+    &.switch-info {
+      &:checked,
+      &[checked="true"],
+      &[aria-checked="true"] {
+        --tglbg: theme(colors.base-100);
+        @apply border-info bg-info;
+        &:focus-visible {
+          @apply outline-info/30;
+        }
+      }
+    }
+    &.switch-success {
+      &:checked,
+      &[checked="true"],
+      &[aria-checked="true"] {
+        --tglbg: theme(colors.base-100);
+        @apply border-success bg-success;
+        &:focus-visible {
+          @apply outline-success/30;
+        }
+      }
+    }
+    &.switch-warning {
+      &:checked,
+      &[checked="true"],
+      &[aria-checked="true"] {
+        --tglbg: theme(colors.base-100);
+        @apply border-warning bg-warning;
+        &:focus-visible {
+          @apply outline-warning/30;
+        }
+      }
+    }
+    &.switch-error {
+      &:checked,
+      &[checked="true"],
+      &[aria-checked="true"] {
+        --tglbg: theme(colors.base-100);
+        @apply border-error bg-error;
+        &:focus-visible {
+          @apply outline-error/30;
+        }
+      }
+    }
+    &.disabled,
+    &:disabled,
+    &[disabled] {
+      @apply pointer-events-none border-current bg-transparent opacity-30;
+      --switchhandleborder: 0 0 0 3px theme(colors.base-content) inset,
+        var(--handleoffsetcalculator) 0 0 3px theme(colors.base-content) inset;
+    }
+  }
+}
+
+/* Backward compatibility */
+.switch-mark {
+  @apply hidden;
+}
+
+/* State style */
+.switch.is-valid,
+.validate .switch:valid {
+  --tglbg: theme(colors.success);
+  &:focus-visible {
+    @apply !outline-success/30;
+  }
+  &:checked,
+  &[checked="true"],
+  &[aria-checked="true"] {
+    --tglbg: theme(colors.success);
+  }
+}
+
+.switch.is-invalid,
+.validate .switch:invalid {
+  --tglbg: theme(colors.error);
+  &:focus-visible {
+    @apply !outline-error/30;
+  }
+  &:checked,
+  &[checked="true"],
+  &[aria-checked="true"] {
+    --tglbg: theme(colors.error);
+  }
+}
+
+/* Label state */
+/* main style is in switch.css  */
+
+/* This style the top right side label for floating and filled */
+.validate .label:has(+ * > .switch:valid)>*,
+/*This style the bottom start and end side label for floating and filled  */
+.validate .label~*:has(> .switch:valid)~.label .label-text-alt,
+/* This style the top start and end side label for floating and default */
+.validate .label:has(~ .switch:valid)>*,
+.validate .label:has(~ .switch:valid) :where(.label-text),
+/* When .is-valid is immediately followed by .label */
+.validate .switch:valid~.label,
+.validate .switch:valid~.label .label-text {
+  @apply text-success;
+}
+
+/* This style the top right side label for floating and filled */
+.validate .label:has(+ * > .switch:invalid)>*,
+/*This style the bottom start and end side label for floating and filled  */
+.validate .label~*:has(> .switch:invalid)~.label .label-text-alt,
+/* This style the top start and end side label for floating and default */
+.validate .label:has(~ .switch:invalid)>*,
+.validate .label:has(~ .switch:invalid) :where(.label-text),
+/* When .is-invalid is immediately followed by .label */
+.validate .switch:invalid~.label,
+.validate .switch:invalid~.label .label-text {
+  @apply text-error;
+}
+
+/* Helper text */
+/* main style is in switch.css  */
+.validate *:has(> .switch:valid) ~ .success-message,
+.validate .label ~ *:has(> .switch:valid) ~ * > .success-message,
+.validate .switch:valid ~ * > .success-message,
+.validate .switch:valid ~ .success-message {
+  @apply block;
+}
+.validate *:has(> .switch:invalid) ~ .error-message,
+.validate .label ~ *:has(> .switch:invalid) ~ * > .error-message,
+.validate .switch:invalid ~ * > .error-message,
+.validate .switch:invalid ~ .error-message {
+  @apply block;
+}
+
+/* Outline */
+
+.switch-outline.is-valid,
+.validate .switch-outline:valid {
+  --tglbg: theme(colors.base-100);
+  @apply border-success bg-success;
+  &:checked,
+  &[checked="true"],
+  &[aria-checked="true"] {
+    --tglbg: theme(colors.base-100);
+    @apply border-success bg-success;
+  }
+}
+
+.switch-outline.is-invalid,
+.validate .switch-outline:invalid {
+  --tglbg: theme(colors.base-100);
+  @apply border-error bg-error;
+  &:checked,
+  &[checked="true"],
+  &[aria-checked="true"] {
+    --tglbg: theme(colors.base-100);
+    @apply border-error bg-error;
+  }
+}
+
+/* Label state */
+/* main style is in switch.css  */
+
+/* This style the top right side label for floating and filled */
+.validate .label:has(+ * > .switch-outline:valid)>*,
+/*This style the bottom start and end side label for floating and filled  */
+.validate .label~*:has(> .switch-outline:valid)~.label .label-text-alt,
+/* This style the top start and end side label for floating and default */
+.validate .label:has(~ .switch-outline:valid)>*,
+.validate .label:has(~ .switch-outline:valid) :where(.label-text),
+/* When .is-valid is immediately followed by .label */
+.validate .switch-outline:valid~.label,
+.validate .switch-outline:valid~.label .label-text {
+  @apply text-success;
+}
+
+/* This style the top right side label for floating and filled */
+.validate .label:has(+ * > .switch-outline:invalid)>*,
+/*This style the bottom start and end side label for floating and filled  */
+.validate .label~*:has(> .switch-outline:invalid)~.label .label-text-alt,
+/* This style the top start and end side label for floating and default */
+.validate .label:has(~ .switch-outline:invalid)>*,
+.validate .label:has(~ .switch-outline:invalid) :where(.label-text),
+/* When .is-invalid is immediately followed by .label */
+.validate .switch-outline:invalid~.label,
+.validate .switch-outline:invalid~.label .label-text {
+  @apply text-error;
+}
+
+/* Helper text */
+/* main style is in switch.css  */
+.validate *:has(> .switch-outline:valid) ~ .success-message,
+.validate .label ~ *:has(> .switch-outline:valid) ~ * > .success-message,
+.validate .switch-outline:valid ~ * > .success-message,
+.validate .switch-outline:valid ~ .success-message {
+  @apply block;
+}
+.validate *:has(> .switch-outline:invalid) ~ .error-message,
+.validate .label ~ *:has(> .switch-outline:invalid) ~ * > .error-message,
+.validate .switch-outline:invalid ~ * > .error-message,
+.validate .switch-outline:invalid ~ .error-message {
+  @apply block;
+}

@@ -1,0 +1,13 @@
+.tabs {
+  @apply flex items-end;
+}
+.tabs-lifted {
+  &:has(.tab-content[class^="rounded-"]) .tab:first-child:not(.tab-active),
+  &:has(.tab-content[class*=" rounded-"]) .tab:first-child:not(.tab-active) {
+    @apply border-b-transparent;
+  }
+}
+.tab {
+  @apply h-9.5 relative inline-flex cursor-pointer select-none appearance-none items-center justify-center text-center text-base;
+  --tab-padding: 1rem;
+}

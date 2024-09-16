@@ -1,0 +1,11 @@
+[type="checkbox"].checkbox {
+  &-xs {
+    @apply size-4;
+  }
+  &-sm {
+    @apply size-5;
+  }
+  &-lg {
+    @apply size-8;
+  }
+}

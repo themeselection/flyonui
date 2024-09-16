@@ -1,0 +1,38 @@
+/* Define the base skeleton styles */
+.skeleton {
+  @apply bg-base-300 rounded-box;
+  will-change: background-position;
+  background-image: linear-gradient(
+    105deg,
+    transparent 0%,
+    transparent 40%,
+    theme(colors.base-100/0.75) 50%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: 200% auto;
+  background-repeat: no-repeat;
+  background-position-x: -50%;
+}
+
+/* Define the animation properties in the skeleton-animated class */
+.skeleton-animated {
+  animation: skeleton 1.8s ease-in-out infinite;
+}
+
+/* Reduce animation duration for reduced motion preferences */
+@media (prefers-reduced-motion) {
+  .skeleton-animated {
+    animation-duration: 15s;
+  }
+}
+
+/* Define the animation keyframes */
+@keyframes skeleton {
+  from {
+    background-position: 150%;
+  }
+  to {
+    background-position: -50%;
+  }
+}

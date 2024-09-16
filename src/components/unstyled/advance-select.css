@@ -1,0 +1,15 @@
+.advance-select-toggle {
+  @apply relative flex w-full cursor-pointer text-nowrap px-3 py-[7px] pe-9 text-start;
+}
+
+.advance-select-menu {
+  @apply z-10 w-full space-y-0.5 p-2;
+}
+
+.advance-select-option {
+  @apply w-full cursor-pointer px-4 py-2.5;
+}
+
+.advance-select-tag {
+  @apply relative flex w-full cursor-pointer text-nowrap px-1 py-0 pe-9 text-start;
+}

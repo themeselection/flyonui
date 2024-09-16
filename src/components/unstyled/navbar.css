@@ -1,0 +1,12 @@
+.navbar {
+  @apply flex items-center;
+}
+.navbar-start {
+  @apply flex w-1/2 justify-start;
+}
+.navbar-center {
+  @apply shrink-0;
+}
+.navbar-end {
+  @apply flex w-1/2 justify-end;
+}

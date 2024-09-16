@@ -1,0 +1,19 @@
+.progress {
+  @apply flex h-1.5 w-full overflow-hidden rounded-full;
+
+  &-bar {
+    @apply flex items-center justify-center overflow-hidden whitespace-nowrap rounded-full text-xs font-medium transition duration-500 ease-in-out;
+  }
+
+  &-label {
+    @apply rounded-tooltip relative inline w-fit px-1.5 py-0.5 text-xs font-medium;
+  }
+
+  &-vertical {
+    @apply h-full w-1.5 flex-col justify-end rounded-full;
+  }
+}
+
+.progress-step {
+  @apply flex h-1.5 w-full flex-col justify-center whitespace-nowrap text-center text-xs;
+}
