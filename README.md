@@ -1,3 +1,5 @@
+[![Hero Image](https://cdn.flyonui.com/fy-assets/logo/flyonui-logo.svg)](https://flyonui.com)
+
 <a href="https://flyonui.com">
   <img alt="flyonui logo" width="350" src="https://cdn.flyonui.com/fy-assets/logo/flyonui-logo.svg">
 </a>
@@ -5,6 +7,7 @@
 [FlyonUI](http://flyonui.com/) is the most easiest, free and open-source Tailwind CSS component library with semantic classes. 🚀
 
 <p>
+    <a href="https://discord.com/invite/4eeurUVvTy"><img src="https://img.shields.io/discord/902911619032576090?color=%237289da&label=Discord" alt="Join our Discord"></a>
     <a href="https://www.npmjs.com/package/flyonui"><img src="https://img.shields.io/npm/dt/flyonui.svg" alt="Total Downloads on NPM"></a>
     <a href="https://github.com/themesberg/flyonui/releases"><img src="https://img.shields.io/npm/v/flyonui.svg" alt="Latest Version"></a>
     <a href="https://flyonui.com/docs/getting-started/license/"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
@@ -21,9 +24,13 @@
 - [Documentation](#documentation)
 - [Getting Started](#getting-started)
   - [Installation via NPM](#installation-via-npm)
+  - [Why No CDN Support?](#why-no-cdn-support)
   - [RTL (Right-to-Left) Language Support](#rtl-right-to-left-language-support)
 - [Available Components](#available-components)
   - [Component Examples](#component-examples)
+- [Figma Design System](#figma-design-system)
+- [FlyonUI GPT](#flyonui-gpt)
+- [Hire Us](#hire-us)
 - [Community](#community)
 - [Credits](#credits)
 - [License](#license)
@@ -38,7 +45,7 @@ FlyonUI is designed to combine the best of both worlds: the aesthetic appeal of 
 
 FlyonUI brings together the beauty of semantic classes and the interactive JS plugins, offering you a powerful toolkit to build stunning, interactive user interfaces with ease.
 
-- **Beautiful and Semantic Styling:** Utilize comprehensive CSS components with semantic class names for a clean and readable codebase.
+- **Beautiful and Semantic Styling:** Utilize comprehensive CSS components with semantic class names for a clean and readable codebase ().
 - **Interactive and Dynamic Features:** Incorporate JavaScript plugins to add interactivity and dynamic behavior to your UI components.
 - **Efficiency and Productivity:** Enjoy a faster and more efficient development process by combining the strengths of semantic classes and JS plugins.
 - **Maintainable and Scalable:** Keep your projects maintainable and scalable with a consistent coding approach and powerful JS plugins.
@@ -73,15 +80,9 @@ To use FlyonUI, ensure that you have [Node.js](https://nodejs.org/en/) and [Tail
 
    ```javascript
    module.exports = {
-     plugins: [
-      require("flyonui"), 
-      require("flyonui/plugin")  // Include this line if you are using JS plugins/components
-      ]
+     plugins: [require("flyonui"), require("flyonui/plugin")]
    }
    ```
-
-> [!TIP]
-> Step no 3 and 4 are optional if you are not using any JS plugins/components.
 
 3. Add the template path in `tailwind.config.js` to allow Tailwind to scan FlyonUI's JavaScript files:
 
@@ -96,6 +97,22 @@ To use FlyonUI, ensure that you have [Node.js](https://nodejs.org/en/) and [Tail
    ```html
    <script src="../path/to/flyonui/flyonui.js"></script>
    ```
+
+> [!TIP]
+> Step no 3 and 4 are optional if you are not using any JS plugins.
+
+### Why No CDN Support?
+
+FlyonUI is not available via CDN because Tailwind CSS requires access to the JavaScript files to generate the necessary utility classes. By specifying the correct file path in the `content` array, Tailwind can scan the provided files from FlyonUI to create the needed styles:
+
+```javascript
+module.exports = {
+  content: ["./node_modules/flyonui/dist/js/*.js"]
+}
+```
+
+Using a CDN would prevent this functionality, leading to missing styles and utility classes.
+
 ### RTL (Right-to-Left) Language Support
 
 FlyonUI components offer native RTL support. Simply add the `dir="rtl"` attribute to your HTML element to enable this feature.
@@ -104,7 +121,7 @@ FlyonUI components offer native RTL support. Simply add the `dir="rtl"` attribut
 
 FlyonUI provides a robust library of UI components built with Tailwind CSS utility classes, enabling fast and efficient web development. Our library includes 78+ components, from basic elements like buttons and cards to more complex third-party integrations.
 
-[Explore all components](https://flyonui.com/docs/components/accordion/)
+[Explore all components](https://flyonui.com/docs/components/)
 
 ### Component Examples
 
@@ -199,15 +216,36 @@ FlyonUI provides a robust library of UI components built with Tailwind CSS utili
   </tr>
 </table>
 
-[Explore all components](https://flyonui.com/docs/components/accordion/)
+[Explore all components](https://flyonui.com/docs/components/)
+
+## Figma Design System
+
+Get access to our comprehensive Figma design files to help you visualize
+
+and prototype your projects with FlyonUI components.
+
+🎨 [Access Figma Design Files]()
+
+## FlyonUI GPT
+
+Utilize our custom-trained ChatGPT model to generate website sections and pages tailored for use with FlyonUI and Tailwind CSS.
+
+🤖 [Generate with FlyonUI GPT]()
+
+## Hire Us
+
+Take your application to the next level by partnering with our experienced developers who specialize in FlyonUI and Tailwind CSS.
+
+🙋‍♂️ [Work with Us]()
 
 ## Community
 
 Join the FlyonUI community to discuss the library, ask questions, and share your experiences:
 
-- 📢 [Follow us on Twitter](https://x.com/flyonui)
-- ⌨️ [Discuss on GitHub](https://github.com/themeselection/flyonui/discussions)
-
+- 📢 [Follow us on Twitter]()
+- 💬 [Join the FlyonUI Discord Server]()
+- ⌨️ [Discuss on GitHub]()
+- 🎥 [Subscribe to our YouTube Channel]()
 
 ## Credits
 
@@ -217,7 +255,7 @@ We are grateful for the contributions of the open-source community, particularly
 - [daisyUI](https://daisyui.com/)
 - [Preline UI](https://preline.co/).
 
-These projects form the backbone of FalyonUI, allowing us to build a powerful and user-friendly UI kit.
+These projects form the backbone of FlyonUI, allowing us to build a powerful and user-friendly UI kit.
 
 ## License
 

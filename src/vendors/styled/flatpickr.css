@@ -39,7 +39,7 @@
   }
 
   input.cur-year {
-    @apply m-0 h-4 cursor-default ps-1;
+    @apply m-0 h-5 cursor-default ps-1;
 
     &:focus {
       @apply outline-none;
