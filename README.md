@@ -1,5 +1,3 @@
-[![Hero Image](https://cdn.flyonui.com/fy-assets/logo/flyonui-logo.svg)](https://flyonui.com)
-
 <a href="https://flyonui.com">
   <img alt="flyonui logo" width="350" src="https://cdn.flyonui.com/fy-assets/logo/flyonui-logo.svg">
 </a>
@@ -7,7 +5,6 @@
 [FlyonUI](http://flyonui.com/) is the most easiest, free and open-source Tailwind CSS component library with semantic classes. 🚀
 
 <p>
-    <a href="https://discord.com/invite/4eeurUVvTy"><img src="https://img.shields.io/discord/902911619032576090?color=%237289da&label=Discord" alt="Join our Discord"></a>
     <a href="https://www.npmjs.com/package/flyonui"><img src="https://img.shields.io/npm/dt/flyonui.svg" alt="Total Downloads on NPM"></a>
     <a href="https://github.com/themesberg/flyonui/releases"><img src="https://img.shields.io/npm/v/flyonui.svg" alt="Latest Version"></a>
     <a href="https://flyonui.com/docs/getting-started/license/"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
@@ -24,13 +21,9 @@
 - [Documentation](#documentation)
 - [Getting Started](#getting-started)
   - [Installation via NPM](#installation-via-npm)
-  - [Why No CDN Support?](#why-no-cdn-support)
   - [RTL (Right-to-Left) Language Support](#rtl-right-to-left-language-support)
 - [Available Components](#available-components)
   - [Component Examples](#component-examples)
-- [Figma Design System](#figma-design-system)
-- [FlyonUI GPT](#flyonui-gpt)
-- [Hire Us](#hire-us)
 - [Community](#community)
 - [Credits](#credits)
 - [License](#license)
@@ -41,12 +34,24 @@
 
 FlyonUI is designed to combine the best of both worlds: the aesthetic appeal of semantic classes and the powerful functionality of JS plugins.
 
+Under the hood, it uses the strengths of:
+
+- [Tailwind CSS](https://tailwindcss.com/) A utility-first CSS framework that helps you build beautiful websites with ease.
+- [DaisyUI](https://daisyui.com/) adds component sematic class names to Tailwind CSS so you can make beautiful websites faster, easier and Maintainable.
+- [Preline](https://preline.co/plugins.html) JavaScript headless & fully unstyled Tailwind plugins for accessible, responsive UI. Enhance experiences with animations, transitions, and more.
+
 ## Why should I use FlyonUI?
 
-FlyonUI brings together the beauty of semantic classes and the interactive JS plugins, offering you a powerful toolkit to build stunning, interactive user interfaces with ease.
+Using Tailwind CSS alone may lead to cluttered HTML with numerous utility classes, which can be a nightmare to maintain.
 
-- **Beautiful and Semantic Styling:** Utilize comprehensive CSS components with semantic class names for a clean and readable codebase ().
-- **Interactive and Dynamic Features:** Incorporate JavaScript plugins to add interactivity and dynamic behavior to your UI components.
+Apart from that Tailwind CSS or DaisyUI doesn’t provide any interactive headless JavaScript components like accordion, overlay, dropdowns, etc…
+
+**This is where FlyonUI shines.✨**
+
+FlyonUI brings together the beauty of semantic classes and the interactive headless JavaScript plugins, offering you a powerful toolkit to build stunning, interactive user interfaces with ease.
+
+- **Beautiful and Semantic Styling:** Utilize comprehensive CSS components with semantic class names for a clean and readable codebase.
+- **Interactive and Dynamic Features:** Incorporate Headless JavaScript plugins for ex: Accordion, Dropdown, Overlay etc… to add interactivity and dynamic behavior to your UI components.
 - **Efficiency and Productivity:** Enjoy a faster and more efficient development process by combining the strengths of semantic classes and JS plugins.
 - **Maintainable and Scalable:** Keep your projects maintainable and scalable with a consistent coding approach and powerful JS plugins.
 
@@ -54,9 +59,10 @@ FlyonUI brings together the beauty of semantic classes and the interactive JS pl
 
 1. **800+ Free Components & Examples**: Hundreds of component examples for all your WebApp needs that meet accessibility criteria.
 2. **Universal Framework Compatibility**: Fully compatible wherever Tailwind CSS is in action, from React to Vue and beyond.
-3. **Unstyled & Accessible Plugins**: Seamlessly add unstyled, accessible plugins for functionality without sacrificing design.
-4. **Responsive & RTL support** : Built with responsiveness in mind, ensuring your app looks great on all devices with RTL language support.
-5. **Free Forever:** Completely free forever, open-source, and built for the community.
+3. **Unlimited Themes**: Customize your app’s look and feel with FlyonUI’s theming capabilities. Refer to the theme section for more details.
+4. **Unstyled & Accessible Plugins**: Seamlessly add unstyled, accessible plugins for functionality without sacrificing design.
+5. **Responsive & RTL support** : Built with responsiveness in mind, ensuring your app looks great on all devices with RTL language support.
+6. **Free Forever:** Completely free forever, open-source, and built for the community.
 
 ## Documentation
 
@@ -80,38 +86,39 @@ To use FlyonUI, ensure that you have [Node.js](https://nodejs.org/en/) and [Tail
 
    ```javascript
    module.exports = {
-     plugins: [require("flyonui"), require("flyonui/plugin")]
+     content: ["./node_modules/flyonui/dist/js/*.js"], // Require only if you want to use FlyonUI JS component
+
+     plugins: [
+       require("flyonui"),
+       require("flyonui/plugin") // Require only if you want to use FlyonUI JS component
+     ]
    }
    ```
 
-3. Add the template path in `tailwind.config.js` to allow Tailwind to scan FlyonUI's JavaScript files:
+   This ensures that FlyonUI's styling is applied correctly throughout your project.
+
+   If you want to include specific js component:
 
    ```javascript
    module.exports = {
-     content: ["./node_modules/flyonui/dist/js/*.js"]
+     content: ["./node_modules/flyonui/dist/js/accordion.js"]
    }
    ```
 
-4. Include the main JavaScript file to activate interactive elements:
+3. Include FlyonUI JavaScript in HTML
+   To enable interactive elements, include FlyonUI's JavaScript in your HTML file, right before the closing `</body>` tag:
 
    ```html
-   <script src="../path/to/flyonui/flyonui.js"></script>
+   <script src="../node_modules/flyonui/flyonui.js"></script>
    ```
 
-> [!TIP]
-> Step no 3 and 4 are optional if you are not using any JS plugins.
+   For a single component, use the specific path:
 
-### Why No CDN Support?
+   ```html
+   <script src="../node_modules/flyonui/dist/js/accordion.js"></script>
+   ```
 
-FlyonUI is not available via CDN because Tailwind CSS requires access to the JavaScript files to generate the necessary utility classes. By specifying the correct file path in the `content` array, Tailwind can scan the provided files from FlyonUI to create the needed styles:
-
-```javascript
-module.exports = {
-  content: ["./node_modules/flyonui/dist/js/*.js"]
-}
-```
-
-Using a CDN would prevent this functionality, leading to missing styles and utility classes.
+   This script ensures that all FlyonUI interactivity is correctly applied to your elements.
 
 ### RTL (Right-to-Left) Language Support
 
@@ -121,7 +128,7 @@ FlyonUI components offer native RTL support. Simply add the `dir="rtl"` attribut
 
 FlyonUI provides a robust library of UI components built with Tailwind CSS utility classes, enabling fast and efficient web development. Our library includes 78+ components, from basic elements like buttons and cards to more complex third-party integrations.
 
-[Explore all components](https://flyonui.com/docs/components/)
+[Explore all components](https://flyonui.com/docs/components/accordion/)
 
 ### Component Examples
 
@@ -216,36 +223,14 @@ FlyonUI provides a robust library of UI components built with Tailwind CSS utili
   </tr>
 </table>
 
-[Explore all components](https://flyonui.com/docs/components/)
-
-## Figma Design System
-
-Get access to our comprehensive Figma design files to help you visualize
-
-and prototype your projects with FlyonUI components.
-
-🎨 [Access Figma Design Files]()
-
-## FlyonUI GPT
-
-Utilize our custom-trained ChatGPT model to generate website sections and pages tailored for use with FlyonUI and Tailwind CSS.
-
-🤖 [Generate with FlyonUI GPT]()
-
-## Hire Us
-
-Take your application to the next level by partnering with our experienced developers who specialize in FlyonUI and Tailwind CSS.
-
-🙋‍♂️ [Work with Us]()
+[Explore all components](https://flyonui.com/docs/components/accordion/)
 
 ## Community
 
 Join the FlyonUI community to discuss the library, ask questions, and share your experiences:
 
-- 📢 [Follow us on Twitter]()
-- 💬 [Join the FlyonUI Discord Server]()
-- ⌨️ [Discuss on GitHub]()
-- 🎥 [Subscribe to our YouTube Channel]()
+- 📢 [Follow us on Twitter](https://x.com/flyonui)
+- ⌨️ [Discuss on GitHub](https://github.com/themeselection/flyonui/discussions)
 
 ## Credits
 
@@ -255,7 +240,7 @@ We are grateful for the contributions of the open-source community, particularly
 - [daisyUI](https://daisyui.com/)
 - [Preline UI](https://preline.co/).
 
-These projects form the backbone of FlyonUI, allowing us to build a powerful and user-friendly UI kit.
+These projects form the backbone of FalyonUI, allowing us to build a powerful and user-friendly UI kit.
 
 ## License
 
