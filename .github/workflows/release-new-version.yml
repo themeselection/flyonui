@@ -1,0 +1,52 @@
+name: "🎉 Release new version"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: 🚀 Publish
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    env:
+      runtime: npm
+    outputs:
+      flyonuiversion: ${{ steps.package-version.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          clean: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "latest"
+          registry-url: https://registry.npmjs.org
+
+      - name: Install package dependencies
+        run: ${{ env.runtime }} install
+
+      - name: Build package
+        run: ${{ env.runtime }} run dist
+
+      - name: Read package version from package.json
+        id: package-version
+        run: |
+          version=$(grep -o '"version": *"[^"]*"' package.json | cut -d'"' -f4)
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+      - name: Publish package to NPM
+        if: github.repository == 'themeselection/flyonui'
+        run: ${{ env.runtime }} publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  write-release-notes:
+    name: 📝 Release notes
+    needs: publish
+    uses: ./.github/workflows/write-release-notes.yml
+    secrets: inherit
+    with:
+      flyonuiversion: ${{ needs.publish.outputs.flyonuiversion }}

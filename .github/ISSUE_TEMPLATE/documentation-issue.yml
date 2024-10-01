@@ -1,0 +1,37 @@
+name: 📕 Documentation Issue
+description: If you found an issue on flyonui.com website
+title: "docs: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please first search in [existing issues](https://github.com/themeselection/flyonui/issues?q=is%3Aissue) and [discussion forum](https://github.com/themeselection/flyonui/discussions) and make sure this issue is not addressed before.
+  - type: input
+    id: page
+    attributes:
+      label: On which page do you see this issue?
+      placeholder: "example: https://flyonui.com/"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the issue
+      description: Explain the issue, including the circumstances under which it occurs, and provide screenshots if possible.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - All browsers
+        - Chrome
+        - Chrome Android
+        - Safari
+        - Safari iOS
+        - Firefox
+        - Edge
+        - Other

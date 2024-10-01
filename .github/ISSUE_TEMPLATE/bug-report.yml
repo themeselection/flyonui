@@ -1,0 +1,72 @@
+name: 🐞 Report a new Bug
+description: If you found a new bug on flyonui package, report it here.
+title: "bug: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+
+        Thank you for submitting a bug report 💙
+        If you need help about your project and it's **NOT** a flyonui bug, please [ask your question in discussion forum](https://github.com/themeselection/flyonui/discussions/new?category=q-a).
+
+        👉 Before you submit a new bug, please do the following steps:
+
+        1. Update your FlyonUI (and other dependencies) to the latest version (`npm i -D flyonui@latest`)
+        3. Search [existing issues](https://github.com/themeselection/flyonui/issues?q=is%3Aissue) and [discussion forum](https://github.com/themeselection/flyonui/discussions?discussions_q=). You may find a solution there
+        4. Open one issue per problem. Don't list multiple issues in the same page because that would be hard to track.
+
+  - type: input
+    id: version
+    attributes:
+      label: What version of FlyonUI are you using?
+      description: You can see the flyonui version number on your `package.json` file.
+      placeholder: "example: v1.0.0"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: Which browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - All browsers
+        - Chrome
+        - Chrome Android
+        - Safari
+        - Safari iOS
+        - Firefox
+        - Edge
+        - Other
+
+  - type: input
+    id: reproduction
+    attributes:
+      label: Reproduction URL
+      description: |
+
+        ℹ️ Please provide a link to a small, minimal example source code where issue can be reproduced. Without a link it will be hard to guess what is the cause of the problem and it will take more time to fix.
+
+        ℹ️ Provide a link to a demo on [CodeSandbox](https://codesandbox.io/) or [StackBlitz](https://stackblitz.com/) that reproduces the issue.
+        You can fork from an existing [FlyonUI](https://github.com/themeselection/flyonui) demo if needed.
+
+      placeholder: "https://"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe your issue
+      description: |
+
+        ℹ️ Explain the issue, including the circumstances under which it occurs, and provide screenshots if possible.
+
+        ℹ️ Please include the steps to reproduce the issue (e.g., "Step 1: Open...").
+
+        ℹ️ To write a code block, use ``` before and after your code.
+
+        ℹ️ Please don't use JSX or other framework specific code. Use plain HTML and CSS.
+
+    validations:
+      required: true

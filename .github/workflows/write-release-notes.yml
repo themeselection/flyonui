@@ -1,0 +1,50 @@
+name: "📝 Write Release Notes"
+
+on:
+  workflow_call:
+    inputs:
+      flyonuiversion:
+        type: string
+
+jobs:
+  write-release-notes:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+          clean: false
+
+      - name: Read package version from workflow input
+        id: package-version
+        run: |
+          version=${{ inputs.flyonuiversion }}
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+          # Check if the version follows semantic versioning (e.g., 1.0.0)
+          if [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "$version is a stable version"
+            echo "is-stable=true" >> $GITHUB_OUTPUT
+          else
+            echo "$version is not a stable version"
+            echo "is-stable=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Add release notes to GitHub
+        uses: softprops/action-gh-release@v2
+        if: steps.package-version.outputs.is-stable == 'true'
+        with:
+          tag_name: v${{ steps.package-version.outputs.version }}
+          body: |
+            📜 Read changelog: https://github.com/themeselection/flyonui/blob/main/CHANGELOG.md
+
+            📦 Install this update:
+            ```bash
+            npm i -D flyonui@${{ steps.package-version.outputs.version }}
+            ```
+
+            🙏 Thank you for using flyonui!
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

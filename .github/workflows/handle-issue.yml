@@ -1,0 +1,38 @@
+name: "🧑🏻‍💻 Handle issue"
+
+on:
+  issues:
+    types: [opened, reopened]
+
+jobs:
+  handle_new_issue:
+    if: github.event.action == 'opened'
+    runs-on: ubuntu-latest
+    name: Handle new issue
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Greet
+        uses: badsyntax/github-action-issue-comment@master
+        if: github.event_name == 'issues'
+        with:
+          id: "auto-reply"
+          action: "create-clean"
+          template: ".github/workflows/issue-reply.hbs"
+          issue-number: ${{ github.event.issue.number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          template-inputs: |
+            {
+              "user": "${{ github.event.issue.user.login }}"
+            }
+
+      # Find duplicates
+      - name: Find duplicates
+        uses: wow-actions/potential-duplicates@v1.0.9
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
+          label: ""
+          comment: >
+            Potential duplicates: {{#issues}}
+              - #{{ number }} _({{ accuracy }}% Match)_
+            {{/issues}}
