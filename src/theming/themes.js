@@ -58,8 +58,8 @@ module.exports = {
     neutral: '#37332F',
     'neutral-content': '#FEFDFC',
     'base-100': '#FEFDFC',
-    'base-200': '#FCF1EA',
-    'base-300': '#F8E4D5',
+    'base-200': '#F8E4D5',
+    'base-300': '#F3DFD1',
     'base-content': '#37332F',
     'base-shadow': '#54341E',
     info: '#0EA5E9',
@@ -71,7 +71,7 @@ module.exports = {
     error: '#FB4141',
     'error-content': '#FFF5ED',
     '--rounded-box': '0.75rem',
-    '--rounded-btn': '1.375rem',
+    '--rounded-btn': '1.75rem',
     '--rounded-tooltip': '0.5rem',
     '--tab-radius': '0.75rem'
   },
@@ -88,7 +88,7 @@ module.exports = {
     'base-100': '#FDFDFE',
     'base-200': '#D3D8F1',
     'base-300': '#CDD2EF',
-    'base-content': '#23317A',
+    'base-content': '#464B68',
     'base-shadow': '#161E4C',
     info: '#14B8A6',
     'info-content': '#CCFBF1',
@@ -114,7 +114,7 @@ module.exports = {
     neutral: '#C28F58',
     'neutral-content': '#190B02',
     'base-100': '#261A11',
-    'base-200': '#7A5938',
+    'base-200': '#180B02',
     'base-300': '#725334',
     'base-content': '#ECDAC7',
     'base-shadow': '#1E0E03',
@@ -151,8 +151,8 @@ module.exports = {
     error: '#FC8D79',
     'error-content': '#FFF5ED',
     '--rounded-box': '0.75rem',
-    '--rounded-btn': '1.375rem',
+    '--rounded-btn': '1.75rem',
     '--rounded-tooltip': '0.5rem',
-    '--tab-radius': '1.375rem'
+    '--tab-radius': '0.75rem'
   }
 }
