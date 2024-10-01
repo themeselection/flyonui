@@ -6,7 +6,7 @@
 
 <p>
     <a href="https://www.npmjs.com/package/flyonui"><img src="https://img.shields.io/npm/dt/flyonui.svg" alt="Total Downloads on NPM"></a>
-    <a href="https://github.com/themesberg/flyonui/releases"><img src="https://img.shields.io/npm/v/flyonui.svg" alt="Latest Version"></a>
+    <a href="https://github.com/themeselection/flyonui/releases"><img src="https://img.shields.io/npm/v/flyonui.svg" alt="Latest Version"></a>
     <a href="https://flyonui.com/docs/getting-started/license/"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
 </p>
 
