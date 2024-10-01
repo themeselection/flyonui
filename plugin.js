@@ -451,7 +451,12 @@ module.exports = plugin(function ({ addVariant, e }) {
   addVariant('file-upload-complete', [
     ({ modifySelectors, separator }) => {
       modifySelectors(({ className }) => {
-        return `.dz-complete .${e(`file-upload-complete${separator}${className}`)}`
+        return `.complete .${e(`file-upload-complete${separator}${className}`)}`
+      })
+    },
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.complete.${e(`file-upload-complete${separator}${className}`)}`
       })
     }
   ])
