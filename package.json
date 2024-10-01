@@ -1,13 +1,13 @@
 {
   "name": "flyonui",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The most easiest, free and open-source Tailwind CSS component library with semantic classes.",
   "author": "ThemeSelection",
   "license": "MIT",
   "homepage": "https://flyonui.com/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/themeslection/flyonui.git"
+    "url": "git+https://github.com/themeselection/flyonui.git"
   },
   "bugs": {
     "url": "https://github.com/themeselection/flyonui/issues"
