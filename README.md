@@ -1,8 +1,10 @@
 <a href="https://flyonui.com">
-  <img alt="flyonui logo" width="350" src="https://cdn.flyonui.com/fy-assets/logo/flyonui-logo.svg">
-</a>
+  <img alt="flyonui logo" width="800" src="https://cdn.flyonui.com/fy-assets/smm/marketing/flyonui-smm-banner.png">
+</a><br/><br/>
 
-[FlyonUI](http://flyonui.com/) is the most easiest, free and open-source Tailwind CSS component library with semantic classes. 🚀
+
+
+[FlyonUI](http://flyonui.com/) is the easiest, open-source Tailwind CSS component library with semantic classes. 🚀
 
 <p>
     <a href="https://www.npmjs.com/package/flyonui"><img src="https://img.shields.io/npm/dt/flyonui.svg" alt="Total Downloads on NPM"></a>
