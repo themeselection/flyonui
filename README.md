@@ -59,7 +59,7 @@ FlyonUI brings together the beauty of semantic classes and the interactive headl
 
 ## Features
 
-1. **800+ Free Components & Examples**: Hundreds of component examples for all your WebApp needs that meet accessibility criteria.
+1. **800+ Free Components Examples**: Hundreds of component examples for all your WebApp needs that meet accessibility criteria.
 2. **Universal Framework Compatibility**: Fully compatible wherever Tailwind CSS is in action, from React to Vue and beyond.
 3. **Unlimited Themes**: Customize your app’s look and feel with FlyonUI’s theming capabilities. Refer to the theme section for more details.
 4. **Unstyled & Accessible Plugins**: Seamlessly add unstyled, accessible plugins for functionality without sacrificing design.
