@@ -125,8 +125,11 @@ The author reserves the right to terminate the rights granted under this Fair Us
 - Users who believe that the terms of this Fair Use License have been violated are encouraged to report the violation to the author.
 - The author reserves the right to take legal action to enforce compliance with this Fair Use License.
 
-Below files are from Preline (https://github.com/htmlstreamofficial/preline) under Preline MIT license and using them in other projects, requires including daisyUI MIT license text:
-  - `src/js/plugins/`
-
----
-
+The below files are from Preline (https://github.com/htmlstreamofficial/preline) under the Preline MIT license and using them in other projects requires including Preline MIT license text:
+  - `src/js/plugins/` (modified)
+  - `src/dts-config.js`
+  - `src/flyonui.d.ts`
+  - `src/flyonui.js` (modified)
+  - `src/plugin.js` (modified)
+  - `src/tsconfig.json` 
+  - `src/webpack.config.js` 
