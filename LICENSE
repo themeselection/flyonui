@@ -59,14 +59,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Below files are from daisyUI (https://github.com/saadeghi/daisyui) under daisyUI MIT license and using them in other projects, requires including daisyUI MIT license text:
+The below files are from daisyUI (https://github.com/saadeghi/daisyui) under daisyUI MIT license and using them in other projects requires including daisyUI MIT license text:
   - src/base/*
-  - src/components/*
+  - src/components/* (modified)
   - src/full/*
   - src/lib/*
   - src/themes/*
-  - src/utilities/*
-  - src/lib/*
+  - src/theming/* (modified)  
+  - src/utilities/* (modified)  
   - src/index.js (modified)
   - src/release.js
 
