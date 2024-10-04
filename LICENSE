@@ -36,7 +36,7 @@ FlyonUI incorporates the following third-party open-source software:
 
 ---
 
-#### DaisyUI MIT License
+#### daisyUI MIT License
 MIT License
 
 Copyright (c) 2020 Pouya Saadeghi
@@ -58,6 +58,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+Below files are from daisyUI (https://github.com/saadeghi/daisyui) under daisyUI MIT license and using them in other projects, requires including daisyUI MIT license text:
+  - src/base/*
+  - src/components/*
+  - src/full/*
+  - src/lib/*
+  - src/themes/*
+  - src/utilities/*
+  - src/lib/*
+  - src/index.js (modified)
+  - src/release.js
 
 ---
 
@@ -114,15 +125,8 @@ The author reserves the right to terminate the rights granted under this Fair Us
 - Users who believe that the terms of this Fair Use License have been violated are encouraged to report the violation to the author.
 - The author reserves the right to take legal action to enforce compliance with this Fair Use License.
 
+Below files are from Preline (https://github.com/htmlstreamofficial/preline) under Preline MIT license and using them in other projects, requires including daisyUI MIT license text:
+  - `src/js/plugins/`
+
 ---
 
-### Directory/Files from Third-Party Sources
-
-The following files in this project are from third-party sources:
-
-- **Directory/Files from DaisyUI**:
-  - FlyonUI uses DaisyUI as the base structure for the repository’s root.
-
-- **Directory/Files from Preline**:
-  - FlyonUI incorporates Preline’s headless JavaScript plugins, adapting them to be compatible with DaisyUI’s semantic structure.
-  - `src/js/plugins/`
