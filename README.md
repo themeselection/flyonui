@@ -50,7 +50,7 @@ Apart from that Tailwind CSS or DaisyUI doesn’t provide any interactive headle
 
 **This is where FlyonUI shines.✨**
 
-FlyonUI [Tailiwnd CSS Components Library](https://flyonui.com/) brings together the beauty of semantic classes and the interactive headless JavaScript plugins, offering you a powerful toolkit to build stunning, interactive user interfaces with ease.
+FlyonUI [Tailwind CSS Components Library](https://flyonui.com/) brings together the beauty of semantic classes and the interactive headless JavaScript plugins, offering you a powerful toolkit to build stunning, interactive user interfaces with ease.
 
 - **Beautiful and Semantic Styling:** Utilize comprehensive CSS components with semantic class names for a clean and readable codebase.
 - **Interactive and Dynamic Features:** Incorporate Headless JavaScript plugins for ex: Accordion, Dropdown, Overlay etc… to add interactivity and dynamic behavior to your UI components.
