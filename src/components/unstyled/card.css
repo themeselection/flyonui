@@ -17,10 +17,6 @@
 
   & figure {
     @apply flex items-center justify-center;
-
-    & > * {
-      @apply w-full;
-    }
   }
 
   &.image-full {
@@ -41,6 +37,10 @@
   &.image-full > &-body {
     @apply relative;
   }
+}
+
+:where(.card figure > *) {
+  width: 100%;
 }
 
 .card-group {

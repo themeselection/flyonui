@@ -15,7 +15,12 @@
     border-end-end-radius: inherit;
   }
   & figure > * {
-    @apply h-full w-full object-cover;
     max-width: unset;
   }
+}
+
+:where(.card-side figure > *) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
