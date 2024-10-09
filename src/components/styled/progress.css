@@ -6,7 +6,7 @@
     @apply border-base-content/25 border;
   }
 
-  &-stripped {
+  &-striped {
     background-image: linear-gradient(
       45deg,
       rgba(255, 255, 255, 0.15) 25%,

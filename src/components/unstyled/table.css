@@ -9,7 +9,7 @@
   :where(.table-pin-cols tr th) {
     @apply bg-base-100 sticky end-0 start-0;
   }
-  &-stripped tbody tr:nth-child(even) :where(.table-pin-cols tr th) {
+  &-striped tbody tr:nth-child(even) :where(.table-pin-cols tr th) {
     @apply bg-base-200;
   }
 }
