@@ -1,0 +1,40 @@
+.waves-effect .waves-ripple {
+  background: radial-gradient(
+    var(--wave-color) 0,
+    var(--wave-color) 40%,
+    var(--wave-color) 50%,
+    var(--wave-color) 60%,
+    var(--wave-color) 70%
+  );
+}
+.waves {
+  --wave-color: oklch(var(--bc) / 0.2);
+  .waves-ripple {
+    background-color: var(--wave-color);
+  }
+
+  &.waves-neutral .waves-ripple {
+    --wave-color: oklch(var(--n) / 0.2);
+  }
+  &.waves-primary .waves-ripple {
+    --wave-color: oklch(var(--p) / 0.2);
+  }
+  &.waves-secondary .waves-ripple {
+    --wave-color: oklch(var(--s) / 0.2);
+  }
+  &.waves-accent .waves-ripple {
+    --wave-color: oklch(var(--a) / 0.2);
+  }
+  &.waves-info .waves-ripple {
+    --wave-color: oklch(var(--in) / 0.2);
+  }
+  &.waves-success .waves-ripple {
+    --wave-color: oklch(var(--su) / 0.2);
+  }
+  &.waves-warning .waves-ripple {
+    --wave-color: oklch(var(--wa) / 0.2);
+  }
+  &.waves-error .waves-ripple {
+    --wave-color: oklch(var(--er) / 0.2);
+  }
+}
