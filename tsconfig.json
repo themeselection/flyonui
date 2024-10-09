@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "dist/js",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "ESNext",
-    "target": "ESNext",
+    "module": "commonjs",
+    "target": "es5",
     "allowJs": true,
-    "esModuleInterop": true,
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "include": ["src/js/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }
