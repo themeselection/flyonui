@@ -2,19 +2,30 @@
   <img alt="flyonui logo" width="800" src="https://cdn.flyonui.com/fy-assets/smm/marketing/flyonui-smm-banner.png">
 </a><br/><br/>
 
-
-
-[FlyonUI](http://flyonui.com/) is the easiest, open-source Tailwind CSS component library with semantic classes. 🚀
+[FlyonUI](https://flyonui.com/) is the easiest, free and open-source Tailwind CSS component library with semantic classes. 🚀
 
 <p>
     <a href="https://www.npmjs.com/package/flyonui"><img src="https://img.shields.io/npm/dt/flyonui.svg" alt="Total Downloads on NPM"></a>
     <a href="https://github.com/themeselection/flyonui/releases"><img src="https://img.shields.io/npm/v/flyonui.svg" alt="Latest Version"></a>
     <a href="https://flyonui.com/docs/getting-started/license/"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License"></a>
+    <a href="https://x.com/flyonui" target="_blank">
+      <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/flyonui">
+   </a>
 </p>
+
+<a href="https://themeselection.com" target="_blank">
+  <img
+    src="https://cdn.themeselection.com/ts-assets/themeselection/logo/logo.png"
+    alt="themeselection logo"
+    height="30"
+  />
+</a>
+
+Created by [ThemeSelection](https://themeselection.com), with a commitment to empowering the open-source community.
 
 ---
 
-## Table of Contents
+## Table of Contents 📋
 
 - [Table of Contents](#table-of-contents)
 - [Overview](#overview)
@@ -32,21 +43,21 @@
 
 ---
 
-## Overview
+## Overview 🌏
 
 FlyonUI is designed to combine the best of both worlds: the aesthetic appeal of semantic classes and the powerful functionality of JS plugins.
 
 Under the hood, it uses the strengths of:
 
 - [Tailwind CSS](https://tailwindcss.com/) A utility-first CSS framework that helps you build beautiful websites with ease.
-- [DaisyUI](https://daisyui.com/) adds component sematic class names to Tailwind CSS so you can make beautiful websites faster, easier and Maintainable.
+- [daisyUI](https://daisyui.com/) adds component semantic class names to Tailwind CSS so you can make beautiful websites faster, easier and Maintainable.
 - [Preline](https://preline.co/plugins.html) JavaScript headless & fully unstyled Tailwind plugins for accessible, responsive UI. Enhance experiences with animations, transitions, and more.
 
-## Why should I use FlyonUI?
+## Why should I use FlyonUI? 💡
 
 Using Tailwind CSS alone may lead to cluttered HTML with numerous utility classes, which can be a nightmare to maintain.
 
-Apart from that Tailwind CSS or DaisyUI doesn’t provide any interactive headless JavaScript components like accordion, overlay, dropdowns, etc…
+Apart from that Tailwind CSS or daisyUI doesn’t provide any interactive headless JavaScript components like accordion, overlay, dropdowns, etc…
 
 **This is where FlyonUI shines.✨**
 
@@ -57,7 +68,7 @@ FlyonUI [Tailwind CSS Components Library](https://flyonui.com/) brings together 
 - **Efficiency and Productivity:** Enjoy a faster and more efficient development process by combining the strengths of semantic classes and JS plugins.
 - **Maintainable and Scalable:** Keep your projects maintainable and scalable with a consistent coding approach and powerful JS plugins.
 
-## Features
+## Features ✨
 
 1. **800+ Free Components Examples**: Hundreds of component examples for all your WebApp needs that meet accessibility criteria.
 2. **Universal Framework Compatibility**: Fully compatible wherever Tailwind CSS is in action, from React to Vue and beyond.
@@ -66,11 +77,26 @@ FlyonUI [Tailwind CSS Components Library](https://flyonui.com/) brings together 
 5. **Responsive & RTL support** : Built with responsiveness in mind, ensuring your app looks great on all devices with RTL language support.
 6. **Free Forever:** Completely free forever, open-source, and built for the community.
 
-## Documentation
+## Documentation 📚
 
 For comprehensive documentation, please visit [flyonui.com](https://flyonui.com/).
 
-## Getting Started
+## Framework guides 🛠️
+
+<table  width="33.3333%">
+  <tr>
+    <td  align="center">HTML</td>
+  </tr>
+  <tr>
+    <td align="center">
+        <a href="https://flyonui.com/docs/getting-started/quick-start/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/html-icon.png" alt="Html log" height="70" />
+        </a>
+    </td>
+  </tr>
+</table>
+
+## Getting Started 🏁
 
 FlyonUI can be easily integrated into any existing Tailwind CSS project.
 
@@ -126,7 +152,7 @@ To use FlyonUI, ensure that you have [Node.js](https://nodejs.org/en/) and [Tail
 
 FlyonUI components offer native RTL support. Simply add the `dir="rtl"` attribute to your HTML element to enable this feature.
 
-## Available Components
+## Available Components 🧩
 
 FlyonUI provides a robust library of UI components built with Tailwind CSS utility classes, enabling fast and efficient web development. Our library includes 78+ components, from basic elements like buttons and cards to more complex third-party integrations.
 
@@ -227,14 +253,21 @@ FlyonUI provides a robust library of UI components built with Tailwind CSS utili
 
 [Explore all components](https://flyonui.com/docs/components/accordion/)
 
-## Community
+## Community 🤝
 
 Join the FlyonUI community to discuss the library, ask questions, and share your experiences:
 
-- 📢 [Follow us on Twitter](https://x.com/flyonui)
-- ⌨️ [Discuss on GitHub](https://github.com/themeselection/flyonui/discussions)
+- 🐦 [Follow us on Twitter](https://x.com/flyonui)
+- 💬 [Discuss on GitHub](https://github.com/themeselection/flyonui/discussions)
+- 🎮 [Join us on Discord](https://discord.com/invite/kBHkY7DekX)
 
-## Credits
+## Contributing 📝
+
+Fix a bug, or add a new feature. You can make a pull request and see your code in the next version of FlyonUI.
+
+Before adding a pull request, please see the **[contributing guidelines](https://github.com/themeselection/flyonui/blob/main/.github/CONTRIBUTING.md)**.
+
+## Credits 🤘
 
 We are grateful for the contributions of the open-source community, particularly:
 
@@ -244,9 +277,15 @@ We are grateful for the contributions of the open-source community, particularly
 
 These projects form the backbone of FalyonUI, allowing us to build a powerful and user-friendly UI kit.
 
-## License
+## License ©
 
-FlyonUI is open-source software licensed under the MIT License.
+- Copyright © [ThemeSelection](https://themeselection.com/)
+- Licensed under [MIT](https://github.com/themeselection/flyonui/blob/main/LICENSE)
+- FlyonUI is open-source software licensed under the MIT License.You can use our free items for personal as well as commercial purposes.
 
-- 📝 [Read the License](https://github.com/themeselection/flyonui/blob/main/LICENSE)
-- 📀 [View THIRD_PARTY_LICENSES](https://github.com/themeselection/flyonui/blob/main/THIRD_PARTY_LICENSES)
+## Useful Links 🎁
+
+- [Vue CheatSheet](https://vue-cheatsheet.themeselection.com/)
+- [Freebies](https://themeselection.com/item/category/freebies/)
+- [Download Free Admin Templates](https://themeselection.com/item/category/free-admin-templates/)
+- [Bootstrap 5 CheatSheet](https://bootstrap-cheatsheet.themeselection.com/)
