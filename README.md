@@ -83,14 +83,94 @@ For comprehensive documentation, please visit [flyonui.com](https://flyonui.com/
 
 ## Framework guides 🛠️
 
-<table  width="33.3333%">
+<table>
   <tr>
-    <td  align="center">HTML</td>
+    <td width="20%" align="center">HTML</td>
+    <td width="20%" align="center">React</td>
+    <td width="20%" align="center">Nextjs</td>
+    <td width="20%" align="center">Vue</td>
+    <td width="20%" align="center">Nuxtjs</td>
   </tr>
   <tr>
-    <td align="center">
+    <td width="20%" align="center">
         <a href="https://flyonui.com/docs/getting-started/quick-start/">
-        <img src="https://cdn.flyonui.com/fy-assets/icons/html-icon.png" alt="Html log" height="70" />
+        <img src="https://cdn.flyonui.com/fy-assets/icons/html-icon.png" alt="Html logo" width="70" />
+        </a>
+    </td>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/react/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/react-icon.png" alt="React logo" width="70" />
+        </a>
+    </td>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/nextjs/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/nextjs-icon.png" alt="Nextjs logo" width="70" />
+        </a>
+    </td>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/vuejs/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/vue-vite-icon.png" alt="Vue logo" width="70" />
+        </a>
+    </td>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/nuxtjs/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/nuxt-icon.png" alt="Nuxtjs logo" width="70" />
+        </a>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" align="center">Angular</td>
+    <td width="20%" align="center">Svelte</td>
+    <td width="20%" align="center">Remix</td>
+    <td width="20%" align="center">Astro</td>
+    <td width="20%" align="center">Qwik</td>
+  </tr>
+  <tr>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/angular/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/angular-icon.png" alt="Angular logo" width="70" />
+        </a>
+    </td>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/svelte/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/svelte-icon.png" alt="Svelte logo" width="70" />
+        </a>
+    </td>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/remix/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/remix-icon.png" alt="Remix logo" width="70" />
+        </a>
+    </td>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/astro/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/astro-icon.png" alt="Astro logo" width="70" />
+        </a>
+    </td>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/qwik/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/qwik-icon.png" alt="Qwik logo" width="70" />
+        </a>
+    </td>
+  </tr>
+  <tr>
+    <td width="20%" align="center">Django</td>
+    <td width="20%" align="center">Flask</td>
+    <td width="20%" align="center">Laravel</td>
+  </tr>
+  <tr>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/django/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/django-icon.png" alt="Django logo" width="70" />
+        </a>
+    </td>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/flask/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/flask-icon.png" alt="Flask logo" width="70" />
+        </a>
+    </td>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/laravel/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/laravel-icon.png" alt="Laravel logo" width="70" />
         </a>
     </td>
   </tr>
@@ -275,7 +355,7 @@ We are grateful for the contributions of the open-source community, particularly
 - [daisyUI](https://daisyui.com/)
 - [Preline UI](https://preline.co/).
 
-These projects form the backbone of FalyonUI, allowing us to build a powerful and user-friendly UI kit.
+These projects form the backbone of FlyonUI, allowing us to build a powerful and user-friendly UI kit.
 
 ## License ©
 
