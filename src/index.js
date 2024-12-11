@@ -100,17 +100,17 @@ const mainFunction = ({ addBase, addComponents, config }) => {
     }
     if (themeInjector.themeOrder.length > 0) {
       console.log(
-        `├─ ${pc.green('✔︎')} ${themeInjector.themeOrder.length} ${themeInjector.themeOrder.length > 1 ? 'themes' : 'theme'} added${pc.dim('\t\thttps://flyonui.com/docs/themes')}`
+        `├─ ${pc.green('✔︎')} ${themeInjector.themeOrder.length} ${themeInjector.themeOrder.length > 1 ? 'themes' : 'theme'} added${pc.dim('\t\thttps://flyonui.com/docs/customization/themes/')}`
       )
     }
 
     if (themeInjector.themeOrder.length === 0) {
       console.log(
-        `├─ ${pc.yellow('ℹ︎')} All themes are disabled in config${pc.dim('\t\thttps://flyonui.com/docs/themes')}`
+        `├─ ${pc.yellow('ℹ︎')} All themes are disabled in config${pc.dim('\thttps://flyonui.com/docs/customization/themes/')}`
       )
     }
     const messages = [
-      `${pc.green('★')} ${pc.reset('Star FlyonUI on GitHub')}\t${pc.dim('https://github.com/themeslection/flyonui.git')}`
+      `${pc.green('★')} ${pc.reset('Star FlyonUI on GitHub')}\t${pc.dim('\thttps://github.com/themeselection/flyonui')}`
     ]
     console.log(`╰─ ${messages[Math.floor(Math.random() * messages.length)]}`)
     console.log()

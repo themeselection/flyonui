@@ -1,3 +1,10 @@
+/*
+ * @version: 2.6.0
+ * @author: Preline Labs Ltd.
+ * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
+ * Copyright 2024 Preline Labs Ltd.
+ */
+
 const stringToBoolean = (string: string): boolean => {
   return string === 'true' ? true : false
 }
@@ -53,6 +60,16 @@ const isIpadOS = () => {
   return navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(navigator.platform)
 }
 
+const isDirectChild = (parent: Element, child: HTMLElement) => {
+  const children = parent.children
+
+  for (let i = 0; i < children.length; i++) {
+    if (children[i] === child) return true
+  }
+
+  return false
+}
+
 const isEnoughSpace = (
   el: HTMLElement,
   toggle: HTMLElement,
@@ -90,6 +107,25 @@ const isParentOrElementHidden = (element: any): any => {
   if (computedStyle.display === 'none') return true
 
   return isParentOrElementHidden(element.parentElement)
+}
+
+const isJson = (str: string) => {
+  if (typeof str !== 'string') return false
+
+  const firstChar = str.trim()[0]
+  const lastChar = str.trim().slice(-1)
+
+  if ((firstChar === '{' && lastChar === '}') || (firstChar === '[' && lastChar === ']')) {
+    try {
+      JSON.parse(str)
+
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  return false
 }
 
 const debounce = (func: Function, timeout = 200) => {
@@ -171,6 +207,8 @@ export {
   isEnoughSpace,
   isParentOrElementHidden,
   isFormElement,
+  isDirectChild,
+  isJson,
   debounce,
   dispatch,
   afterTransition,

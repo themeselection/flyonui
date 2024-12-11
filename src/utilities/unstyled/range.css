@@ -1,6 +1,6 @@
 .range {
-  &-sm {
-    @apply h-5;
+  &-xs {
+    @apply h-1;
     &::-webkit-slider-runnable-track {
       @apply h-1;
     }
@@ -8,29 +8,46 @@
       @apply h-1;
     }
     &::-webkit-slider-thumb {
-      @apply size-5;
-      --filler-offset: 0.5rem;
+      @apply size-2.5;
+      border-width: 2.5px;
     }
     &::-moz-range-thumb {
-      @apply size-5;
-      --filler-offset: 0.5rem;
+      @apply size-2.5;
+      border-width: 2.5px;
+    }
+  }
+  &-sm {
+    @apply h-1.5;
+    &::-webkit-slider-runnable-track {
+      @apply h-1.5;
+    }
+    &::-moz-range-track {
+      @apply h-1.5;
+    }
+    &::-webkit-slider-thumb {
+      @apply size-3;
+      border-width: 2.5px;
+    }
+    &::-moz-range-thumb {
+      @apply size-3;
+      border-width: 2.5px;
     }
   }
   &-lg {
-    @apply h-8;
+    @apply h-3;
     &::-webkit-slider-runnable-track {
-      @apply h-4;
+      @apply h-3;
     }
     &::-moz-range-track {
-      @apply h-4;
+      @apply h-3;
     }
     &::-webkit-slider-thumb {
-      @apply size-8;
-      --filler-offset: 1rem;
+      @apply size-5;
+      border-width: 4px;
     }
     &::-moz-range-thumb {
-      @apply size-8;
-      --filler-offset: 1rem;
+      @apply size-5;
+      border-width: 4px;
     }
   }
 }

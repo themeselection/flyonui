@@ -38,7 +38,7 @@ jobs:
         with:
           tag_name: v${{ steps.package-version.outputs.version }}
           body: |
-            📜 Read changelog: https://github.com/themeselection/flyonui/blob/main/CHANGELOG.md
+            📜 Read changelog: https://flyonui.com/changelog/
 
             📦 Install this update:
             ```bash

@@ -26,6 +26,6 @@
 
 /* Tree view space */
 
-.accordion-treeview-root .tree-view-space {
+.tree-view-space {
   @apply before:bg-base-content/40 relative ms-4 ps-4 before:absolute before:start-0 before:top-0 before:-ms-0.5 before:h-full before:w-0.5;
 }

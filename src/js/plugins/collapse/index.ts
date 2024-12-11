@@ -1,6 +1,6 @@
 /*
  * HSCollapse
- * @version: 2.4.1
+ * @version: 2.6.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -11,12 +11,15 @@ import { dispatch, afterTransition } from '../../utils'
 import { ICollapse } from './interfaces'
 
 import HSBasePlugin from '../base-plugin'
+import HSDropdown from '../dropdown'
 import { ICollectionItem } from '../../interfaces'
 
 class HSCollapse extends HSBasePlugin<{}> implements ICollapse {
   private readonly contentId: string | null
   public content: HTMLElement | null
   private animationInProcess: boolean
+
+  private onElementClickListener: () => void
 
   constructor(el: HTMLElement, options?: {}, events?: {}) {
     super(el, options, events)
@@ -28,27 +31,50 @@ class HSCollapse extends HSBasePlugin<{}> implements ICollapse {
     if (this.content) this.init()
   }
 
+  private elementClick() {
+    if (this.content.classList.contains('open')) {
+      this.hide()
+    } else {
+      this.show()
+    }
+  }
+
   private init() {
     this.createCollection(window.$hsCollapseCollection, this)
+
+    this.onElementClickListener = () => this.elementClick()
 
     if (this?.el?.ariaExpanded) {
       if (this.el.classList.contains('open')) this.el.ariaExpanded = 'true'
       else this.el.ariaExpanded = 'false'
     }
 
-    this.el.addEventListener('click', () => {
-      if (this.content.classList.contains('open')) {
-        this.hide()
-      } else {
-        this.show()
-      }
-    })
+    this.el.addEventListener('click', this.onElementClickListener)
   }
 
   private hideAllMegaMenuItems() {
     this.content.querySelectorAll('mega-menu-content.block').forEach(el => {
       el.classList.remove('block')
       el.classList.add('hidden')
+    })
+  }
+
+  private closeDropdowns(): void {
+    if (!this.content) return
+
+    const dropdowns = this.content.querySelectorAll('.dropdown')
+    dropdowns.forEach((el: Element) => {
+      try {
+        const instance = HSDropdown.getInstance(el as HTMLElement, true) as ICollectionItem<HSDropdown> | null
+
+        if (!instance?.element) return
+
+        if (el instanceof HTMLElement && el.classList.contains('open')) {
+          instance.element.close(false)
+        }
+      } catch (error) {
+        console.warn('Error closing dropdown:', error)
+      }
     })
   }
 
@@ -109,6 +135,17 @@ class HSCollapse extends HSBasePlugin<{}> implements ICollapse {
     if (this.content.querySelectorAll('.mega-menu-content.block').length) {
       this.hideAllMegaMenuItems()
     }
+
+    this.closeDropdowns()
+  }
+
+  public destroy() {
+    this.el.removeEventListener('click', this.onElementClickListener)
+
+    this.content = null
+    this.animationInProcess = false
+
+    window.$hsCollapseCollection = window.$hsCollapseCollection.filter(({ element }) => element.el !== this.el)
   }
 
   // Static methods
@@ -122,6 +159,9 @@ class HSCollapse extends HSBasePlugin<{}> implements ICollapse {
 
   static autoInit() {
     if (!window.$hsCollapseCollection) window.$hsCollapseCollection = []
+
+    if (window.$hsCollapseCollection)
+      window.$hsCollapseCollection = window.$hsCollapseCollection.filter(({ element }) => document.contains(element.el))
 
     document.querySelectorAll('.collapse-toggle:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
       if (!window.$hsCollapseCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSCollapse(el)

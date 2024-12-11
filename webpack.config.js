@@ -15,11 +15,13 @@ module.exports = (env, argv) => {
       collapse: './src/js/plugins/collapse/index.ts',
       combobox: './src/js/plugins/combobox/index.ts',
       'copy-markup': './src/js/plugins/copy-markup/index.ts',
+      datatable: './src/js/plugins/datatable/index.ts',
       dropdown: './src/js/plugins/dropdown/index.ts',
       'file-upload': './src/js/plugins/file-upload/index.ts',
       'input-number': './src/js/plugins/input-number/index.ts',
       overlay: './src/js/plugins/overlay/index.ts',
       'pin-input': './src/js/plugins/pin-input/index.ts',
+      'range-slider': './src/js/plugins/range-slider/index.ts',
       'remove-element': './src/js/plugins/remove-element/index.ts',
       scrollspy: './src/js/plugins/scrollspy/index.ts',
       select: './src/js/plugins/select/index.ts',
@@ -28,7 +30,12 @@ module.exports = (env, argv) => {
       tabs: './src/js/plugins/tabs/index.ts',
       'toggle-count': './src/js/plugins/toggle-count/index.ts',
       'toggle-password': './src/js/plugins/toggle-password/index.ts',
-      tooltip: './src/js/plugins/tooltip/index.ts'
+      tooltip: './src/js/plugins/tooltip/index.ts',
+      'tree-view': './src/js/plugins/tree-view/index.ts',
+
+      // Helpers
+      'helper-apexcharts': './src/js/helpers/apexcharts/index.ts',
+      'helper-clipboard': './src/js/helpers/clipboard/index.ts'
     },
     module: {
       rules: [
@@ -45,7 +52,10 @@ module.exports = (env, argv) => {
     externals: {
       jquery: 'jQuery',
       lodash: '_',
-      dropzone: 'Dropzone'
+      'datatables.net': 'DataTable',
+      dropzone: 'Dropzone',
+      clipboard: 'ClipboardJS',
+      noUiSlider: 'noUiSlider'
     },
     optimization: {
       minimize: true,

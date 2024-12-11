@@ -72,9 +72,9 @@
     &:disabled,
     &[disabled] {
       @apply bg-base-100 border;
-    }
-    & ~ .select-floating-label {
-      @apply text-base-content/50;
+      & ~ .select-floating-label {
+        @apply text-base-content/50;
+      }
     }
   }
 
@@ -83,9 +83,9 @@
     &:disabled,
     &[disabled] {
       @apply border-b;
-    }
-    & ~ .select-filled-label {
-      @apply text-base-content/50;
+      & ~ .select-filled-label {
+        @apply text-base-content/50;
+      }
     }
   }
 }
@@ -181,45 +181,52 @@
 }
 
 /* Label state */
-/* main style is in select.css  */
-
-/* This style the top right side label for floating and filled */
-.validate .label:has(+ * > .select:valid) > *,
-.validate .label:has(+ * > .select:valid),
-/*This style the bottom start and end side label for floating and filled  */
-.validate .label ~ *:has(> .select:valid) ~ .label .label-text-alt,
-/* This style the top start and end side label for floating and default */
-.validate .label:has(~ .select:valid) > *,
-.validate .label:has(~ .select:valid),
-.validate .label:has(~ .select:valid) :where(.label-text),
-/* When .is-valid is immediately followed by .label */
-.validate .select:valid ~  .label {
+/* Top text */
+.validate .label:has(+ * .select:valid) > *, /* label sibling child has radio:valid then style label */
+.validate .label-text:has(+ * .select:valid), /* label sibling child has radio:valid then style label-text */
+.validate .label-text:has(~ .select:valid).label-text, /* label sibling has radio:valid then style sibling label-text */
+.validate .label:has(~ .select:valid) > *, /* label sibling has radio:valid then style sibling label */
+/* Bottom text */
+.validate .select:valid ~ .label, /* label next sibling of radio:valid then style sibling label */
+.validate .select:valid ~ .label-text, /* label next sibling of radio:valid then style sibling label-text */
+.validate .select:valid ~ .label .label-text,  /* label next sibling of radio:valid then style sibling .label label-text */
+.validate *:has(.select:valid) ~ .label, /*  when radio:valid is child then style sibling of that parent label */
+.validate *:has(.select:valid) ~ .label-text, /*  when radio:valid is child then style sibling of that parent label */
+.validate *:has(.select:valid) ~ .label .label-text /*  when radio:valid is child then style sibling of that parent label */ {
   @apply text-success;
 }
 
-/* This style the top right side label for floating and filled */
-.validate .label:has(+ * > .select:invalid) > *,
-.validate .label:has(+ * > .select:invalid),
-/*This style the bottom start and end side label for floating and filled  */
-.validate .label ~ *:has(> .select:invalid) ~ .label .label-text-alt,
-/* This style the top start and end side label for floating and default */
-.validate .label:has(~ .select:invalid) > *,
-.validate .label:has(~ .select:invalid),
-.validate .label:has(~ .select:invalid) :where(.label-text),
-/* When .is-invalid is .label */
-.validate .select:invalid ~ .label {
+/* Invalid text style */
+/* Top text */
+.validate .label:has(+ * .select:invalid) > *, /* label sibling child has .select:invalid then style label */
+.validate .label-text:has(+ * .select:invalid), /* label sibling child has .select:invalid then style label-text */
+.validate .label-text:has(~ .select:invalid), /* label sibling has .select:invalid then style sibling label-text */
+.validate .label:has(~ .select:invalid) > *, /* label sibling has .select:invalid then style sibling label */
+/* Bottom text */
+.validate .select:invalid ~ .label, /* label next sibling of .select:invalid then style sibling label */
+.validate .select:invalid ~ .label-text, /* label next sibling of .select:invalid then style sibling label-text */
+.validate .select:invalid ~ .label .label-text,  /* label next sibling of .select:invalid then style sibling .label label-text */
+.validate *:has(.select:invalid) ~ .label, /*  when .select:invalid is child then style sibling of that parent label */
+.validate *:has(.select:invalid) ~ .label-text, /*  when .select:invalid is child then style sibling of that parent label */
+.validate *:has(.select:invalid) ~ .label .label-text /*  when is-invalid is child then style sibling of that parent label */ {
   @apply text-error;
 }
 
 /* Helper text */
-/* main style is in select.css  */
 
+/* Valid message display */
 .validate *:has(> .select:valid) ~ .success-message,
-.validate .select:valid ~ .success-message {
+.validate *:has(> .select:valid) > * > .success-message,
+/* Both parent. */
+.validate .select:valid ~ .success-message,
+.validate .select:valid + * > .success-message {
   @apply block;
 }
 
 .validate *:has(> .select:invalid) ~ .error-message,
-.validate .select:invalid ~ .error-message {
+.validate *:has(> .select:invalid) > * > .error-message,
+/* Both parent. */
+.validate .select:invalid ~ .error-message,
+.validate .select:invalid + * > .error-message {
   @apply block;
 }

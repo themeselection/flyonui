@@ -63,15 +63,15 @@ SOFTWARE.
 
 The below files are from daisyUI (https://github.com/saadeghi/daisyui) under daisyUI MIT license and using them in other projects requires including daisyUI MIT license text:
 
-- src/base/\*
-- src/components/\* (modified)
-- src/full/\*
-- src/lib/\*
-- src/themes/\*
-- src/theming/\* (modified)
-- src/utilities/\* (modified)
-- src/index.js (modified)
-- src/release.js
+- `src/base/\*`
+- `src/components/\*` (modified)
+- `src/full/\*`
+- `src/lib/\*`
+- `src/themes/\*`
+- `src/theming/\*` (modified)
+- `src/utilities/\*` (modified)
+- `src/index.js` (modified)
+- `src/release.js`
 
 ---
 

@@ -1,12 +1,14 @@
 .label {
   @apply text-base-content/80 p-1;
-  &-text {
-    @apply text-base-content/90 cursor-pointer text-sm;
-  }
+
   &-text-alt {
     @apply text-xs;
   }
   a {
     @apply [@media(hover:hover)]:hover:text-base-content;
   }
+}
+
+.label-text {
+  @apply text-base-content/90 cursor-pointer text-sm;
 }

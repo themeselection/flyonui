@@ -1,6 +1,6 @@
 /*
  * HSToggleCount
- * @version: 2.4.1
+ * @version: 2.6.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -17,6 +17,8 @@ class HSToggleCount extends HSBasePlugin<IToggleCountOptions> implements IToggle
   private readonly max: number | null
   private readonly duration: number | null
   private isChecked: boolean
+
+  private onToggleChangeListener: () => void
 
   constructor(el: HTMLElement, options?: IToggleCountOptions) {
     super(el, options)
@@ -42,16 +44,20 @@ class HSToggleCount extends HSBasePlugin<IToggleCountOptions> implements IToggle
     if (this.target) this.init()
   }
 
+  private toggleChange() {
+    this.isChecked = !this.isChecked
+
+    this.toggle()
+  }
+
   private init() {
     this.createCollection(window.$hsToggleCountCollection, this)
 
     if (this.isChecked) this.el.innerText = String(this.max)
 
-    this.target.addEventListener('change', () => {
-      this.isChecked = !this.isChecked
+    this.onToggleChangeListener = () => this.toggleChange()
 
-      this.toggle()
-    })
+    this.target.addEventListener('change', this.onToggleChangeListener)
   }
 
   private toggle() {
@@ -83,6 +89,13 @@ class HSToggleCount extends HSBasePlugin<IToggleCountOptions> implements IToggle
     this.animate(this.max, this.min)
   }
 
+  public destroy() {
+    // Remove listeners
+    this.target.removeEventListener('change', this.onToggleChangeListener)
+
+    window.$hsToggleCountCollection = window.$hsToggleCountCollection.filter(({ element }) => element.el !== this.el)
+  }
+
   // Static methods
   static getInstance(target: HTMLElement | string, isInstance?: boolean) {
     const elInCollection = window.$hsToggleCountCollection.find(
@@ -94,6 +107,11 @@ class HSToggleCount extends HSBasePlugin<IToggleCountOptions> implements IToggle
 
   static autoInit() {
     if (!window.$hsToggleCountCollection) window.$hsToggleCountCollection = []
+
+    if (window.$hsToggleCountCollection)
+      window.$hsToggleCountCollection = window.$hsToggleCountCollection.filter(({ element }) =>
+        document.contains(element.el)
+      )
 
     document.querySelectorAll('[data-toggle-count]:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
       if (!window.$hsToggleCountCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSToggleCount(el)

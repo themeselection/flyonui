@@ -353,7 +353,7 @@ We are grateful for the contributions of the open-source community, particularly
 
 - [TailwindCSS](https://tailwindcss.com/)
 - [daisyUI](https://daisyui.com/)
-- [Preline UI](https://preline.co/).
+- [Preline UI](https://preline.co/)
 
 These projects form the backbone of FlyonUI, allowing us to build a powerful and user-friendly UI kit.
 

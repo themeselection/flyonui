@@ -1,6 +1,6 @@
 /*
  * HSTogglePassword
- * @version: 2.4.1
+ * @version: 2.6.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -18,6 +18,8 @@ class HSTogglePassword extends HSBasePlugin<ITogglePasswordOptions> implements I
   private isShown: boolean
   private isMultiple: boolean
   private eventType: string
+
+  private onElementActionListener: () => void
 
   constructor(el: HTMLElement, options?: ITogglePasswordOptions) {
     super(el, options)
@@ -48,6 +50,17 @@ class HSTogglePassword extends HSBasePlugin<ITogglePasswordOptions> implements I
     if (this.target) this.init()
   }
 
+  private elementAction() {
+    if (this.isShown) {
+      this.hide()
+    } else {
+      this.show()
+    }
+
+    this.fireEvent('toggle', this.target)
+    dispatch('toggle.toggle-select', this.el, this.target)
+  }
+
   private init() {
     this.createCollection(window.$hsTogglePasswordCollection, this)
 
@@ -57,16 +70,9 @@ class HSTogglePassword extends HSBasePlugin<ITogglePasswordOptions> implements I
       this.show()
     }
 
-    this.el.addEventListener(this.eventType, () => {
-      if (this.isShown) {
-        this.hide()
-      } else {
-        this.show()
-      }
+    this.onElementActionListener = () => this.elementAction()
 
-      this.fireEvent('toggle', this.target)
-      dispatch('toggle.toggle-select', this.el, this.target)
-    })
+    this.el.addEventListener(this.eventType, this.onElementActionListener)
   }
 
   private getMultipleToggles(): HSTogglePassword[] {
@@ -116,6 +122,29 @@ class HSTogglePassword extends HSBasePlugin<ITogglePasswordOptions> implements I
     })
   }
 
+  public destroy() {
+    // Remove classes
+    if (this.isMultiple) {
+      this.el.closest('[data-toggle-password-group]').classList.remove('active')
+    } else {
+      this.el.classList.remove('active')
+    }
+
+    // Remove attributes
+    ;(this.target as HTMLInputElement[]).forEach(el => {
+      ;(el as HTMLInputElement).type = 'password'
+    })
+
+    // Remove listeners
+    this.el.removeEventListener(this.eventType, this.onElementActionListener)
+
+    this.isShown = false
+
+    window.$hsTogglePasswordCollection = window.$hsTogglePasswordCollection.filter(
+      ({ element }) => element.el !== this.el
+    )
+  }
+
   // Static methods
   static getInstance(target: HTMLElement | string, isInstance?: boolean) {
     const elInCollection = window.$hsTogglePasswordCollection.find(
@@ -127,6 +156,11 @@ class HSTogglePassword extends HSBasePlugin<ITogglePasswordOptions> implements I
 
   static autoInit() {
     if (!window.$hsTogglePasswordCollection) window.$hsTogglePasswordCollection = []
+
+    if (window.$hsTogglePasswordCollection)
+      window.$hsTogglePasswordCollection = window.$hsTogglePasswordCollection.filter(({ element }) =>
+        document.contains(element.el)
+      )
 
     document.querySelectorAll('[data-toggle-password]:not(.--prevent-on-load-init)').forEach((el: HTMLInputElement) => {
       if (!window.$hsTogglePasswordCollection.find(elC => (elC?.element?.el as HTMLElement) === el))

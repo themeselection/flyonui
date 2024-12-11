@@ -1,6 +1,6 @@
 /*
  * HSStepper
- * @version: 2.4.1
+ * @version: 2.6.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -30,6 +30,19 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
   private finishBtn: HTMLElement | null
   private resetBtn: HTMLElement | null
 
+  private onNavItemClickListener:
+    | {
+        el: HTMLElement
+        fn: () => void
+      }[]
+    | null
+  private onBackClickListener: () => void
+  private onNextClickListener: () => void
+  private onSkipClickListener: () => void
+  private onCompleteStepBtnClickListener: () => void
+  private onFinishBtnClickListener: () => void
+  private onResetBtnClickListener: () => void
+
   constructor(el: HTMLElement, options?: IStepperOptions) {
     super(el, options)
 
@@ -49,7 +62,90 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
     this.navItems = []
     this.contentItems = []
 
+    this.onNavItemClickListener = []
+
     this.init()
+  }
+
+  private navItemClick(item: IStepperItem) {
+    this.handleNavItemClick(item)
+  }
+
+  private backClick() {
+    this.handleBackButtonClick()
+
+    if (this.mode === 'linear') {
+      const currentNavItem = this.navItems.find(({ index }) => index === this.currentIndex)
+      const currentContentItem = this.contentItems.find(({ index }) => index === this.currentIndex)
+
+      if (!currentNavItem || !currentContentItem) return
+
+      if (currentNavItem.isCompleted) {
+        currentNavItem.isCompleted = false
+        currentNavItem.isSkip = false
+
+        currentNavItem.el.classList.remove('is-valid', 'skipped')
+      }
+
+      if (currentContentItem.isCompleted) {
+        currentContentItem.isCompleted = false
+        currentContentItem.isSkip = false
+
+        currentContentItem.el.classList.remove('is-valid', 'skipped')
+      }
+
+      if (this.mode === 'linear' && this.currentIndex !== this.totalSteps) {
+        if (this.nextBtn) this.nextBtn.style.display = ''
+        if (this.completeStepBtn) this.completeStepBtn.style.display = ''
+      }
+
+      this.showSkipButton()
+      this.showFinishButton()
+      this.showCompleteStepButton()
+    }
+  }
+
+  private nextClick() {
+    this.fireEvent('beforeNext', this.currentIndex)
+    dispatch('beforeNext.stepper', this.el, this.currentIndex)
+
+    if (this.getNavItem(this.currentIndex)?.isProcessed) {
+      this.disableAll()
+
+      return false
+    }
+
+    this.goToNext()
+  }
+
+  private skipClick() {
+    this.handleSkipButtonClick()
+
+    if (this.mode === 'linear' && this.currentIndex === this.totalSteps) {
+      if (this.nextBtn) this.nextBtn.style.display = 'none'
+      if (this.completeStepBtn) this.completeStepBtn.style.display = 'none'
+      if (this.finishBtn) this.finishBtn.style.display = ''
+    }
+  }
+
+  private completeStepBtnClick() {
+    this.handleCompleteStepButtonClick()
+  }
+
+  private finishBtnClick() {
+    this.fireEvent('beforeFinish', this.currentIndex)
+    dispatch('beforeFinish.stepper', this.el, this.currentIndex)
+
+    if (this.getNavItem(this.currentIndex)?.isProcessed) {
+      this.disableAll()
+
+      return false
+    }
+    this.handleFinishButtonClick()
+  }
+
+  private resetBtnClick() {
+    this.handleResetButtonClick()
   }
 
   private init() {
@@ -88,7 +184,12 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
     if (index === this.currentIndex) this.setCurrentNavItem()
 
     if (this.mode !== 'linear' || isDisabled) {
-      el.addEventListener('click', () => this.handleNavItemClick(item))
+      this.onNavItemClickListener.push({
+        el,
+        fn: () => this.navItemClick(item)
+      })
+
+      el.addEventListener('click', this.onNavItemClickListener.find(navItem => navItem.el === el).fn)
     }
   }
 
@@ -279,39 +380,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
 
     this.checkForTheFirstStep()
 
-    this.backBtn.addEventListener('click', () => {
-      this.handleBackButtonClick()
+    this.onBackClickListener = () => this.backClick()
 
-      if (this.mode === 'linear') {
-        const currentNavItem = this.navItems.find(({ index }) => index === this.currentIndex)
-        const currentContentItem = this.contentItems.find(({ index }) => index === this.currentIndex)
-
-        if (!currentNavItem || !currentContentItem) return
-
-        if (currentNavItem.isCompleted) {
-          currentNavItem.isCompleted = false
-          currentNavItem.isSkip = false
-
-          currentNavItem.el.classList.remove('is-valid', 'skipped')
-        }
-
-        if (currentContentItem.isCompleted) {
-          currentContentItem.isCompleted = false
-          currentContentItem.isSkip = false
-
-          currentContentItem.el.classList.remove('is-valid', 'skipped')
-        }
-
-        if (this.mode === 'linear' && this.currentIndex !== this.totalSteps) {
-          if (this.nextBtn) this.nextBtn.style.display = ''
-          if (this.completeStepBtn) this.completeStepBtn.style.display = ''
-        }
-
-        this.showSkipButton()
-        this.showFinishButton()
-        this.showCompleteStepButton()
-      }
-    })
+    this.backBtn.addEventListener('click', this.onBackClickListener)
   }
 
   private handleBackButtonClick() {
@@ -361,18 +432,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
   private buildNextButton() {
     if (!this.nextBtn) return
 
-    this.nextBtn.addEventListener('click', () => {
-      this.fireEvent('beforeNext', this.currentIndex)
-      dispatch('beforeNext.stepper', this.el, this.currentIndex)
+    this.onNextClickListener = () => this.nextClick()
 
-      if (this.getNavItem(this.currentIndex)?.isProcessed) {
-        this.disableAll()
-
-        return false
-      }
-
-      this.goToNext()
-    })
+    this.nextBtn.addEventListener('click', this.onNextClickListener)
   }
 
   private unsetProcessedNavItemActions(item: IStepperItem) {
@@ -436,15 +498,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
 
     this.showSkipButton()
 
-    this.skipBtn.addEventListener('click', () => {
-      this.handleSkipButtonClick()
+    this.onSkipClickListener = () => this.skipClick()
 
-      if (this.mode === 'linear' && this.currentIndex === this.totalSteps) {
-        if (this.nextBtn) this.nextBtn.style.display = 'none'
-        if (this.completeStepBtn) this.completeStepBtn.style.display = 'none'
-        if (this.finishBtn) this.finishBtn.style.display = ''
-      }
-    })
+    this.skipBtn.addEventListener('click', this.onSkipClickListener)
   }
 
   private setSkipItem(n?: number) {
@@ -486,7 +542,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
 
     this.completeStepBtnDefaultText = this.completeStepBtn.innerText
 
-    this.completeStepBtn.addEventListener('click', () => this.handleCompleteStepButtonClick())
+    this.onCompleteStepBtnClickListener = () => this.completeStepBtnClick()
+
+    this.completeStepBtn.addEventListener('click', this.onCompleteStepBtnClickListener)
   }
 
   private changeTextAndDisableCompleteButtonIfStepCompleted() {
@@ -553,18 +611,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
       this.setCompleted()
     }
 
-    this.finishBtn.addEventListener('click', () => {
-      this.fireEvent('beforeFinish', this.currentIndex)
-      dispatch('beforeFinish.stepper', this.el, this.currentIndex)
+    this.onFinishBtnClickListener = () => this.finishBtnClick()
 
-      if (this.getNavItem(this.currentIndex)?.isProcessed) {
-        this.disableAll()
-
-        return false
-      }
-
-      this.handleFinishButtonClick()
-    })
+    this.finishBtn.addEventListener('click', this.onFinishBtnClickListener)
   }
 
   private setCompleted() {
@@ -622,7 +671,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
   private buildResetButton() {
     if (!this.resetBtn) return
 
-    this.resetBtn.addEventListener('click', () => this.handleResetButtonClick())
+    this.onResetBtnClickListener = () => this.resetBtnClick()
+
+    this.resetBtn.addEventListener('click', this.onResetBtnClickListener)
   }
 
   private handleResetButtonClick() {
@@ -656,8 +707,8 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
 
     this.currentIndex = 1
 
-    this.isCompleted = false
     this.unsetCompleted()
+    this.isCompleted = false
 
     this.showSkipButton()
     this.setCurrentNavItem()
@@ -716,6 +767,43 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
     this.setErrorNavItemActions(targetNavItem)
   }
 
+  public destroy() {
+    // Remove classes
+    this.el.classList.remove('completed')
+    this.el.querySelectorAll('[data-stepper-nav-item]').forEach(el => {
+      el.classList.remove('active', 'is-valid', 'skipped', 'disabled', 'is-invalid')
+
+      if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') el.removeAttribute('disabled')
+    })
+    this.el.querySelectorAll('[data-stepper-content-item]').forEach(el => {
+      el.classList.remove('is-valid', 'skipped')
+    })
+    if (this.backBtn) this.backBtn.classList.remove('disabled')
+    if (this.nextBtn) this.nextBtn.classList.remove('disabled')
+    if (this.completeStepBtn) this.completeStepBtn.classList.remove('disabled')
+
+    // Remove attributes
+    if (this.backBtn) this.backBtn.style.display = ''
+    if (this.nextBtn) this.nextBtn.style.display = ''
+    if (this.skipBtn) this.skipBtn.style.display = ''
+    if (this.finishBtn) this.finishBtn.style.display = 'none'
+    if (this.resetBtn) this.resetBtn.style.display = 'none'
+
+    // Remove listeners
+    if (this.onNavItemClickListener.length)
+      this.onNavItemClickListener.forEach(({ el, fn }) => {
+        el.removeEventListener('click', fn)
+      })
+    if (this.backBtn) this.backBtn.removeEventListener('click', this.onBackClickListener)
+    if (this.nextBtn) this.nextBtn.removeEventListener('click', this.onNextClickListener)
+    if (this.skipBtn) this.skipBtn.removeEventListener('click', this.onSkipClickListener)
+    if (this.completeStepBtn) this.completeStepBtn.removeEventListener('click', this.onCompleteStepBtnClickListener)
+    if (this.finishBtn) this.finishBtn.removeEventListener('click', this.onFinishBtnClickListener)
+    if (this.resetBtn) this.resetBtn.removeEventListener('click', this.onResetBtnClickListener)
+
+    window.$hsStepperCollection = window.$hsStepperCollection.filter(({ element }) => element.el !== this.el)
+  }
+
   // Static methods
   static getInstance(target: HTMLElement | string, isInstance?: boolean) {
     const elInCollection = window.$hsStepperCollection.find(
@@ -727,6 +815,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
 
   static autoInit() {
     if (!window.$hsStepperCollection) window.$hsStepperCollection = []
+
+    if (window.$hsStepperCollection)
+      window.$hsStepperCollection = window.$hsStepperCollection.filter(({ element }) => document.contains(element.el))
 
     document.querySelectorAll('[data-stepper]:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
       if (!window.$hsStepperCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSStepper(el)

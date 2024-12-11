@@ -1,6 +1,6 @@
 /*
  * HSFileUpload
- * @version: 2.4.1
+ * @version: 2.6.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -26,7 +26,20 @@ class HSFileUpload extends HSBasePlugin<IFileUploadOptions> implements IFileUplo
   private extensions: any = {}
   private singleton: boolean
 
-  private dropzone: Dropzone | null
+  public dropzone: Dropzone | null
+
+  private onReloadButtonClickListener:
+    | {
+        el: Element
+        fn: (evt: MouseEvent) => void
+      }[]
+    | null
+  private onTempFileInputChangeListener:
+    | {
+        el: HTMLElement
+        fn: (event: Event) => void
+      }[]
+    | null
 
   constructor(el: HTMLElement, options?: IFileUploadOptions, events?: {}) {
     super(el, options, events)
@@ -99,7 +112,44 @@ class HSFileUpload extends HSBasePlugin<IFileUploadOptions> implements IFileUplo
       ...options
     }
 
+    this.onReloadButtonClickListener = []
+    this.onTempFileInputChangeListener = []
+
     this.init()
+  }
+
+  private tempFileInputChange(event: Event, file: DropzoneFile) {
+    const input = event.target as HTMLInputElement
+    const newFile = input.files?.[0]
+
+    if (newFile) {
+      const dzNewFile = newFile as Dropzone.DropzoneFile
+      dzNewFile.status = Dropzone.ADDED
+      dzNewFile.accepted = true
+      dzNewFile.previewElement = file.previewElement
+      dzNewFile.previewTemplate = file.previewTemplate
+      dzNewFile.previewsContainer = file.previewsContainer
+
+      this.dropzone.removeFile(file)
+      this.dropzone.addFile(dzNewFile)
+    }
+  }
+
+  private reloadButtonClick(evt: MouseEvent, file: DropzoneFile) {
+    evt.preventDefault()
+    evt.stopPropagation()
+
+    const tempFileInput = document.createElement('input')
+    tempFileInput.type = 'file'
+
+    this.onTempFileInputChangeListener.push({
+      el: tempFileInput,
+      fn: (event: Event) => this.tempFileInputChange(event, file)
+    })
+
+    tempFileInput.click()
+
+    tempFileInput.addEventListener('change', this.onTempFileInputChangeListener.find(el => el.el === tempFileInput).fn)
   }
 
   private init() {
@@ -133,6 +183,22 @@ class HSFileUpload extends HSBasePlugin<IFileUploadOptions> implements IFileUplo
       })
   }
 
+  // Public methods
+  public destroy() {
+    this.onTempFileInputChangeListener.forEach(el => {
+      el.el.removeEventListener('change', el.fn)
+    })
+    this.onTempFileInputChangeListener = null
+    this.onReloadButtonClickListener.forEach(el => {
+      el.el.removeEventListener('click', el.fn)
+    })
+    this.onReloadButtonClickListener = null
+
+    this.dropzone.destroy()
+
+    window.$hsFileUploadCollection = window.$hsFileUploadCollection.filter(({ element }) => element.el !== this.el)
+  }
+
   private onAddFile(file: DropzoneFile) {
     const { previewElement } = file
     const reloadButton = file.previewElement.querySelector('[data-file-upload-reload]')
@@ -142,32 +208,12 @@ class HSFileUpload extends HSBasePlugin<IFileUploadOptions> implements IFileUplo
     if (this.singleton && this.dropzone.files.length > 1) this.dropzone.removeFile(this.dropzone.files[0])
 
     if (reloadButton) {
-      reloadButton.addEventListener('click', (evt: MouseEvent) => {
-        evt.preventDefault()
-        evt.stopPropagation()
-
-        const tempFileInput = document.createElement('input')
-        tempFileInput.type = 'file'
-
-        tempFileInput.click()
-
-        tempFileInput.addEventListener('change', (event: Event) => {
-          const input = event.target as HTMLInputElement
-          const newFile = input.files?.[0]
-
-          if (newFile) {
-            const dzNewFile = newFile as Dropzone.DropzoneFile
-            dzNewFile.status = Dropzone.ADDED
-            dzNewFile.accepted = true
-            dzNewFile.previewElement = file.previewElement
-            dzNewFile.previewTemplate = file.previewTemplate
-            dzNewFile.previewsContainer = file.previewsContainer
-
-            this.dropzone.removeFile(file)
-            this.dropzone.addFile(dzNewFile)
-          }
-        })
+      this.onReloadButtonClickListener.push({
+        el: reloadButton,
+        fn: evt => this.reloadButtonClick(evt, file)
       })
+
+      reloadButton.addEventListener('click', this.onReloadButtonClickListener.find(el => el.el === reloadButton).fn)
     }
 
     this.previewAccepted(file)
@@ -284,6 +330,11 @@ class HSFileUpload extends HSBasePlugin<IFileUploadOptions> implements IFileUplo
 
   static autoInit() {
     if (!window.$hsFileUploadCollection) window.$hsFileUploadCollection = []
+
+    if (window.$hsFileUploadCollection)
+      window.$hsFileUploadCollection = window.$hsFileUploadCollection.filter(({ element }) =>
+        document.contains(element.el)
+      )
 
     document.querySelectorAll('[data-file-upload]:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
       if (!window.$hsFileUploadCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSFileUpload(el)

@@ -1,6 +1,6 @@
 /*
  * Plugin
- * @version: 2.4.1
+ * @version: 2.6.0
  * @author: Preline Labs Ltd.
  * @requires: tailwindcss ^3.4.1
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
@@ -18,12 +18,40 @@ module.exports = plugin(function ({ addVariant, e }) {
     },
     ({ modifySelectors, separator }) => {
       modifySelectors(({ className }) => {
-        return `.dropdown.open .dropdown-toggle .${e(`dropdown-open${separator}${className}`)}`
+        return `.dropdown.open > .dropdown-toggle .${e(`dropdown-open${separator}${className}`)}`
       })
     },
     ({ modifySelectors, separator }) => {
       modifySelectors(({ className }) => {
         return `.dropdown.open > .dropdown-menu > .${e(`dropdown-open${separator}${className}`)}`
+      })
+    },
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.dropdown-menu.open.${e(`dropdown-open${separator}${className}`)}`
+      })
+    }
+  ])
+
+  addVariant('dropdown-item-disabled', ({ modifySelectors, separator }) => {
+    modifySelectors(({ className }) => {
+      return `.dropdown.open > .dropdown-menu .disabled.${e(`dropdown-item-disabled${separator}${className}`)}`
+    })
+  })
+
+  addVariant('dropdown-item-checked', [
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.dropdown.open > .dropdown-menu [aria-checked="true"].${e(
+          `dropdown-item-checked${separator}${className}`
+        )}`
+      })
+    },
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.dropdown.open > .dropdown-menu [aria-checked="true"] .${e(
+          `dropdown-item-checked${separator}${className}`
+        )}`
       })
     }
   ])
@@ -34,11 +62,18 @@ module.exports = plugin(function ({ addVariant, e }) {
     })
   })
 
-  addVariant('tooltip-shown', ({ modifySelectors, separator }) => {
-    modifySelectors(({ className }) => {
-      return `.tooltip.show .${e(`tooltip-shown${separator}${className}`)}`
-    })
-  })
+  addVariant('tooltip-shown', [
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.tooltip.show .${e(`tooltip-shown${separator}${className}`)}`
+      })
+    },
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.tooltip-content.show.${e(`tooltip-shown${separator}${className}`)}`
+      })
+    }
+  ])
 
   addVariant('accordion-item-active', [
     ({ modifySelectors, separator }) => {
@@ -74,6 +109,13 @@ module.exports = plugin(function ({ addVariant, e }) {
           `accordion-item-active${separator}${className}`
         )}`
       })
+    },
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.accordion-item.active .accordion-item-force-active.${e(
+          `accordion-item-active${separator}${className}`
+        )}`
+      })
     }
   ])
 
@@ -83,10 +125,36 @@ module.exports = plugin(function ({ addVariant, e }) {
     })
   })
 
+  addVariant('tree-view-selected', [
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `[data-tree-view-item].selected > .${e(`tree-view-selected${separator}${className}`)}`
+      })
+    },
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `[data-tree-view-item].selected.${e(`tree-view-selected${separator}${className}`)}`
+      })
+    }
+  ])
+
+  addVariant('tree-view-disabled', [
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `[data-tree-view-item].disabled.${e(`tree-view-disabled${separator}${className}`)}`
+      })
+    },
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `[data-tree-view-item].disabled > .${e(`tree-view-disabled${separator}${className}`)}`
+      })
+    }
+  ])
+
   addVariant('collapse-open', [
     ({ modifySelectors, separator }) => {
       modifySelectors(({ className }) => {
-        return `.collapse.open .${e(`collapse-open${separator}${className}`)}`
+        return `.collapse.open > .${e(`collapse-open${separator}${className}`)}`
       })
     },
     ({ modifySelectors, separator }) => {
@@ -96,7 +164,7 @@ module.exports = plugin(function ({ addVariant, e }) {
     },
     ({ modifySelectors, separator }) => {
       modifySelectors(({ className }) => {
-        return `.collapse-toggle.open .${e(`collapse-open${separator}${className}`)}`
+        return `.collapse-toggle.open > .${e(`collapse-open${separator}${className}`)}`
       })
     },
     ({ modifySelectors, separator }) => {
@@ -180,12 +248,25 @@ module.exports = plugin(function ({ addVariant, e }) {
   addVariant('carousel-disabled', [
     ({ modifySelectors, separator }) => {
       modifySelectors(({ className }) => {
-        return `.disabled.${e(`carousel${separator}disabled${separator}${className}`)}`
+        return `.disabled.${e(`carousel-disabled${separator}${className}`)}`
       })
     },
     ({ modifySelectors, separator }) => {
       modifySelectors(({ className }) => {
-        return `.disabled .${e(`carousel${separator}disabled${separator}${className}`)}`
+        return `.disabled .${e(`carousel-disabled${separator}${className}`)}`
+      })
+    }
+  ])
+
+  addVariant('carousel-dragging', [
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.dragging.${e(`carousel-dragging${separator}${className}`)}`
+      })
+    },
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.dragging .${e(`carousel-dragging${separator}${className}`)}`
       })
     }
   ])
@@ -448,6 +529,55 @@ module.exports = plugin(function ({ addVariant, e }) {
     }
   ])
 
+  // Datatables.net
+  addVariant('datatable-ordering-asc', [
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.dt-ordering-asc .${e(`datatable-ordering-asc${separator}${className}`)}`
+      })
+    },
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.dt-ordering-asc.${e(`datatable-ordering-asc${separator}${className}`)}`
+      })
+    }
+  ])
+
+  addVariant('datatable-ordering-desc', [
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.dt-ordering-desc .${e(`datatable-ordering-desc${separator}${className}`)}`
+      })
+    },
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.dt-ordering-desc.${e(`datatable-ordering-desc${separator}${className}`)}`
+      })
+    }
+  ])
+
+  // Sortable.js
+  addVariant('dragged', ({ modifySelectors, separator }) => {
+    modifySelectors(({ className }) => {
+      return `.dragged.${e(`dragged${separator}${className}`)}`
+    })
+  })
+
+  // noUiSlider
+  addVariant('range-slider-disabled', [
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.disabled .${e(`range-slider-disabled${separator}${className}`)}`
+      })
+    },
+    ({ modifySelectors, separator }) => {
+      modifySelectors(({ className }) => {
+        return `.disabled.${e(`range-slider-disabled${separator}${className}`)}`
+      })
+    }
+  ])
+
+  // Dropzone
   addVariant('file-upload-complete', [
     ({ modifySelectors, separator }) => {
       modifySelectors(({ className }) => {

@@ -16,7 +16,16 @@ export const POSITIONS: any = {
   'left-end': 'left-end'
 }
 
-export const DROPDOWN_ACCESSIBILITY_KEY_SET = ['Escape', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'Enter']
+export const DROPDOWN_ACCESSIBILITY_KEY_SET = [
+  'Escape',
+  'ArrowUp',
+  'ArrowDown',
+  'ArrowRight',
+  'ArrowLeft',
+  'Home',
+  'End',
+  'Enter'
+]
 
 export const OVERLAY_ACCESSIBILITY_KEY_SET = ['Escape', 'Tab']
 
@@ -31,6 +40,7 @@ export const SELECT_ACCESSIBILITY_KEY_SET = [
   'End',
   'Escape',
   'Enter',
+  'Space',
   'Tab'
 ]
 
@@ -46,6 +56,7 @@ export const COMBO_BOX_ACCESSIBILITY_KEY_SET = [
 ]
 
 export const BREAKPOINTS: any = {
+  xs: 0,
   sm: 640,
   md: 768,
   lg: 1024,

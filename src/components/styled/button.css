@@ -266,7 +266,7 @@
 
   /* outline */
   &-outline {
-    @apply text-base-content border-current bg-transparent shadow-none hover:shadow-none;
+    @apply text-base-content border-solid border-current bg-transparent shadow-none hover:shadow-none;
     @media (hover: hover) {
       &:hover {
         @apply bg-base-content/10 border-base-content;
@@ -605,13 +605,15 @@
 
   /* disabled */
   &.btn-disabled,
+  &.disabled,
   &[disabled],
   &:disabled {
-    @apply opacity-50 shadow-none;
+    @apply pointer-events-none opacity-50 shadow-none;
   }
   @media (hover: hover) {
     &-disabled:hover,
     &[disabled]:hover,
+    &.disabled:hover,
     &:disabled:hover {
       @apply opacity-50 shadow-none;
     }

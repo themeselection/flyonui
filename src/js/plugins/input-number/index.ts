@@ -1,6 +1,6 @@
 /*
  * HSInputNumber
- * @version: 2.4.1
+ * @version: 2.6.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -20,6 +20,10 @@ class HSInputNumber extends HSBasePlugin<IInputNumberOptions> implements IInputN
   private readonly minInputValue: number | null
   private readonly maxInputValue: number | null
   private readonly step: number
+
+  private onInputInputListener: () => void
+  private onIncrementClickListener: () => void
+  private onDecrementClickListener: () => void
 
   constructor(el: HTMLElement, options?: IInputNumberOptions) {
     super(el, options)
@@ -42,6 +46,18 @@ class HSInputNumber extends HSBasePlugin<IInputNumberOptions> implements IInputN
     this.step = 'step' in concatOptions && concatOptions.step > 0 ? concatOptions.step : 1
 
     this.init()
+  }
+
+  private inputInput() {
+    this.changeValue()
+  }
+
+  private incrementClick() {
+    this.changeValue('increment')
+  }
+
+  private decrementClick() {
+    this.changeValue('decrement')
   }
 
   private init() {
@@ -86,30 +102,32 @@ class HSInputNumber extends HSBasePlugin<IInputNumberOptions> implements IInputN
     if (this.increment) this.buildIncrement()
     if (this.decrement) this.buildDecrement()
 
-    if (this.inputValue <= 0 && this.minInputValue === 0) {
-      this.inputValue = 0
-      this.input.value = '0'
+    if (this.inputValue <= this.minInputValue) {
+      this.inputValue = this.minInputValue
+      this.input.value = `${this.minInputValue}`
     }
 
-    if (this.inputValue <= 0 || this.minInputValue < 0) this.changeValue()
+    if (this.inputValue <= this.minInputValue) this.changeValue()
 
     if (this.input.hasAttribute('disabled')) this.disableButtons()
   }
 
   private buildInput() {
-    this.input.addEventListener('input', () => this.changeValue())
+    this.onInputInputListener = () => this.inputInput()
+
+    this.input.addEventListener('input', this.onInputInputListener)
   }
 
   private buildIncrement() {
-    this.increment.addEventListener('click', () => {
-      this.changeValue('increment')
-    })
+    this.onIncrementClickListener = () => this.incrementClick()
+
+    this.increment.addEventListener('click', this.onIncrementClickListener)
   }
 
   private buildDecrement() {
-    this.decrement.addEventListener('click', () => {
-      this.changeValue('decrement')
-    })
+    this.onDecrementClickListener = () => this.decrementClick()
+
+    this.decrement.addEventListener('click', this.onDecrementClickListener)
   }
 
   private changeValue(event = 'none') {
@@ -195,6 +213,23 @@ class HSInputNumber extends HSBasePlugin<IInputNumberOptions> implements IInputN
     }
   }
 
+  // Public methods
+  public destroy() {
+    // Remove classes
+    this.el.classList.remove('disabled')
+
+    // Remove attributes
+    this.increment.removeAttribute('disabled')
+    this.decrement.removeAttribute('disabled')
+
+    // Remove listeners
+    this.input.removeEventListener('input', this.onInputInputListener)
+    this.increment.removeEventListener('click', this.onIncrementClickListener)
+    this.decrement.removeEventListener('click', this.onDecrementClickListener)
+
+    window.$hsInputNumberCollection = window.$hsInputNumberCollection.filter(({ element }) => element.el !== this.el)
+  }
+
   // Global method
   static getInstance(target: HTMLElement | string, isInstance?: boolean) {
     const elInCollection = window.$hsInputNumberCollection.find(
@@ -206,6 +241,11 @@ class HSInputNumber extends HSBasePlugin<IInputNumberOptions> implements IInputN
 
   static autoInit() {
     if (!window.$hsInputNumberCollection) window.$hsInputNumberCollection = []
+
+    if (window.$hsInputNumberCollection)
+      window.$hsInputNumberCollection = window.$hsInputNumberCollection.filter(({ element }) =>
+        document.contains(element.el)
+      )
 
     document.querySelectorAll('[data-input-number]:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
       if (!window.$hsInputNumberCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSInputNumber(el)

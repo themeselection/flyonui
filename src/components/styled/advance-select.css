@@ -57,33 +57,36 @@ select.is-invalid + .advance-select-toggle,
 }
 
 /* When using JS for form validation */
-.validate .label:has(+ * > .is-valid) > *,
-.validate .advance-select:has(> select.is-valid) ~ .label,
-.validate .advance-select:has(> select.is-valid) ~ .label .label-text,
-.validate .label:has(~ .advance-select > * > .selected) > *,
-.validate .advance-select:has(> * > .selected) ~ .label,
-.validate .advance-select:has(> * > .selected) ~ .label .label-text {
+/* Top */
+.validate .label:has(~ .advance-select > select:valid) > *,
+.validate .label-text:has(~ .advance-select > select:valid),
+/* Bottom* */
+.validate .advance-select:has(> select:valid) ~ .label,
+.validate .advance-select:has(> select:valid) ~ .label-text,
+.validate .advance-select:has(> select:valid) ~ .label .label-text {
   @apply text-success;
 }
 
-.validate .label:has(+ * > .is-invalid) > *,
-.validate .advance-select:has(> select.is-invalid) ~ .label,
-.validate .advance-select:has(> select.is-invalid) ~ .label .label-text,
-.validate .label:has(+ .advance-select:not(> .selected)) > *,
-.validate .advance-select:not(:has(> * > .selected)) ~ .label,
-.validate .advance-select:not(:has(> * > .selected)) ~ .label .label-text {
+/* Top */
+.validate .label:has(~ * > select:invalid) > *,
+.validate .label-text:has(~ * > select:invalid),
+/* Bottom */
+.validate .advance-select:has( > select:invalid) ~ .label,
+.validate .advance-select:has(> select:invalid) ~ .label-text,
+.validate .advance-select:has( > select:invalid) ~ .label .label-text {
   @apply text-error;
 }
 
 /* Message */
-.validate .label:has(+ * > .is-invalid) ~ * > .success-message,
-.validate .advance-select:has(> select.is-valid) ~ * > .success-message,
-.validate .advance-select:has(> select.is-valid) ~ .success-message {
+/* Success message */
+.validate .label ~ *:has(> select:valid) ~ * > .success-message,
+.validate .advance-select:has(> select:valid) ~ * > .success-message,
+.validate .advance-select:has(> select:valid) ~ .success-message {
   @apply block;
 }
-
-.validate .label ~ *:has(> select.is-invalid) ~ * > .error-message,
-.validate .advance-select:has(> select.is-invalid) ~ * > .error-message,
-.validate .advance-select:has(> select.is-invalid) ~ .error-message {
+/* Error message */
+.validate .label ~ *:has(> select:invalid) ~ * > .error-message,
+.validate .advance-select:has(> select:invalid) ~ * > .error-message,
+.validate .advance-select:has(> select:invalid) ~ .error-message {
   @apply block;
 }

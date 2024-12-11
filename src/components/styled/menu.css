@@ -44,8 +44,8 @@
   }
 }
 
-.menu li:not(.disabled, :disabled, [disabled]) > *:not(ul, .menu-title, .collapse, .btn):active,
-.menu li:not(.disabled, :disabled, [disabled]) > *:not(ul, .menu-title, .collapse, .btn).active {
+.menu li:not(.disabled, :disabled, [disabled]) > :not(ul, .menu-title, .collapse, .btn):active,
+.menu li:not(.disabled, :disabled, [disabled]) > :not(ul, .menu-title, .collapse, .btn).active {
   @apply bg-primary/10 text-primary [@media(hover:hover)]:bg-primary/10 [@media(hover:hover)]:text-primary;
 }
 

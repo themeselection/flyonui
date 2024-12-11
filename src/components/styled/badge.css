@@ -1,6 +1,6 @@
 /* Base badge styles */
 .badge {
-  @apply text-neutral rounded-btn bg-neutral/20;
+  @apply text-base-content rounded-btn bg-base-200;
 
   /* Base variants */
   &-neutral {

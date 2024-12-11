@@ -1,6 +1,6 @@
 /*
  * HSPinInput
- * @version: 2.4.1
+ * @version: 2.6.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -20,6 +20,57 @@ class HSPinInput extends HSBasePlugin<IPinInputOptions> implements IPinInput {
   private readonly placeholders: string[] | null
   private readonly availableCharsRE: RegExp | null
 
+  private onElementInputListener:
+    | {
+        el: HTMLElement
+        fn: (evt: Event) => void
+      }[]
+    | null
+  private onElementPasteListener:
+    | {
+        el: HTMLElement
+        fn: (evt: Event) => void
+      }[]
+    | null
+  private onElementKeydownListener:
+    | {
+        el: HTMLElement
+        fn: (evt: Event) => void
+      }[]
+    | null
+  private onElementFocusinListener:
+    | {
+        el: HTMLElement
+        fn: () => void
+      }[]
+    | null
+  private onElementFocusoutListener:
+    | {
+        el: HTMLElement
+        fn: () => void
+      }[]
+    | null
+
+  private elementInput(evt: Event, index: number) {
+    this.onInput(evt, index)
+  }
+
+  private elementPaste(evt: ClipboardEvent) {
+    this.onPaste(evt)
+  }
+
+  private elementKeydown(evt: KeyboardEvent, index: number) {
+    this.onKeydown(evt, index)
+  }
+
+  private elementFocusin(index: number) {
+    this.onFocusIn(index)
+  }
+
+  private elementFocusout(index: number) {
+    this.onFocusOut(index)
+  }
+
   constructor(el: HTMLElement, options?: IPinInputOptions) {
     super(el, options)
 
@@ -35,6 +86,12 @@ class HSPinInput extends HSBasePlugin<IPinInputOptions> implements IPinInput {
     this.currentValue = new Array(this.items.length).fill('')
     this.placeholders = []
     this.availableCharsRE = new RegExp(concatOptions?.availableCharsRE || '^[a-zA-Z0-9]+$') // '^[0-9]+$'
+
+    this.onElementInputListener = []
+    this.onElementPasteListener = []
+    this.onElementKeydownListener = []
+    this.onElementFocusinListener = []
+    this.onElementFocusoutListener = []
 
     this.init()
   }
@@ -55,11 +112,32 @@ class HSPinInput extends HSBasePlugin<IPinInputOptions> implements IPinInput {
 
       if (el.hasAttribute('autofocus')) this.onFocusIn(index)
 
-      el.addEventListener('input', evt => this.onInput(evt, index))
-      el.addEventListener('paste', evt => this.onPaste(evt))
-      el.addEventListener('keydown', evt => this.onKeydown(evt, index))
-      el.addEventListener('focusin', () => this.onFocusIn(index))
-      el.addEventListener('focusout', () => this.onFocusOut(index))
+      this.onElementInputListener.push({
+        el,
+        fn: (evt: Event) => this.elementInput(evt, index)
+      })
+      this.onElementPasteListener.push({
+        el,
+        fn: (evt: ClipboardEvent) => this.elementPaste(evt)
+      })
+      this.onElementKeydownListener.push({
+        el,
+        fn: (evt: KeyboardEvent) => this.elementKeydown(evt, index)
+      })
+      this.onElementFocusinListener.push({
+        el,
+        fn: () => this.elementFocusin(index)
+      })
+      this.onElementFocusoutListener.push({
+        el,
+        fn: () => this.elementFocusout(index)
+      })
+
+      el.addEventListener('input', this.onElementInputListener.find(elI => elI.el === el).fn)
+      el.addEventListener('paste', this.onElementPasteListener.find(elI => elI.el === el).fn)
+      el.addEventListener('keydown', this.onElementKeydownListener.find(elI => elI.el === el).fn)
+      el.addEventListener('focusin', this.onElementFocusinListener.find(elI => elI.el === el).fn)
+      el.addEventListener('focusout', this.onElementFocusoutListener.find(elI => elI.el === el).fn)
     })
   }
 
@@ -144,6 +222,28 @@ class HSPinInput extends HSBasePlugin<IPinInputOptions> implements IPinInput {
     })
   }
 
+  // Public methods
+  public destroy() {
+    // Remove classes
+    this.el.classList.remove('active')
+
+    // Remove listeners
+    if (this.items.length)
+      this.items.forEach(el => {
+        el.removeEventListener('input', this.onElementInputListener.find(elI => elI.el === el).fn)
+        el.removeEventListener('paste', this.onElementPasteListener.find(elI => elI.el === el).fn)
+        el.removeEventListener('keydown', this.onElementKeydownListener.find(elI => elI.el === el).fn)
+        el.removeEventListener('focusin', this.onElementFocusinListener.find(elI => elI.el === el).fn)
+        el.removeEventListener('focusout', this.onElementFocusoutListener.find(elI => elI.el === el).fn)
+      })
+
+    this.items = null
+    this.currentItem = null
+    this.currentValue = null
+
+    window.$hsPinInputCollection = window.$hsPinInputCollection.filter(({ element }) => element.el !== this.el)
+  }
+
   // Static method
   static getInstance(target: HTMLElement | string, isInstance?: boolean) {
     const elInCollection = window.$hsPinInputCollection.find(
@@ -155,6 +255,9 @@ class HSPinInput extends HSBasePlugin<IPinInputOptions> implements IPinInput {
 
   static autoInit() {
     if (!window.$hsPinInputCollection) window.$hsPinInputCollection = []
+
+    if (window.$hsPinInputCollection)
+      window.$hsPinInputCollection = window.$hsPinInputCollection.filter(({ element }) => document.contains(element.el))
 
     document.querySelectorAll('[data-pin-input]:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
       if (!window.$hsPinInputCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSPinInput(el)

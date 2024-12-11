@@ -159,46 +159,52 @@
 }
 
 /* Label state */
-/* main style is in checkbox.css  */
 
-/* This style the top right side label for floating and filled */
-.validate .label:has(+ * > .checkbox:valid)>*,
-/*This style the bottom start and end side label for floating and filled  */
-.validate .label~*:has(> .checkbox:valid)~.label .label-text-alt,
-/* This style the top start and end side label for floating and default */
-.validate .label:has(~ .checkbox:valid)>*,
-.validate .label:has(~ .checkbox:valid) :where(.label-text),
-/* When .is-valid is immediately followed by .label */
-.validate .checkbox:valid~.label,
-.validate .checkbox:valid~.label .label-text {
+/* Top text */
+.validate .label:has(+ * .checkbox:valid) > *, /* label sibling child has radio:valid then style label */
+.validate .label-text:has(+ * .checkbox:valid), /* label sibling child has radio:valid then style label-text */
+.validate .label-text:has(~ .checkbox:valid), /* label sibling has radio:valid then style sibling label-text */
+.validate .label:has(~ .checkbox:valid) > *, /* label sibling has radio:valid then style sibling label */
+/* Bottom text */
+.validate .checkbox:valid ~ .label, /* label next sibling of radio:valid then style sibling label */
+.validate .checkbox:valid ~ .label-text, /* label next sibling of radio:valid then style sibling label-text */
+.validate .checkbox:valid ~ .label .label-text,  /* label next sibling of radio:valid then style sibling .label label-text */
+.validate *:has(.checkbox:valid) ~ .label, /*  when radio:valid is child then style sibling of that parent label */
+.validate *:has(.checkbox:valid) ~ .label-text, /*  when radio:valid is child then style sibling of that parent label */
+.validate *:has(.checkbox:valid) ~ .label .label-text /*  when radio:valid is child then style sibling of that parent label */ {
   @apply text-success;
 }
 
-/* This style the top right side label for floating and filled */
-.validate .label:has(+ * > .checkbox:invalid)>*,
-/*This style the bottom start and end side label for floating and filled  */
-.validate .label~*:has(> .checkbox:invalid)~.label .label-text-alt,
-/* This style the top start and end side label for floating and default */
-.validate .label:has(~ .checkbox:invalid)>*,
-.validate .label:has(~ .checkbox:invalid) :where(.label-text),
-/* When .is-invalid is immediately followed by .label */
-.validate .checkbox:invalid~.label,
-.validate .checkbox:invalid~.label .label-text {
+/* Invalid text style */
+/* Top text */
+.validate .label:has(+ * .checkbox:invalid) > *, /* label sibling child has .checkbox:invalid then style label */
+.validate .label-text:has(+ * .checkbox:invalid), /* label sibling child has .checkbox:invalid then style label-text */
+.validate .label-text:has(~ .checkbox:invalid), /* label sibling has .checkbox:invalid then style sibling label-text */
+.validate .label:has(~ .checkbox:invalid) > *, /* label sibling has .checkbox:invalid then style sibling label */
+/* Bottom text */
+.validate .checkbox:invalid ~ .label, /* label next sibling of .checkbox:invalid then style sibling label */
+.validate .checkbox:invalid ~ .label-text, /* label next sibling of .checkbox:invalid then style sibling label-text */
+.validate .checkbox:invalid ~ .label .label-text,  /* label next sibling of .checkbox:invalid then style sibling .label label-text */
+.validate *:has(.checkbox:invalid) ~ .label, /*  when .checkbox:invalid is child then style sibling of that parent label */
+.validate *:has(.checkbox:invalid) ~ .label-text, /*  when .checkbox:invalid is child then style sibling of that parent label */
+.validate *:has(.checkbox:invalid) ~ .label .label-text /*  when is-invalid is child then style sibling of that parent label */ {
   @apply text-error;
 }
 
 /* Helper text */
-/* main style is in checkbox.css  */
+/* Valid message display */
 .validate *:has(> .checkbox:valid) ~ .success-message,
-.validate .label ~ *:has(> .checkbox:valid) ~ * > .success-message,
-.validate .checkbox:valid ~ * > .success-message,
-.validate .checkbox:valid ~ .success-message {
+.validate *:has(> .checkbox:valid) > * > .success-message,
+/* Both parent. */
+.validate .checkbox:valid ~ .success-message,
+.validate .checkbox:valid + * > .success-message {
   @apply block;
 }
 
 .validate *:has(> .checkbox:invalid) ~ .error-message,
-.validate .label ~ *:has(> .checkbox:invalid) ~ * > .error-message,
-.validate .checkbox:invalid ~ * > .error-message,
-.validate .checkbox:invalid ~ .error-message {
+.validate *:has(> .checkbox:invalid) > * > .error-message,
+/* Both parent. */
+.validate .checkbox:invalid ~ .error-message,
+.validate .checkbox:invalid + * > .error-message {
   @apply block;
 }

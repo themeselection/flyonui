@@ -15,7 +15,10 @@ input {
     border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;
   &::file-selector-button {
-    @apply bg-base-content/20 text-base-content/90 rounded-s-btn disabled:bg-neutral/10 border-0 font-semibold uppercase no-underline;
+    @apply bg-base-content/20 text-base-content/90 rounded-s-btn border-0 font-semibold uppercase no-underline;
+  }
+  &[type="file"]:disabled {
+    @apply bg-neutral/10;
   }
   &:focus,
   &:focus-within {
@@ -223,23 +226,34 @@ input {
   }
 }
 
-/* This style the top right side label for floating and filled */
-.label:has(+ * > .is-valid) > *,
-/*This style the bottom start and end side label for floating and filled  */
-.label ~ *:has(> .is-valid) ~ .label .label-text-alt,
-/* This style the top start and end side label for floating and default */
-.label:has(~ .is-valid) > *,
-/* When .label is immediately followed by .is-valid */
-.is-valid ~ .label,
-.is-valid ~ .label .label-text,
+/* Top text */
+.label:has(+ * .is-valid) > *, /* label sibling child has is-valid then style label */
+.label-text:has(+ * .is-valid), /* label sibling child has is-valid then style label-text */
+.label-text:has(~ .is-valid), /* label sibling has is-valid then style sibling label-text */
+.label:has(~ .is-valid) > *, /* label sibling has is-valid then style sibling label */
+
+/* Bottom text */
+.is-valid ~ .label, /* label next sibling of is-valid then style sibling label */
+.is-valid ~ .label-text, /* label next sibling of is-valid then style sibling label-text */
+.is-valid ~ .label .label-text,  /* label next sibling of is-valid then style sibling .label label-text */
+*:has(.is-valid) ~ .label, /*  when is-valid is child then style sibling of that parent label */
+*:has(.is-valid) ~ .label-text, /*  when is-valid is child then style sibling of that parent label */
+*:has(.is-valid) ~ .label .label-text, /*  when is-valid is child then sibling of that parent label get style */
+
 /* When using JS for form validation */
-.validate .label:has(+ * > .input:valid) > *,
-.validate .label:has(+ * > .input:valid),
-.validate .label ~ *:has(> .input:valid) ~ .label .label-text-alt,
-.validate .label:has(~ .input:valid) > *,
-.validate .label:has(~ .input:valid),
-.validate .input:valid ~  .label,
-.validate .input:valid ~  .label .label-text {
+/* Top text */
+.validate .label:has(+ * .input:valid) > *, /* label sibling child has input:valid then style label */
+.validate .label-text:has(+ * .input:valid), /* label sibling child has input:valid then style label-text */
+.validate .label-text:has(~ .input:valid), /* label sibling has input:valid then style sibling label-text */
+.validate .label:has(~ .input:valid) > *, /* label sibling has input:valid then style sibling label */
+
+/* Bottom text */
+.validate .input:valid ~ .label, /* label next sibling of input:valid then style sibling label */
+.validate .input:valid ~ .label.label-text, /* label next sibling of input:valid then style sibling label-text */
+.validate .input:valid ~ .label .label-text,  /* label next sibling of input:valid then style sibling .label label-text */
+.validate *:has(.input:valid) ~ .label, /*  when input:valid is child then style sibling of that parent label */
+.validate *:has(.input:valid) ~ .label-text, /*  when input:valid is child then style sibling of that parent label */
+.validate *:has(.input:valid) ~ .label .label-text /*  when input:valid is child then style sibling of that parent label */ {
   @apply text-success;
 }
 
@@ -269,22 +283,34 @@ input {
   }
 }
 
-/* This style the top right side label for floating and filled */
-.label:has(+ * > .is-invalid) > *,
-/*This style the bottom start and end side label for floating and filled  */
-.label ~ *:has(> .is-invalid) ~ .label .label-text-alt,
-/* This style the top start and end side label for floating and default */
-.label:has(~ .is-invalid) > *,
-/* When .is-invalid is general .label */
-.is-invalid ~ .label,
-.is-invalid ~ .label .label-text,
-/* When using JS for form validation */
-.validate .label:has(+ * > .input:invalid) > *,
-.validate .label:has(+ * > .input:invalid),
-.validate .label ~ *:has(> .input:invalid) ~ .label .label-text-alt,
-.validate .label:has(~ .input:invalid) > *,
-.validate .input:invalid ~ .label,
-.validate .input:invalid ~ .label .label-text {
+/* Top text */
+.label:has(+ * .is-invalid) > *, /* label sibling child has is-invalid then style label */
+.label-text:has(+ * .is-invalid), /* label sibling child has is-invalid then style label-text */
+.label-text:has(~ .is-invalid), /* label sibling has is-invalid then style sibling label-text */
+.label:has(~ .is-invalid) > *, /* label sibling has is-invalid then style sibling label */
+
+/* Bottom text */
+.is-invalid ~ .label, /* label next sibling of is-invalid then style sibling label */
+.is-invalid ~ .label-text, /* label next sibling of is-invalid then style sibling label-text */
+.is-invalid ~ .label .label-text,  /* label next sibling of is-invalid then style sibling .label label-text */
+*:has(.is-invalid) ~ .label, /*  when is-invalid is child then style sibling of that parent label */
+*:has(.is-invalid) ~ .label-text, /*  when is-invalid is child then style sibling of that parent label */
+*:has(.is-invalid) ~ .label .label-text, /*  when is-invalid is child then sibling of that parent label get style */
+
+/* When using JS for form invalidation */
+/* Top text */
+.validate .label:has(+ * .input:invalid) > *, /* label sibling child has input:invalid then style label */
+.validate .label-text:has(+ * .input:invalid), /* label sibling child has input:invalid then style label-text */
+.validate .label-text:has(~ .input:invalid), /* label sibling has input:invalid then style sibling label-text */
+.validate .label:has(~ .input:invalid) > *, /* label sibling has input:invalid then style sibling label */
+
+/* Bottom text */
+.validate .input:invalid ~ .label, /* label next sibling of input:invalid then style sibling label */
+.validate .input:invalid ~ .label.label-text, /* label next sibling of input:invalid then style sibling label-text */
+.validate .input:invalid ~ .label .label-text,  /* label next sibling of input:invalid then style sibling .label label-text */
+.validate *:has(.input:invalid) ~ .label, /*  when input:invalid is child then style sibling of that parent label */
+.validate *:has(.input:invalid) ~ .label-text, /*  when input:invalid is child then style sibling of that parent label */
+.validate *:has(.input:invalid) ~ .label .label-text /*  when input:valid is child then style sibling of that parent label */ {
   @apply text-error;
 }
 
@@ -296,32 +322,32 @@ input {
 /* State text */
 
 .success-message {
-  @apply text-success hidden;
+  @apply text-success hidden text-sm;
 }
 
 /* .valid is a child class and when .message is parent. */
-*:has(> .is-valid) ~ .success-message,
+
 .validate *:has(> .input:valid) ~ .success-message,
+.validate *:has(> .input:valid)  > * > .success-message,
 /* Both parent. */
-.is-valid ~ .success-message,
-.validate .input:valid ~ .success-message {
+.validate .input:valid ~ .success-message,
+.validate .input:valid  + * > .success-message {
   @apply block;
 }
 
 .error-message {
-  @apply text-error hidden;
+  @apply text-error hidden text-sm;
 }
 
-*:has(> .is-invalid) ~ .error-message,
 .validate *:has(> .input:invalid) ~ .error-message,
+.validate *:has(> .input:invalid) > * > .error-message,
 /* Both parent. */
-.is-invalid ~ .error-message,
-.validate .input:invalid ~ .error-message {
+.validate .input:invalid ~ .error-message,
+.validate .input:invalid + * > .error-message {
   @apply block;
 }
 
 /* Input group State */
-
 .validate .input-group > .input:valid,
 .input-group > .input:valid,
 .validate .input-group > .input:invalid,

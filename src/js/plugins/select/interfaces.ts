@@ -11,6 +11,15 @@ export interface ISingleOption {
   options?: ISingleOptionOptions | null
 }
 
+export interface IApiFieldMap {
+  id: string
+  val: string
+  title: string
+  icon?: string | null
+  description?: string | null
+  [key: string]: unknown
+}
+
 export interface ISelectOptions {
   value?: string | string[]
   isOpened?: boolean
@@ -23,18 +32,28 @@ export interface ISelectOptions {
 
   wrapperClasses?: string
 
+  apiUrl?: string | null
+  apiQuery?: string | null
+  apiOptions?: RequestInit | null
+  apiDataPart?: string | null
+  apiSearchQueryKey?: string | null
+  apiFieldsMap?: IApiFieldMap | null
+  apiIconTag?: string | null
+
   toggleTag?: string
   toggleClasses?: string
   toggleSeparators?: {
     items?: string
     betweenItemsAndCounter?: string
   }
-  toggleCountText?: string
+  toggleCountText?: string | null
+  toggleCountTextPlacement?: 'postfix' | 'prefix' | 'postfix-no-space' | 'prefix-no-space'
   toggleCountTextMinItems?: number
   toggleCountTextMode?: string
 
   tagsItemTemplate?: string
   tagsItemClasses?: string
+  tagsInputId?: string
   tagsInputClasses?: string
 
   dropdownTag?: string
@@ -44,13 +63,21 @@ export interface ISelectOptions {
     bottom?: string
   }
   dropdownSpace: number
+  dropdownPlacement: string | null
+  dropdownVerticalFixedPlacement: 'top' | 'bottom' | null
+  dropdownScope: 'window' | 'parent'
 
   extraMarkup?: string | string[] | null
 
+  searchTemplate?: string
   searchWrapperTemplate?: string
+  searchId?: string
+  searchLimit?: number | typeof Infinity
+  isSearchDirectMatch?: boolean
   searchClasses?: string
   searchWrapperClasses?: string
   searchPlaceholder?: string
+  searchNoResultTemplate?: string | null
   searchNoResultText?: string | null
   searchNoResultClasses?: string | null
 
@@ -68,10 +95,11 @@ export interface ISelectOptions {
 export interface ISelect {
   options?: ISelectOptions
 
-  destroy(): void
+  setValue(val: string | string[]): void
   open(): void
   close(): void
   addOption(items: ISingleOption | ISingleOption[]): void
   removeOption(values: string | string[]): void
   recalculateDirection(): void
+  destroy(): void
 }

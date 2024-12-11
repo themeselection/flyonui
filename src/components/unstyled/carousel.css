@@ -1,9 +1,8 @@
 .carousel {
-  @apply relative min-h-80 w-full overflow-hidden;
-
-  &-body {
-    @apply absolute bottom-0 start-0 top-0 flex flex-nowrap;
-  }
+  @apply relative w-full overflow-hidden rounded-2xl;
+}
+.carousel-body {
+  @apply flex flex-nowrap;
 }
 
 .carousel-prev,
@@ -17,10 +16,10 @@
   @apply end-0 rounded-e-2xl;
 }
 
-.carousel-pagination {
-  @apply absolute bottom-3 end-0 start-0 flex justify-center space-x-2 rtl:space-x-reverse;
+.carousel-box {
+  @apply bg-neutral/30 carousel-active:bg-primary h-1 w-10 cursor-pointer;
+}
 
-  .carousel-dot {
-    @apply h-1 w-10 cursor-pointer rounded-full;
-  }
+.carousel-dot {
+  @apply bg-neutral/30 carousel-active:bg-primary size-3 cursor-pointer rounded-full;
 }

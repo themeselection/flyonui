@@ -10,6 +10,6 @@
     "moduleResolution": "node",
     "esModuleInterop": true
   },
-  "include": ["src/js/**/*"],
+  "include": ["src/js/**/*", "global.d.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

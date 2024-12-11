@@ -334,49 +334,55 @@
 }
 
 /* Label state */
-/* main style is in radio.css  */
-
-/* This style the top right side label for floating and filled */
-.validate .label:has(+ * > .radio:valid) > *,
-/*This style the bottom start and end side label for floating and filled  */
-.validate .label ~ *:has(> .radio:valid) ~ .label .label-text-alt,
-/* This style the top start and end side label for floating and default */
-.validate .label:has(~ .radio:valid) > *,
-.validate .label:has(~ .radio:valid) :where(.label-text),
-/* When .is-valid is immediately followed by .label */
-.validate .radio:valid ~  .label,
-.validate .radio:valid ~  .label .label-text {
-  @apply !text-success;
+/* Top text */
+.validate .label:has(+ * .radio:valid) > *, /* label sibling child has radio:valid then style label */
+.validate .label-text:has(+ * .radio:valid), /* label sibling child has radio:valid then style label-text */
+.validate .label-text:has(~ .radio:valid), /* label sibling has radio:valid then style sibling label-text */
+.validate .label:has(~ .radio:valid) > *, /* label sibling has radio:valid then style sibling label */
+/* Bottom text */
+.validate .radio:valid ~ .label, /* label next sibling of radio:valid then style sibling label */
+.validate .radio:valid ~ .label-text, /* label next sibling of radio:valid then style sibling label-text */
+.validate .radio:valid ~ .label .label-text,  /* label next sibling of radio:valid then style sibling .label label-text */
+.validate *:has(.radio:valid) ~ .label, /*  when radio:valid is child then style sibling of that parent label */
+.validate *:has(.radio:valid) ~ .label-text, /*  when radio:valid is child then style sibling of that parent label */
+.validate *:has(.radio:valid) ~ .label .label-text /*  when radio:valid is child then style sibling of that parent label */ {
+  @apply text-success;
 }
 
-/* This style the top right side label for floating and filled */
-.validate .label:has(+ * > .radio:invalid) > *,
-/*This style the bottom start and riend side label for floating and filled  */
-.validate .label ~ *:has(> .radio:invalid) ~ .label .label-text-alt,
-/* This style the top start and riend side label for floating and default */
-.validate .label:has(~ .radio:invalid) > *,
-.validate .label:has(~ .radio:invalid) :where(.label-text),
-/* When .is-invalid is immediately followed by .label */
-.validate .radio:invalid ~ .label,
-.validate .radio:invalid ~ .label .label-text {
-  @apply !text-error;
+/* Invalid text style */
+/* Top text */
+.validate .label:has(+ * .radio:invalid) > *, /* label sibling child has .radio:invalid then style label */
+.validate .label-text:has(+ * .radio:invalid), /* label sibling child has .radio:invalid then style label-text */
+.validate .label-text:has(~ .radio:invalid), /* label sibling has .radio:invalid then style sibling label-text */
+.validate .label:has(~ .radio:invalid) > *, /* label sibling has .radio:invalid then style sibling label */
+/* Bottom text */
+.validate .radio:invalid ~ .label, /* label next sibling of .radio:invalid then style sibling label */
+.validate .radio:invalid ~ .label-text, /* label next sibling of .radio:invalid then style sibling label-text */
+.validate .radio:invalid ~ .label .label-text,  /* label next sibling of .radio:invalid then style sibling .label label-text */
+.validate *:has(.radio:invalid) ~ .label, /*  when .radio:invalid is child then style sibling of that parent label */
+.validate *:has(.radio:invalid) ~ .label-text, /*  when .radio:invalid is child then style sibling of that parent label */
+.validate *:has(.radio:invalid) ~ .label .label-text /*  when is-invalid is child then style sibling of that parent label */ {
+  @apply text-error;
 }
 
 /* Helper text */
-/* main style is in radio.css  */
 
+/* Valid message display */
 .validate *:has(> .radio:valid) ~ .success-message,
-.validate .label ~ *:has(> .radio:valid) ~ * > .success-message,
-.validate .radio:valid ~ * > .success-message,
-.validate .radio:valid ~ .success-message {
-  @apply !block;
+.validate *:has(> .radio:valid) > * > .success-message,
+/* Both parent. */
+.validate .radio:valid ~ .success-message,
+.validate .radio:valid + * > .success-message {
+  @apply block;
 }
 
+/* Invalid message display */
 .validate *:has(> .radio:invalid) ~ .error-message,
-.validate .label ~ *:has(> .radio:invalid) ~ * > .error-message,
-.validate .radio:invalid ~ * > .error-message,
-.validate .radio:invalid ~ .error-message {
-  @apply !block;
+.validate *:has(> .radio:invalid) > * > .error-message,
+/* Both parent. */
+.validate .radio:invalid ~ .error-message,
+.validate .radio:invalid + * > .error-message {
+  @apply block;
 }
 
 /* Inset Radio */
@@ -406,47 +412,52 @@
 }
 
 /* Label state */
-/* main style is in radio.css  */
-
-/* This style the top right side label for floating and filled */
-.validate .label:has(+ * > .radio-inset:valid) > *,
-/*This style the bottom start and end side label for floating and filled  */
-.validate .label ~ *:has(> .radio-inset:valid) ~ .label .label-text-alt,
-/* This style the top start and end side label for floating and default */
-.validate .label:has(~ .radio-inset:valid) > *,
-.validate .label:has(~ .radio-inset:valid) :where(.label-text),
-/* When .is-valid is immediately followed by .label */
-.validate .radio-inset:valid ~  .label,
-.validate .radio-inset:valid ~  .label .label-text {
-  @apply !text-success;
+/* Top text */
+.validate .label:has(+ * .radio-inset:valid) > *, /* label sibling child has radio-inset:valid then style label */
+.validate .label:has(+ * .radio-inset:valid).label-text, /* label sibling child has radio-inset:valid then style label-text */
+.validate .label:has(~ .radio-inset:valid).label-text, /* label sibling has radio-inset:valid then style sibling label-text */
+.validate .label:has(~ .radio-inset:valid) > *, /* label sibling has radio-inset:valid then style sibling label */
+/* Bottom text */
+.validate .radio-inset:valid ~ .label, /* label next sibling of radio-inset:valid then style sibling label */
+.validate .radio-inset:valid ~ .label.label-text, /* label next sibling of radio-inset:valid then style sibling label-text */
+.validate .radio-inset:valid ~ .label .label-text,  /* label next sibling of radio-inset:valid then style sibling .label label-text */
+.validate *:has(.radio-inset:valid) ~ .label, /*  when radio-inset:valid is child then style sibling of that parent label */
+.validate *:has(.radio-inset:valid) ~ .label.label-text, /*  when radio-inset:valid is child then style sibling of that parent label */
+.validate *:has(.radio-inset:valid) ~ .label .label-text /*  when radio:valid is child then style sibling of that parent label */ {
+  @apply text-success;
 }
 
-/* This style the top right side label for floating and filled */
-.validate .label:has(+ * > .radio-inset:invalid) > *,
-/*This style the bottom start and riend side label for floating and filled  */
-.validate .label ~ *:has(> .radio-inset:invalid) ~ .label .label-text-alt,
-/* This style the top start and riend side label for floating and default */
-.validate .label:has(~ .radio-inset:invalid) > *,
-.validate .label:has(~ .radio-inset:invalid) :where(.label-text),
-/* When .is-invalid is .label */
-.validate .radio-inset:invalid ~ .label,
-.validate .radio-inset:invalid ~ .label .label-text {
-  @apply !text-error;
+/* Top text */
+.validate .label:has(+ * .radio-inset:invalid) > *, /* label sibling child has .radio-inset:invalid then style label */
+.validate .label-text:has(+ * .radio-inset:invalid), /* label sibling child has .radio-inset:invalid then style label-text */
+.validate .label-text:has(~ .radio-inset:invalid), /* label sibling has .radio-inset:invalid then style sibling label-text */
+.validate .label:has(~ .radio-inset:invalid) > *, /* label sibling has .radio-inset:invalid then style sibling label */
+/* Bottom text */
+.validate .radio-inset:invalid ~ .label, /* label next sibling of .radio-inset:invalid then style sibling label */
+.validate .radio-inset:invalid ~ .label-text, /* label-text next sibling of .radio-inset:invalid then style label-text */
+.validate .radio-inset:invalid ~ .label .label-text,  /* label next sibling of .radio-inset:invalid then style sibling .label label-text */
+.validate *:has(.radio-inset:invalid) ~ .label, /*  when .radio-inset:invalid is child then style sibling of that parent label */
+.validate *:has(.radio-inset:invalid) ~ .label-text, /*  when .radio-inset:invalid is child then style sibling of that parent label */
+.validate *:has(.radio-inset:invalid) ~ .label .label-text /*  when is-invalid is child then style sibling of that parent label */ {
+  @apply text-error;
 }
 
 /* Helper text */
-/* main style is in radio.css  */
 
+/* Valid message display */
 .validate *:has(> .radio-inset:valid) ~ .success-message,
-.validate .label ~ *:has(> .radio-inset:valid) ~ * > .success-message,
-.validate .radio-inset:valid ~ * > .success-message,
-.validate .radio-inset:valid ~ .success-message {
-  @apply !block;
+.validate *:has(> .radio-inset:valid) > * > .success-message,
+/* Both parent. */
+.validate .radio-inset:valid ~ .success-message,
+.validate .radio-inset:valid + * > .success-message {
+  @apply block;
 }
 
+/* Invalid message display */
 .validate *:has(> .radio-inset:invalid) ~ .error-message,
-.validate .label ~ *:has(> .radio-inset:invalid) ~ * > .error-message,
-.validate .radio-inset:invalid ~ * > .error-message,
-.validate .radio-inset:invalid ~ .error-message {
-  @apply !block;
+.validate *:has(> .radio-inset:invalid) > * > .error-message,
+/* Both parent. */
+.validate .radio-inset:invalid ~ .error-message,
+.validate .radio-inset:invalid + * > .error-message {
+  @apply block;
 }

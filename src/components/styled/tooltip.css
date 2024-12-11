@@ -4,7 +4,7 @@
   }
 
   &-body {
-    --tooltip-color: theme(colors.base-content);
+    --tooltip-color: theme(colors.neutral);
     --tooltip-text-color: theme(colors.neutral-content);
     @apply rounded-tooltip text-sm shadow-md;
     background-color: var(--tooltip-color);

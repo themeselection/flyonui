@@ -1,44 +1,20 @@
-.apexcharts-tooltip.apexcharts-theme-light {
-  @apply !bg-base-100 !border-none !shadow;
-
-  .apexcharts-tooltip-marker {
-    @apply rtl:!mr-0;
-  }
-}
-
-.apexcharts-tooltip-title {
-  @apply !text-base-content/90 !bg-base-200 !border-base-content/40;
-}
-
-.apexcharts-yaxis,
-.apexcharts-yaxis-texts-g {
-  @apply rtl:!translate-x-0;
-}
-
 .apexcharts-tooltip-series-group.apexcharts-active {
   @apply !pb-0;
 }
 
-.apexcharts-radar-series.apexcharts-plot-series {
-  .apexcharts-xaxis {
-    @apply rtl:!translate-x-0 rtl:!translate-y-0;
-  }
+.apexcharts-tooltip.apexcharts-theme-light,
+.apexcharts-tooltip.apexcharts-theme-dark {
+  @apply !bg-base-100 !border-none !shadow;
 }
 
-.apexcharts-yaxis.apexcharts-xaxis-inversed {
-  @apply rtl:!translate-x-5;
+.apexcharts-legend-text {
+  @apply !ml-0 !pl-0;
 }
 
-.apexcharts-legend {
-  @apply !pe-6;
+.apexcharts-legend-marker {
+  @apply !top-0;
 }
 
-.apexcharts-legend-series {
-  .apexcharts-legend-marker {
-    @apply !-left-0.5 rtl:!left-1.5;
-  }
-
-  .apexcharts-legend-text {
-    @apply !ml-0 !pl-0;
-  }
+.apexcharts-tooltip-title {
+  @apply !bg-base-100 !border-base-content/40 text-base-content/90 rounded-t-lg !px-2.5 !text-sm !font-semibold;
 }

@@ -162,49 +162,52 @@ textarea {
 }
 
 /* Label state */
-/* main style is in textarea.css  */
-
-/* This style the top right side label for floating and filled */
-.validate .label:has(+ * > .textarea:valid) > *,
-.validate .label:has(+ * > .textarea:valid),
-/*This style the bottom start and end side label for floating and filled  */
-.validate .label ~ *:has(> .textarea:valid) ~ .label .label-text-alt,
-/* This style the top start and end side label for floating and default */
-.validate .label:has(~ .textarea:valid) > *,
-.validate .label:has(~ .textarea:valid),
-.validate .label:has(~ .textarea:valid) :where(.label-text),
-/* When .is-valid is immediately followed by .label */
-.validate .textarea:valid ~  .label {
+/* Top text */
+.validate .label:has(+ * .textarea:valid) > *, /* label sibling child has radio:valid then style label */
+.validate .label-text:has(+ * .textarea:valid), /* label sibling child has radio:valid then style label-text */
+.validate .label-text:has(~ .textarea:valid), /* label sibling has radio:valid then style sibling label-text */
+.validate .label:has(~ .textarea:valid) > *, /* label sibling has radio:valid then style sibling label */
+/* Bottom text */
+.validate .textarea:valid ~ .label, /* label next sibling of radio:valid then style sibling label */
+.validate .textarea:valid ~ .label-text, /* label next sibling of radio:valid then style sibling label-text */
+.validate .textarea:valid ~ .label .label-text,  /* label next sibling of radio:valid then style sibling .label label-text */
+.validate *:has(.textarea:valid) ~ .label, /*  when radio:valid is child then style sibling of that parent label */
+.validate *:has(.textarea:valid) ~ .label-text, /*  when radio:valid is child then style sibling of that parent label */
+.validate *:has(.textarea:valid) ~ .label .label-text /*  when radio:valid is child then style sibling of that parent label */ {
   @apply text-success;
 }
 
-/* This style the top right side label for floating and filled */
-.validate .label:has(+ * > .textarea:invalid) > *,
-.validate .label:has(+ * > .textarea:invalid),
-/*This style the bottom start and riend side label for floating and filled  */
-.validate .label ~ *:has(> .textarea:invalid) ~ .label .label-text-alt,
-/* This style the top start and riend side label for floating and default */
-.validate .label:has(~ .textarea:invalid) > *,
-.validate .label:has(~ .textarea:invalid),
-.validate .label:has(~ .textarea:invalid) :where(.label-text),
-/* When .is-invalid is .label */
-.validate .textarea:invalid ~ .label {
+/* Invalid text style */
+/* Top text */
+.validate .label:has(+ * .textarea:invalid) > *, /* label sibling child has .textarea:invalid then style label */
+.validate .label-text:has(+ * .textarea:invalid), /* label sibling child has .textarea:invalid then style label-text */
+.validate .label-text:has(~ .textarea:invalid), /* label sibling has .textarea:invalid then style sibling label-text */
+.validate .label:has(~ .textarea:invalid) > *, /* label sibling has .textarea:invalid then style sibling label */
+/* Bottom text */
+.validate .textarea:invalid ~ .label, /* label next sibling of .textarea:invalid then style sibling label */
+.validate .textarea:invalid ~ .label-text, /* label next sibling of .textarea:invalid then style sibling label-text */
+.validate .textarea:invalid ~ .label .label-text,  /* label next sibling of .textarea:invalid then style sibling .label label-text */
+.validate *:has(.textarea:invalid) ~ .label, /*  when .textarea:invalid is child then style sibling of that parent label */
+.validate *:has(.textarea:invalid) ~ .label-text, /*  when .textarea:invalid is child then style sibling of that parent label */
+.validate *:has(.textarea:invalid) ~ .label .label-text /*  when is-invalid is child then style sibling of that parent label */ {
   @apply text-error;
 }
 
 /* Helper text */
 /* main style is in textarea.css  */
 
-.validate *:has(> .textarea:valid) ~ * > .success-message,
 .validate *:has(> .textarea:valid) ~ .success-message,
-.validate .textarea:valid ~ * > .success-message,
-.validate .textarea:valid ~ .success-message {
+.validate *:has(> .textarea:valid) > * > .success-message,
+/* Both parent. */
+.validate .textarea:valid ~ .success-message,
+.validate .textarea:valid + * > .success-message {
   @apply block;
 }
 
-.validate *:has(> .textarea:invalid) ~ * > .error-message,
 .validate *:has(> .textarea:invalid) ~ .error-message,
-.validate .textarea:invalid ~ * > .error-message,
-.validate .textarea:invalid ~ .error-message {
+.validate *:has(> .textarea:invalid) > * > .error-message,
+/* Both parent. */
+.validate .textarea:invalid ~ .error-message,
+.validate .textarea:invalid + * > .error-message {
   @apply block;
 }

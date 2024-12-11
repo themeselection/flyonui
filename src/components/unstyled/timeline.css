@@ -19,11 +19,17 @@
 }
 
 .timeline-start {
-  @apply col-start-1 col-end-4 row-start-1 row-end-2 m-2 self-end justify-self-center;
+  @apply col-start-1 col-end-4 row-start-1 row-end-2 m-2;
+}
+:where(.timeline-start) {
+  @apply self-end justify-self-center;
 }
 .timeline-middle {
   @apply col-start-2 row-start-2 flex size-9 items-center justify-center;
 }
 .timeline-end {
-  @apply col-start-1 col-end-4 row-start-3 row-end-4 m-2 self-start justify-self-center;
+  @apply col-start-1 col-end-4 row-start-3 row-end-4 m-2;
+}
+:where(.timeline-end) {
+  @apply self-start justify-self-center;
 }

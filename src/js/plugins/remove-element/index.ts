@@ -1,6 +1,6 @@
 /*
  * HSRemoveElement
- * @version: 2.4.1
+ * @version: 2.6.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -17,6 +17,8 @@ class HSRemoveElement extends HSBasePlugin<IRemoveElementOptions> implements IRe
   private readonly removeTargetId: string | null
   private readonly removeTarget: HTMLElement | null
   private readonly removeTargetAnimationClass: string
+
+  private onElementClickListener: () => void
 
   constructor(el: HTMLElement, options?: IRemoveElementOptions) {
     super(el, options)
@@ -35,10 +37,16 @@ class HSRemoveElement extends HSBasePlugin<IRemoveElementOptions> implements IRe
     if (this.removeTarget) this.init()
   }
 
+  private elementClick() {
+    this.remove()
+  }
+
   private init() {
     this.createCollection(window.$hsRemoveElementCollection, this)
 
-    this.el.addEventListener('click', () => this.remove())
+    this.onElementClickListener = () => this.elementClick()
+
+    this.el.addEventListener('click', this.onElementClickListener)
   }
 
   private remove() {
@@ -46,14 +54,38 @@ class HSRemoveElement extends HSBasePlugin<IRemoveElementOptions> implements IRe
 
     this.removeTarget.classList.add(this.removeTargetAnimationClass)
 
-    afterTransition(this.removeTarget, () => {
-      this.removeTarget.remove()
-    })
+    afterTransition(this.removeTarget, () => setTimeout(() => this.removeTarget.remove()))
+  }
+
+  // Public methods
+  public destroy() {
+    // Remove classes
+    this.removeTarget.classList.remove(this.removeTargetAnimationClass)
+
+    // Remove listeners
+    this.el.removeEventListener('click', this.onElementClickListener)
+
+    window.$hsRemoveElementCollection = window.$hsRemoveElementCollection.filter(
+      ({ element }) => element.el !== this.el
+    )
   }
 
   // Static method
+  static getInstance(target: HTMLElement, isInstance = false) {
+    const elInCollection = window.$hsRemoveElementCollection.find(
+      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
+    )
+
+    return elInCollection ? (isInstance ? elInCollection : elInCollection.element.el) : null
+  }
+
   static autoInit() {
     if (!window.$hsRemoveElementCollection) window.$hsRemoveElementCollection = []
+
+    if (window.$hsRemoveElementCollection)
+      window.$hsRemoveElementCollection = window.$hsRemoveElementCollection.filter(({ element }) =>
+        document.contains(element.el)
+      )
 
     document.querySelectorAll('[data-remove-element]:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
       if (!window.$hsRemoveElementCollection.find(elC => (elC?.element?.el as HTMLElement) === el))

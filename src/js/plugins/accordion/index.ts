@@ -1,12 +1,12 @@
 /*
  * HSAccordion
- * @version: 2.4.1
+ * @version: 2.6.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { dispatch, afterTransition } from '../../utils'
+import { getClassProperty, stringToBoolean, dispatch, afterTransition } from '../../utils'
 
 import { IAccordionOptions, IAccordion, IAccordionTreeView, IAccordionTreeViewStaticOptions } from './interfaces'
 
@@ -14,10 +14,13 @@ import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
 
 class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion {
-  private readonly toggle: HTMLElement | null
+  private toggle: HTMLElement | null
   public content: HTMLElement | null
-  private readonly group: HTMLElement | null
-  private readonly isAlwaysOpened: boolean
+  private group: HTMLElement | null
+  private isAlwaysOpened: boolean
+  private isToggleStopPropagated: boolean
+
+  private onToggleClickListener: (evt: Event) => void
 
   static selectable: IAccordionTreeView[]
 
@@ -26,8 +29,13 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
 
     this.toggle = this.el.querySelector('.accordion-toggle') || null
     this.content = this.el.querySelector('.accordion-content') || null
-    this.group = this.el.closest('.accordion') || null
-    this.isAlwaysOpened = this.group.hasAttribute('data-accordion-always-open') || false
+    this.update()
+
+    if (this.toggle) {
+      this.isToggleStopPropagated = stringToBoolean(
+        getClassProperty(this.toggle, '--stop-propagation', 'false') || 'false'
+      )
+    }
 
     if (this.toggle && this.content) this.init()
   }
@@ -35,15 +43,20 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
   private init() {
     this.createCollection(window.$hsAccordionCollection, this)
 
-    this.toggle.addEventListener('click', (evt: Event) => {
-      evt.stopPropagation()
+    this.onToggleClickListener = (evt: Event) => this.toggleClick(evt)
 
-      if (this.el.classList.contains('active')) {
-        this.hide()
-      } else {
-        this.show()
-      }
-    })
+    this.toggle.addEventListener('click', this.onToggleClickListener)
+  }
+
+  // Public methods
+  public toggleClick(evt: Event) {
+    if (this.isToggleStopPropagated) evt.stopPropagation()
+
+    if (this.el.classList.contains('active')) {
+      this.hide()
+    } else {
+      this.show()
+    }
   }
 
   // Public methods
@@ -77,7 +90,7 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
       this.content.style.height = ''
 
       this.fireEvent('open', this.el)
-      dispatch('open.accordion', this.el, this.el)
+      dispatch('open.accordion.item', this.el, this.el)
     })
   }
 
@@ -97,8 +110,47 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
       this.content.style.height = '0'
 
       this.fireEvent('close', this.el)
-      dispatch('close.accordion', this.el, this.el)
+      dispatch('close.accordion.item', this.el, this.el)
     })
+  }
+
+  public update() {
+    this.group = this.el.closest('.accordion') || null
+
+    if (!this.group) return false
+
+    this.isAlwaysOpened = this.group.hasAttribute('data-accordion-always-open') || false
+
+    window.$hsAccordionCollection.map(el => {
+      if (el.id === this.el.id) {
+        el.element.group = this.group
+        el.element.isAlwaysOpened = this.isAlwaysOpened
+      }
+
+      return el
+    })
+  }
+
+  public destroy() {
+    if (HSAccordion?.selectable?.length) {
+      HSAccordion.selectable.forEach(item => {
+        item.listeners.forEach(({ el, listener }) => {
+          el.removeEventListener('click', listener)
+        })
+      })
+    }
+
+    if (this.onToggleClickListener) {
+      this.toggle.removeEventListener('click', this.onToggleClickListener)
+    }
+
+    this.toggle = null
+    this.content = null
+    this.group = null
+
+    this.onToggleClickListener = null
+
+    window.$hsAccordionCollection = window.$hsAccordionCollection.filter(({ element }) => element.el !== this.el)
   }
 
   // Static methods
@@ -129,9 +181,21 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
   static autoInit() {
     if (!window.$hsAccordionCollection) window.$hsAccordionCollection = []
 
+    if (window.$hsAccordionCollection) {
+      window.$hsAccordionCollection = window.$hsAccordionCollection.filter(({ element }) =>
+        document.contains(element.el)
+      )
+    }
+
     document.querySelectorAll('.accordion-item:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
       if (!window.$hsAccordionCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSAccordion(el)
     })
+  }
+
+  static onSelectableClick = (evt: Event, item: IAccordionTreeView, el: HTMLElement) => {
+    evt.stopPropagation()
+
+    HSAccordion.toggleSelected(item, el)
   }
 
   static treeView() {
@@ -145,7 +209,8 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
 
       this.selectable.push({
         el,
-        options: { ...options }
+        options: { ...options },
+        listeners: []
       })
     })
 
@@ -154,11 +219,11 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
         const { el } = item
 
         el.querySelectorAll('.accordion-selectable').forEach((_el: HTMLElement) => {
-          _el.addEventListener('click', (evt: Event) => {
-            evt.stopPropagation()
+          const listener = (evt: Event) => this.onSelectableClick(evt, item, _el)
 
-            this.toggleSelected(item, _el)
-          })
+          _el.addEventListener('click', listener)
+
+          item.listeners.push({ el: _el, listener })
         })
       })
   }
