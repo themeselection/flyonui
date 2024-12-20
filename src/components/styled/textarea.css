@@ -127,16 +127,16 @@ textarea {
 }
 
 .textarea:focus.is-valid ~ .textarea-floating-label,
-.validate .textarea:focus:is-valid ~ .textarea-floating-label,
+.validate .textarea:focus:valid ~ .textarea-floating-label,
 .textarea:focus.is-valid ~ .textarea-filled-label,
-.validate .textarea:focus:is-valid ~ .textarea-filled-label {
+.validate .textarea:focus:valid ~ .textarea-filled-label {
   @apply text-success;
 }
 
 .textarea:focus.is-invalid ~ .textarea-floating-label,
-.validate .textarea:focus:is-invalid ~ .textarea-floating-label,
+.validate .textarea:focus:invalid ~ .textarea-floating-label,
 .textarea:focus.is-invalid ~ .textarea-filled-label,
-.validate .textarea:focus:is-invalid ~ .textarea-filled-label {
+.validate .textarea:focus:invalid ~ .textarea-filled-label {
   @apply text-error;
 }
 
