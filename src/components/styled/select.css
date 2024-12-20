@@ -145,16 +145,16 @@
   }
 }
 
-.select:focus:valid ~ .select-floating-label,
+.select:focus.is-valid ~ .select-floating-label,
 .validate .select:focus:valid ~ .select-floating-label,
-.select:focus:valid ~ .select-filled-label,
+.select:focus.is-valid ~ .select-filled-label,
 .validate .select:focus:valid ~ .select-filled-label {
   @apply text-success;
 }
 
-.select:focus:invalid ~ .select-floating-label,
+.select:focus.is-invalid ~ .select-floating-label,
 .validate .select:focus:invalid ~ .select-floating-label,
-.select:focus:invalid ~ .select-filled-label,
+.select:focus.is-invalid ~ .select-filled-label,
 .validate .select:focus:invalid ~ .select-filled-label {
   @apply text-error;
 }
