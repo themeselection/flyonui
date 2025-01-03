@@ -16,5 +16,5 @@
 }
 
 .apexcharts-tooltip-title {
-  @apply !bg-base-100 !border-base-content/40 text-base-content/90 rounded-t-lg !px-2.5 !text-sm !font-semibold;
+  @apply !bg-base-100 !border-base-content/40 text-base-content rounded-t-lg !px-2.5 !text-sm !font-semibold;
 }

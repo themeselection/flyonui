@@ -4,6 +4,6 @@
     @apply gap-3;
   }
   &-title {
-    @apply text-base-content/90 mb-1 text-base font-medium;
+    @apply text-base-content mb-1 text-base font-medium;
   }
 }

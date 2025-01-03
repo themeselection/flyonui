@@ -263,7 +263,7 @@
       @apply pb-1;
     }
     .label-text {
-      @apply text-base-content/90 font-medium;
+      @apply text-base-content font-medium;
     }
   }
 

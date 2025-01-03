@@ -1,5 +1,5 @@
 .label {
-  @apply text-base-content/80 p-1;
+  @apply text-base-content/80 select-none p-1;
 
   &-text-alt {
     @apply text-xs;
@@ -10,5 +10,5 @@
 }
 
 .label-text {
-  @apply text-base-content/90 cursor-pointer text-sm;
+  @apply text-base-content block cursor-pointer text-sm;
 }

@@ -15,7 +15,7 @@
 /* Calendar header */
 
 .flatpickr-current-month {
-  @apply text-base-content/90 absolute start-4 flex w-auto items-center justify-center gap-1 pt-0 text-base font-medium rtl:end-4 rtl:start-auto;
+  @apply text-base-content absolute start-4 flex w-auto items-center justify-center gap-1 pt-0 text-base font-medium rtl:end-4 rtl:start-auto;
 
   .flatpickr-monthDropdown-months,
   input.cur-year {
@@ -58,9 +58,9 @@
   }
   .flatpickr-prev-month,
   .flatpickr-next-month {
-    @apply bg-neutral/10 hover:fill-base-content/90 text-base-content/90 absolute top-4 flex size-7 items-center justify-center rounded-full p-0 no-underline rtl:rotate-180;
+    @apply bg-neutral/10 hover:fill-base-content/90 text-base-content absolute top-4 flex size-7 items-center justify-center rounded-full p-0 no-underline rtl:rotate-180;
     svg {
-      @apply fill-base-content/90 text-base-content/90 size-3 align-middle;
+      @apply fill-base-content/90 text-base-content size-3 align-middle;
     }
   }
   .flatpickr-prev-month:hover svg,
@@ -95,7 +95,7 @@
 
 span.flatpickr-weekday,
 .flatpickr-weekwrapper .flatpickr-weekday {
-  @apply text-base-content/90 m-0 block cursor-default text-center text-sm font-medium;
+  @apply text-base-content m-0 block cursor-default text-center text-sm font-medium;
 }
 
 /* Dates */
@@ -113,7 +113,7 @@ span.flatpickr-weekday,
 }
 
 .flatpickr-day {
-  @apply text-base-content/90 size-9.5 max-w-9.5 relative m-0 flex cursor-pointer items-center justify-center text-center text-base;
+  @apply text-base-content size-9.5 max-w-9.5 relative m-0 flex cursor-pointer items-center justify-center text-center text-base;
 
   &.today:not(.selected) {
     @apply bg-primary/20 text-primary border-transparent;
@@ -225,7 +225,7 @@ span.flatpickr-weekday,
 .flatpickr-weekwrapper {
   & span.flatpickr-day,
   & span.flatpickr-day:hover {
-    @apply text-base-content/90 size-9.5 max-w-9.5 m-0 flex cursor-pointer items-center justify-center text-center text-base [&:not(:last-child)]:mb-0.5;
+    @apply text-base-content size-9.5 max-w-9.5 m-0 flex cursor-pointer items-center justify-center text-center text-base [&:not(:last-child)]:mb-0.5;
   }
 
   & .flatpickr-weeks {
@@ -279,13 +279,13 @@ span.flatpickr-weekday,
 }
 
 .flatpickr-time input.flatpickr-hour {
-  @apply rounded-btn border-base-content/10 text-base-content/90 h-auto border border-solid text-base font-normal leading-[inherit];
+  @apply rounded-btn border-base-content/10 text-base-content h-auto border border-solid text-base font-normal leading-[inherit];
 }
 .flatpickr-time input.flatpickr-minute {
-  @apply rounded-btn border-base-content/10 text-base-content/90 h-auto border border-solid text-base leading-[inherit];
+  @apply rounded-btn border-base-content/10 text-base-content h-auto border border-solid text-base leading-[inherit];
 }
 .flatpickr-time .flatpickr-am-pm {
-  @apply rounded-btn border-base-content/10 text-base-content/90 flex items-center justify-center border text-base leading-[inherit];
+  @apply rounded-btn border-base-content/10 text-base-content flex items-center justify-center border text-base leading-[inherit];
 }
 
 .numInputWrapper:hover,

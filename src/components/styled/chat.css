@@ -6,7 +6,7 @@
   }
 
   &-receiver .chat-bubble {
-    @apply bg-base-100 text-base-content/90 rounded-es-none;
+    @apply bg-base-100 text-base-content rounded-es-none;
     &:before {
       inset-inline-start: -0.749rem;
     }

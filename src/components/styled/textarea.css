@@ -71,7 +71,7 @@ textarea {
 /* label styles */
 .textarea-floating-label,
 .textarea-filled-label {
-  @apply text-base-content/90 peer-focus:placeholder:text-base-content/50 peer-focus:text-primary pointer-events-none absolute start-0 top-2 w-full overflow-hidden text-ellipsis bg-transparent px-4 text-base transition-all ease-in;
+  @apply text-base-content peer-focus:placeholder:text-base-content/50 peer-focus:text-primary pointer-events-none absolute start-0 top-2 w-full overflow-hidden text-ellipsis bg-transparent px-4 text-base transition-all ease-in;
 }
 
 .textarea-floating-label {

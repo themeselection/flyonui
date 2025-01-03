@@ -1,5 +1,5 @@
 .divider {
-  @apply after:border-base-content/10 before:border-base-content/10 my-4 h-4 whitespace-nowrap;
+  @apply after:border-base-content/20 before:border-base-content/20 my-4 h-4 whitespace-nowrap;
 
   &:not(:empty) {
     @apply gap-4;

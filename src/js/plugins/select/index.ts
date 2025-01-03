@@ -6,16 +6,15 @@
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { isEnoughSpace, debounce, dispatch, afterTransition, htmlToElement, classToClassList } from '../../utils'
+import { afterTransition, classToClassList, debounce, dispatch, htmlToElement, isEnoughSpace } from '../../utils'
 
-import { ISelect, ISelectOptions, ISingleOption, ISingleOptionOptions, IApiFieldMap } from './interfaces'
+import { IApiFieldMap, ISelect, ISelectOptions, ISingleOption, ISingleOptionOptions } from './interfaces'
 
 import { createPopper } from '@popperjs/core'
-
-import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
+import HSBasePlugin from '../base-plugin'
 
-import { SELECT_ACCESSIBILITY_KEY_SET, POSITIONS } from '../../constants'
+import { POSITIONS, SELECT_ACCESSIBILITY_KEY_SET } from '../../constants'
 
 class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   value: string | string[] | null
@@ -74,6 +73,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   private readonly searchNoResultTemplate: string | null
   private readonly searchNoResultText: string | null
   private readonly searchNoResultClasses: string | null
+  private readonly optionAllowEmptyOption: boolean
   private readonly optionTag: string | null
   private readonly optionTemplate: string | null
   private readonly optionClasses: string | null
@@ -176,6 +176,8 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     this.searchNoResultTemplate = concatOptions?.searchNoResultTemplate || '<span></span>'
     this.searchNoResultText = concatOptions?.searchNoResultText || 'No results found'
     this.searchNoResultClasses = concatOptions?.searchNoResultClasses || 'block advance-select-option'
+    this.optionAllowEmptyOption =
+      typeof concatOptions?.optionAllowEmptyOption !== 'undefined' ? concatOptions?.optionAllowEmptyOption : false
     this.optionTemplate = concatOptions?.optionTemplate || null
     this.optionTag = concatOptions?.optionTag || null
     this.optionClasses = concatOptions?.optionClasses || null
@@ -242,21 +244,33 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
 
   public setValue(val: string | string[]) {
     this.value = val
-
     this.clearSelections()
 
     if (Array.isArray(val)) {
-      this.toggleTextWrapper.innerHTML = this.value.length ? this.stringFromValue() : this.placeholder
-      this.unselectMultipleItems()
-      this.selectMultipleItems()
+      if (this.mode === 'tags') {
+        this.unselectMultipleItems()
+        this.selectMultipleItems()
+
+        this.selectedItems = []
+
+        const existingTags = this.wrapper.querySelectorAll('[data-tag-value]')
+        existingTags.forEach(tag => tag.remove())
+
+        this.setTagsItems()
+        this.reassignTagsInputPlaceholder(this.value.length ? '' : this.placeholder)
+      } else {
+        this.toggleTextWrapper.innerHTML = this.value.length ? this.stringFromValue() : this.placeholder
+        this.unselectMultipleItems()
+        this.selectMultipleItems()
+      }
     } else {
       this.setToggleTitle()
-
       if (this.toggle.querySelector('[data-icon]')) this.setToggleIcon()
       if (this.toggle.querySelector('[data-title]')) this.setToggleTitle()
-
       this.selectSingleItem()
     }
+
+    this.triggerChangeEventForNativeSelect()
   }
 
   private init() {
@@ -270,7 +284,10 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
 
     if (this.el.children) {
       Array.from(this.el.children)
-        .filter((el: HTMLOptionElement) => el.value && el.value !== '')
+        .filter(
+          (el: HTMLOptionElement) =>
+            this.optionAllowEmptyOption || (!this.optionAllowEmptyOption && el.value && el.value !== '')
+        )
         .forEach((el: HTMLOptionElement) => {
           const data = el.getAttribute('data-select-option')
 
@@ -572,6 +589,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     if (this.dropdownScope === 'window') this.buildPopper()
   }
 
+  // This function has been updated.
   private buildPopper() {
     if (typeof createPopper !== 'undefined') {
       document.body.appendChild(this.dropdown)

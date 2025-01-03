@@ -8,10 +8,10 @@
 
 import { dispatch } from '../../utils'
 
-import { IStepperOptions, IStepper, IStepperItem } from './interfaces'
+import { IStepper, IStepperItem, IStepperOptions } from './interfaces'
 
-import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
+import HSBasePlugin from '../base-plugin'
 
 class HSStepper extends HSBasePlugin<{}> implements IStepper {
   private currentIndex: number | null

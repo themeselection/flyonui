@@ -1,11 +1,11 @@
 /*
- * @version: 2.6.0
+ * @version: 2.7.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { IBuildTooltipHelperOptions, IChartProps, IChartPropsSeries, IChartDonutProps } from './interfaces'
+import { IBuildTooltipHelperOptions, IChartDonutProps, IChartProps, IChartPropsSeries } from './interfaces'
 
 function buildTooltip(props: IChartProps, options: IBuildTooltipHelperOptions) {
   const {
@@ -20,13 +20,13 @@ function buildTooltip(props: IChartProps, options: IBuildTooltipHelperOptions) {
     wrapperExtClasses = '',
     seriesClasses = 'text-xs items-center',
     seriesExtClasses = '',
-    titleClasses = '!text-sm !font-semibold !bg-base-100 !border-base-content/40 text-base-content/90 rounded-t-lg !px-2.5',
+    titleClasses = '!text-sm !font-semibold !bg-base-100 !border-base-content/40 text-base-content rounded-t-lg !px-2.5',
     titleExtClasses = '',
     markerClasses = '!w-2.5 !h-2.5 !me-1.5 rtl:!mr-0',
     markerExtClasses = '',
     valueClasses = '!font-medium text-base-content/80 !ms-auto',
     valueExtClasses = '',
-    labelClasses = 'text-base-content/90',
+    labelClasses = 'text-base-content',
     labelExtClasses = ''
   } = options
   const { dataPointIndex } = props
@@ -90,13 +90,13 @@ function buildTooltipCompareTwo(props: IChartProps, options: IBuildTooltipHelper
     wrapperExtClasses = '',
     seriesClasses = 'text-xs items-center !justify-between',
     seriesExtClasses = '',
-    titleClasses = '!text-sm !font-semibold !bg-base-100 !border-base-content/40 text-base-content/90 rounded-t-lg !px-2.5',
+    titleClasses = '!text-sm !font-semibold !bg-base-100 !border-base-content/40 text-base-content rounded-t-lg !px-2.5',
     titleExtClasses = 'flex justify-between',
     markerClasses = '!w-2.5 !h-2.5 !me-1.5',
     markerExtClasses = '',
     valueClasses = '!font-medium text-base-content/80 !ms-auto',
     valueExtClasses = '',
-    labelClasses = 'text-base-content/90 !fw-medium',
+    labelClasses = 'text-base-content !fw-medium',
     labelExtClasses = ''
   } = options
 
@@ -170,13 +170,13 @@ function buildTooltipCompareTwoAlt(props: IChartProps, options: IBuildTooltipHel
     wrapperExtClasses = '',
     seriesClasses = 'text-xs items-center !justify-between',
     seriesExtClasses = '',
-    titleClasses = '!text-sm !font-semibold !bg-base-100 !border-base-content/40 text-base-content/90 rounded-t-lg flex !justify-between !px-2.5',
+    titleClasses = '!text-sm !font-semibold !bg-base-100 !border-base-content/40 text-base-content rounded-t-lg flex !justify-between !px-2.5',
     titleExtClasses = '',
     markerClasses = '!w-2.5 !h-2.5 !me-1.5',
     markerExtClasses = '',
     valueClasses = '!font-medium text-base-content/80 !ms-auto',
     valueExtClasses = '',
-    labelClasses = 'text-base-content/90 !fw-medium',
+    labelClasses = 'text-base-content !fw-medium',
     labelExtClasses = ''
   } = options
 
@@ -259,4 +259,5 @@ function buildChart(id: string, shared: Function) {
   return chart
 }
 
-export { buildTooltip, buildTooltipCompareTwo, buildTooltipCompareTwoAlt, buildTooltipForDonut, buildChart }
+export { buildChart, buildTooltip, buildTooltipCompareTwo, buildTooltipCompareTwoAlt, buildTooltipForDonut }
+

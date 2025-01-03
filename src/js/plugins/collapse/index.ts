@@ -1,18 +1,18 @@
 /*
  * HSCollapse
- * @version: 2.6.0
+ * @version: 2.7.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { dispatch, afterTransition } from '../../utils'
+import { afterTransition, dispatch } from '../../utils'
 
 import { ICollapse } from './interfaces'
 
+import { ICollectionItem } from '../../interfaces'
 import HSBasePlugin from '../base-plugin'
 import HSDropdown from '../dropdown'
-import { ICollectionItem } from '../../interfaces'
 
 class HSCollapse extends HSBasePlugin<{}> implements ICollapse {
   private readonly contentId: string | null
@@ -53,12 +53,12 @@ class HSCollapse extends HSBasePlugin<{}> implements ICollapse {
   }
 
   private hideAllMegaMenuItems() {
-    this.content.querySelectorAll('mega-menu-content.block').forEach(el => {
+    this.content.querySelectorAll('.mega-menu-content.block').forEach(el => {
       el.classList.remove('block')
       el.classList.add('hidden')
     })
   }
-
+  // This function is added to close all dropdowns when the collapse is closed
   private closeDropdowns(): void {
     if (!this.content) return
 
@@ -149,6 +149,16 @@ class HSCollapse extends HSBasePlugin<{}> implements ICollapse {
   }
 
   // Static methods
+  private static findInCollection(target: HSCollapse | HTMLElement | string): ICollectionItem<HSCollapse> | null {
+    return (
+      window.$hsCollapseCollection.find(el => {
+        if (target instanceof HSCollapse) return el.element.el === target.el
+        else if (typeof target === 'string') return el.element.el === document.querySelector(target)
+        else return el.element.el === target
+      }) || null
+    )
+  }
+
   static getInstance(target: HTMLElement, isInstance = false) {
     const elInCollection = window.$hsCollapseCollection.find(
       el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
@@ -168,29 +178,23 @@ class HSCollapse extends HSBasePlugin<{}> implements ICollapse {
     })
   }
 
-  static show(target: HTMLElement) {
-    const elInCollection = window.$hsCollapseCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static show(target: HSCollapse | HTMLElement | string) {
+    const instance = HSCollapse.findInCollection(target)
 
-    if (elInCollection && elInCollection.element.content.classList.contains('hidden')) elInCollection.element.show()
+    if (instance && instance.element.content.classList.contains('hidden')) instance.element.show()
   }
 
-  static hide(target: HTMLElement) {
-    const elInCollection = window.$hsCollapseCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static hide(target: HSCollapse | HTMLElement | string) {
+    const instance = HSCollapse.findInCollection(target)
 
-    if (elInCollection && !elInCollection.element.content.classList.contains('hidden')) elInCollection.element.hide()
+    if (instance && !instance.element.content.classList.contains('hidden')) instance.element.hide()
   }
 
   // Backward compatibility
-  static on(evt: string, target: HTMLElement, cb: Function) {
-    const elInCollection = window.$hsCollapseCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static on(evt: string, target: HSCollapse | HTMLElement | string, cb: Function) {
+    const instance = HSCollapse.findInCollection(target)
 
-    if (elInCollection) elInCollection.element.events[evt] = cb
+    if (instance) instance.element.events[evt] = cb
   }
 }
 

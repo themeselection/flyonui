@@ -18,7 +18,7 @@
 
 /* Search field styling */
 .cdx-search-field {
-  @apply rounded-box bg-base-200/40 text-base-content/90 border-base-content/20;
+  @apply rounded-box bg-base-200/40 text-base-content border-base-content/20;
 }
 
 /* Popover and conversion tool item styling */
@@ -26,7 +26,7 @@
 .ce-conversion-tool,
 .tc-toolbox__toggler,
 .tc-toolbox__toggler:hover {
-  @apply !text-base-content/90;
+  @apply !text-base-content;
 }
 
 /* Secondary title and label styling */
@@ -56,7 +56,7 @@
 
 /* Conversion toolbar label styling */
 .ce-conversion-toolbar__label {
-  @apply text-base-content/90 font-medium;
+  @apply text-base-content font-medium;
 }
 
 /* Inline toolbar dropdown styling */
@@ -132,7 +132,7 @@
 
 .tc-add-column,
 .tc-add-row {
-  @apply !text-base-content/90;
+  @apply !text-base-content;
 }
 
 .tc-cell,

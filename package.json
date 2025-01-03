@@ -1,6 +1,6 @@
 {
   "name": "flyonui",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "The easiest, free and open-source Tailwind CSS component library with semantic classes.",
   "author": "ThemeSelection",
   "license": "MIT",
@@ -62,7 +62,6 @@
     "./global.d.ts",
     "./flyonui.d.ts",
     "./flyonui.js",
-    "./flyonui.mjs",
     "./LICENSE",
     "./THIRD_PARTY_LICENSES",
     "./README.md"

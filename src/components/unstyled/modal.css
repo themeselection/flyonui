@@ -13,22 +13,16 @@
 
 .modal-header {
   @apply relative flex items-center justify-between p-6;
-  & + .modal-body {
-    padding-top: 0;
-  }
 }
 
 .modal-title {
-  @apply text-base-content/90 text-2xl font-semibold;
+  @apply text-base-content text-2xl font-semibold;
 }
 
 .modal-body {
-  @apply overflow-y-auto p-6 text-base font-normal [&::-webkit-scrollbar]:w-2;
-  & + .modal-footer {
-    padding-top: 0;
-  }
+  @apply overflow-y-auto text-base font-normal [&::-webkit-scrollbar]:w-2;
 }
 
 .modal-footer {
-  @apply flex items-center justify-end gap-3 p-6;
+  @apply flex items-center justify-end gap-3;
 }

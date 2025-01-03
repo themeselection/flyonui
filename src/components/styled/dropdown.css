@@ -3,7 +3,7 @@
 }
 
 .dropdown-item {
-  @apply text-base-content/90 rounded-btn bg-transparent no-underline decoration-0;
+  @apply text-base-content rounded-btn bg-transparent no-underline decoration-0;
 
   &:hover,
   &:focus,
@@ -25,7 +25,7 @@
   & > .label {
     @apply text-base-content/80 py-1 text-base;
     &-text {
-      @apply text-base-content/90;
+      @apply text-base-content;
     }
   }
 }

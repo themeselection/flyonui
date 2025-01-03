@@ -15,7 +15,7 @@
     @apply text-base-content/80;
   }
   &-value {
-    @apply text-base-content/90 text-3xl font-semibold;
+    @apply text-base-content text-3xl font-semibold;
   }
   &-desc {
     @apply text-base-content/50 text-xs;

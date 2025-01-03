@@ -1,6 +1,6 @@
 /*
  * HSFileUpload
- * @version: 2.6.0
+ * @version: 2.7.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,12 +8,12 @@
 
 import { DropzoneFile } from 'dropzone'
 
-import { htmlToElement, classToClassList } from '../../utils'
+import { classToClassList, htmlToElement } from '../../utils'
 
-import { IFileUploadOptions, IFileUpload } from './interfaces'
+import { IFileUpload, IFileUploadOptions } from './interfaces'
 
-import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
+import HSBasePlugin from '../base-plugin'
 
 declare var _: any
 declare var Dropzone: any
@@ -58,7 +58,7 @@ class HSFileUpload extends HSBasePlugin<IFileUploadOptions> implements IFileUplo
               <img class="rounded-md hidden" data-dz-thumbnail="" />
             </span>
             <div>
-              <p class="text-base-content/90 text-sm font-medium">
+              <p class="text-base-content text-sm font-medium">
                 <span class="inline-block truncate align-bottom" data-file-upload-file-name=""></span>.<span data-file-upload-file-ext=""></span>
               </p>
               <p class="text-base-content/50 text-xs" data-file-upload-file-size=""></p>
@@ -74,7 +74,7 @@ class HSFileUpload extends HSBasePlugin<IFileUploadOptions> implements IFileUplo
           <div class="progress h-2" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" data-file-upload-progress-bar="" >
             <div class="progress-bar progress-primary file-upload-complete:progress-success transition-all duration-500" style="width: 0" data-file-upload-progress-bar-pane="" ></div>
           </div>
-          <span class="text-base-content/90 mb-0.5 text-sm">
+          <span class="text-base-content mb-0.5 text-sm">
             <span data-file-upload-progress-bar-value="">0</span>%
           </span>
         </div>

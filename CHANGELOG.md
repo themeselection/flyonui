@@ -1,3 +1,29 @@
+## [1.3.0] - [2025-01-03]
+
+## Added 
+
+**Combo Box** : [Minimum search Length](https://flyonui.com/docs/advanced-forms/combo-box/#minimum-search-length)
+
+**Datatables** : [Multiple Controls](https://flyonui.com/docs/third-party-plugins/datatables/#multiple-controls)
+
+## Updated
+
+- Preline v2.7.0
+- Updated divider component border-color from `base-content/10` to `base-content/20`
+- Updated heading color from `text-base-content/90` to `text-base-content`
+- You can now invoke overlay methods directly on the overlay itself without linking it to any button. The previous functionality is retained for backward compatibility.
+
+## Fixes and Improvements
+
+- Added: A new parameter `optionAllowEmptyOption` has been added for Advanced Select
+- Added: A new parameter `minSearchLength` has been added for Combo Box
+- Added: Enhanced support for multiple `prev` and `next` elements, each with its own event listeners, ensuring proper initialization and cleanup in the destroy method. Improved event listener management for `search` and `pagination` controls to prevent memory leaks and support dynamic elements.
+- Fixed: Removed `flyonui.mjs` as it was creating issues while using `import`
+- Fixed: Improve card style specificity
+- Fixed: Typo in select and textarea. [[PR #30]](https://github.com/themeselection/flyonui/pull/30)
+- Fixed: Improved label styles for better usability in form elements.
+- Fixed: `setValue` method functionality with tags in Advanced Select.
+
 ## [1.2.0] - [2024-12-11]
 
 ## Added

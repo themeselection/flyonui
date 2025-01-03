@@ -4,11 +4,11 @@ import { ICollectionItem } from './src/js/interfaces'
 
 import { IStaticMethods } from './src/js/static/interfaces'
 
-import type HSCopyMarkup from './src/js/plugins/copy-markup'
 import type HSAccordion from './src/js/plugins/accordion'
 import type HSCarousel from './src/js/plugins/carousel'
 import type HSCollapse from './src/js/plugins/collapse'
 import type HSComboBox from './src/js/plugins/combobox'
+import type HSCopyMarkup from './src/js/plugins/copy-markup'
 import type HSDataTable from './src/js/plugins/datatable'
 import type HSDropdown from './src/js/plugins/dropdown'
 import type HSFileUpload from './src/js/plugins/file-upload'

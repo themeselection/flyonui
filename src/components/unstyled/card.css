@@ -12,7 +12,7 @@
   }
 
   &-title {
-    @apply text-base-content/90 text-2xl font-semibold;
+    @apply text-base-content text-2xl font-semibold;
   }
 
   & figure {

@@ -1,6 +1,6 @@
 /*
  * HSCarousel
- * @version: 2.6.0
+ * @version: 2.7.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -11,9 +11,9 @@ import { classToClassList, debounce, htmlToElement } from '../../utils'
 import { ICarousel, ICarouselOptions } from './interfaces'
 import { TCarouselOptionsSlidesQty } from './types'
 
-import HSBasePlugin from '../base-plugin'
-import { ICollectionItem } from '../../interfaces'
 import { BREAKPOINTS } from '../../constants'
+import { ICollectionItem } from '../../interfaces'
+import HSBasePlugin from '../base-plugin'
 
 class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
   private currentIndex: number

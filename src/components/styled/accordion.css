@@ -1,5 +1,5 @@
 .accordion-toggle {
-  @apply text-base-content/90 w-full cursor-pointer px-5 py-4 text-lg font-medium disabled:pointer-events-none disabled:opacity-50;
+  @apply text-base-content w-full cursor-pointer px-5 py-4 text-lg font-medium disabled:pointer-events-none disabled:opacity-50;
 }
 
 .accordion-shadow :where(.accordion-item) {

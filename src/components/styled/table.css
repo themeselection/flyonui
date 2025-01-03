@@ -5,7 +5,7 @@
     @apply text-nowrap px-5 py-[0.55rem] align-middle text-base;
   }
   :where(th) {
-    @apply text-base-content/90 text-nowrap text-sm font-medium uppercase;
+    @apply text-base-content text-nowrap text-sm font-medium uppercase;
     letter-spacing: 1px;
   }
   &-xs :where(th, td) {
@@ -50,7 +50,7 @@
   }
 
   :where(thead, tfoot, th) {
-    @apply text-base-content/90 whitespace-nowrap;
+    @apply text-base-content whitespace-nowrap;
   }
 
   &-borderless {

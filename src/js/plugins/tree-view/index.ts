@@ -1,6 +1,6 @@
 /*
  * HSTreeView
- * @version: 2.6.0
+ * @version: 2.7.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,10 +8,10 @@
 
 import { dispatch } from '../../utils'
 
-import { ITreeViewOptions, ITreeView, ITreeViewItem, ITreeViewOptionsControlBy } from './interfaces'
+import { ITreeView, ITreeViewItem, ITreeViewOptions, ITreeViewOptionsControlBy } from './interfaces'
 
-import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
+import HSBasePlugin from '../base-plugin'
 
 class HSTreeView extends HSBasePlugin<ITreeViewOptions> implements ITreeView {
   private items: ITreeViewItem[] = []
@@ -278,6 +278,16 @@ class HSTreeView extends HSBasePlugin<ITreeViewOptions> implements ITreeView {
   }
 
   // Static methods
+  private static findInCollection(target: HSTreeView | HTMLElement | string): ICollectionItem<HSTreeView> | null {
+    return (
+      window.$hsTreeViewCollection.find(el => {
+        if (target instanceof HSTreeView) return el.element.el === target.el
+        else if (typeof target === 'string') return el.element.el === document.querySelector(target)
+        else return el.element.el === target
+      }) || null
+    )
+  }
+
   static getInstance(target: HTMLElement | string, isInstance?: boolean) {
     const elInCollection = window.$hsTreeViewCollection.find(
       el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
@@ -298,12 +308,12 @@ class HSTreeView extends HSBasePlugin<ITreeViewOptions> implements ITreeView {
   }
 
   // Backward compatibility
-  static on(evt: string, target: HTMLElement, cb: Function) {
-    const elInCollection = window.$hsTreeViewCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static on(evt: string, target: HSTreeView | HTMLElement | string, cb: Function) {
+    const instance = HSTreeView.findInCollection(target)
 
-    if (elInCollection) elInCollection.element.events[evt] = cb
+    console.log(1)
+
+    if (instance) instance.element.events[evt] = cb
   }
 }
 

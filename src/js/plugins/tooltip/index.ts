@@ -1,19 +1,19 @@
 /*
  * HSTooltip
- * @version: 2.6.0
+ * @version: 2.7.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { createPopper, PositioningStrategy, Instance } from '@popperjs/core'
-import { getClassProperty, dispatch, afterTransition } from '../../utils'
+import { createPopper, Instance, PositioningStrategy } from '@popperjs/core'
+import { afterTransition, dispatch, getClassProperty } from '../../utils'
 
 import { ITooltip } from './interfaces'
 import { TTooltipOptionsScope } from './types'
 
-import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
+import HSBasePlugin from '../base-plugin'
 
 import { POSITIONS } from '../../constants'
 
@@ -103,7 +103,7 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
   private leave() {
     this.hide()
   }
-  //  This function is updated it closes tooltip if open to the tooltip
+  //  This function is updated.
   private click() {
     if (this.el.classList.contains('show')) {
       this.hide()
@@ -260,6 +260,16 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
   }
 
   // Static methods
+  private static findInCollection(target: HSTooltip | HTMLElement | string): ICollectionItem<HSTooltip> | null {
+    return (
+      window.$hsTooltipCollection.find(el => {
+        if (target instanceof HSTooltip) return el.element.el === target.el
+        else if (typeof target === 'string') return el.element.el === document.querySelector(target)
+        else return el.element.el === target
+      }) || null
+    )
+  }
+
   static getInstance(target: HTMLElement | string, isInstance = false) {
     const elInCollection = window.$hsTooltipCollection.find(
       el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
@@ -274,34 +284,28 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
     if (window.$hsTooltipCollection)
       window.$hsTooltipCollection = window.$hsTooltipCollection.filter(({ element }) => document.contains(element.el))
 
-    document.querySelectorAll('.tooltip').forEach((el: HTMLElement) => {
+    document.querySelectorAll('.tooltip:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
       if (!window.$hsTooltipCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSTooltip(el)
     })
   }
 
-  static show(target: HTMLElement) {
-    const elInCollection = window.$hsTooltipCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static show(target: HSTooltip | HTMLElement | string) {
+    const instance = HSTooltip.findInCollection(target)
 
-    if (elInCollection) elInCollection.element.show()
+    if (instance) instance.element.show()
   }
 
-  static hide(target: HTMLElement) {
-    const elInCollection = window.$hsTooltipCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static hide(target: HSTooltip | HTMLElement | string) {
+    const instance = HSTooltip.findInCollection(target)
 
-    if (elInCollection) elInCollection.element.hide()
+    if (instance) instance.element.hide()
   }
 
   // Backward compatibility
-  static on(evt: string, target: HTMLElement, cb: Function) {
-    const elInCollection = window.$hsTooltipCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static on(evt: string, target: HSTooltip | HTMLElement | string, cb: Function) {
+    const instance = HSTooltip.findInCollection(target)
 
-    if (elInCollection) elInCollection.element.events[evt] = cb
+    if (instance) instance.element.events[evt] = cb
   }
 }
 

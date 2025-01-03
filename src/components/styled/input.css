@@ -15,7 +15,7 @@ input {
     border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;
   &::file-selector-button {
-    @apply bg-base-content/20 text-base-content/90 rounded-s-btn border-0 font-semibold uppercase no-underline;
+    @apply bg-base-content/20 text-base-content rounded-s-btn border-0 font-semibold uppercase no-underline;
   }
   &[type="file"]:disabled {
     @apply bg-neutral/10;
@@ -27,7 +27,7 @@ input {
 
   &:-webkit-autofill,
   &:-webkit-autofill:focus {
-    @apply bg-base-100 text-base-content/90;
+    @apply bg-base-100 text-base-content;
   }
 
   &-floating {
@@ -184,7 +184,7 @@ input {
 
 /* input group text */
 .input-group-text {
-  @apply text-base-content/90 flex items-center px-3 font-normal;
+  @apply text-base-content flex items-center px-3 font-normal;
   transition:
     border-color 0.15s ease-in-out,
     box-shadow 0.15s ease-in-out;

@@ -15,7 +15,7 @@
       }
 
       &:last-child {
-        @apply text-base-content/90 cursor-text font-medium;
+        @apply text-base-content cursor-text font-medium;
       }
     }
   }

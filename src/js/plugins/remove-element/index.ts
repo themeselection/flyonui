@@ -1,6 +1,6 @@
 /*
  * HSRemoveElement
- * @version: 2.6.0
+ * @version: 2.7.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,10 +8,10 @@
 
 import { afterTransition } from '../../utils'
 
-import { IRemoveElementOptions, IRemoveElement } from './interfaces'
+import { IRemoveElement, IRemoveElementOptions } from '../remove-element/interfaces'
 
-import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
+import HSBasePlugin from '../base-plugin'
 
 class HSRemoveElement extends HSBasePlugin<IRemoveElementOptions> implements IRemoveElement {
   private readonly removeTargetId: string | null
@@ -71,9 +71,11 @@ class HSRemoveElement extends HSBasePlugin<IRemoveElementOptions> implements IRe
   }
 
   // Static method
-  static getInstance(target: HTMLElement, isInstance = false) {
+  static getInstance(target: HTMLElement, isInstance?: boolean) {
     const elInCollection = window.$hsRemoveElementCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
+      el =>
+        el.element.el === (typeof target === 'string' ? document.querySelector(target) : target) ||
+        el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
     )
 
     return elInCollection ? (isInstance ? elInCollection : elInCollection.element.el) : null

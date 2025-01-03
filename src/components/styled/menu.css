@@ -25,14 +25,14 @@
 }
 
 :where(.menu li:not(.menu-title, .disabled, [disabled], :disabled)) {
-  @apply text-base-content/90;
+  @apply text-base-content;
 }
 
 :where(.menu li:not(.menu-title, .disabled, [disabled], :disabled) > *:not(ul, .collapse, .menu-title)) {
   &:not(.active, .btn).focus,
   &:not(.active, .btn):focus,
   &:not(.active, .btn):focus-visible {
-    @apply bg-base-content/10 text-base-content/90 cursor-pointer outline-none;
+    @apply bg-base-content/10 text-base-content cursor-pointer outline-none;
   }
   @media (hover: hover) {
     &:not(.active, .btn, .disabled, :disabled, [disabled]):hover {
@@ -56,5 +56,5 @@
 }
 
 .menu-title {
-  @apply text-base-content/90 px-4 py-2 text-sm font-medium;
+  @apply text-base-content px-4 py-2 text-sm font-medium;
 }

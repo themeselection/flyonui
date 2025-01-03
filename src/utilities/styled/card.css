@@ -1,17 +1,22 @@
-.card-compact {
-  .card-header {
-    @apply p-4;
-    & + .card-body {
-      padding-top: 0;
-    }
-  }
-  .card-footer {
-    @apply p-4 pt-0;
-  }
-  .card-body {
-    @apply p-4;
-  }
-  .card-title {
-    @apply mb-1;
-  }
+
+:where(.card-compact ) .card-header {
+  @apply p-4;
+}
+:where(.card-compact ) .card-footer {
+  @apply p-4;
+}
+:where(.card-compact ) .card-body {
+  @apply p-4;
+}
+:where(.card-compact ) .card-title {
+  @apply mb-1;
+}
+
+
+:where(.card-compact:has(>.card-header)) > .card-body {
+@apply pt-0;
+}
+
+:where(.card-compact:has(>.card-body)) > .card-footer {
+@apply pt-0;
 }

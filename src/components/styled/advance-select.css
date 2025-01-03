@@ -1,5 +1,5 @@
 .advance-select-toggle {
-  @apply border-base-content/40 bg-base-100 text-base-content/90 rounded-btn hover:border-base-content/60 border text-base font-normal;
+  @apply border-base-content/40 bg-base-100 text-base-content rounded-btn hover:border-base-content/60 border text-base font-normal;
   @apply select-disabled:pointer-events-none select-disabled:border-0 select-disabled:bg-neutral/10 select-disabled:text-neutral/50 select-disabled:py-2;
 
   &:focus,
@@ -16,7 +16,7 @@
 }
 
 .advance-select-option {
-  @apply hover:bg-neutral/10 focus:bg-neutral/10 text-base-content/90 rounded-btn text-base font-normal focus:outline-none;
+  @apply hover:bg-neutral/10 focus:bg-neutral/10 text-base-content rounded-btn text-base font-normal focus:outline-none;
   &.active,
   &:active {
     @apply bg-primary/10 text-primary;
@@ -24,7 +24,7 @@
 }
 
 .advance-select-tag {
-  @apply border-base-content/25 bg-base-100 text-base-content/90 rounded-box hover:border-base-content/60 border text-base font-normal;
+  @apply border-base-content/25 bg-base-100 text-base-content rounded-box hover:border-base-content/60 border text-base font-normal;
   &:focus,
   &:focus-within {
     @apply ring-primary shadow-primary/22 border-primary shadow-sm ring-1;

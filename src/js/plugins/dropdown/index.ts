@@ -1,30 +1,30 @@
 /*
  * HSDropdown
- * @version: 2.6.0
+ * @version: 2.7.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
 import {
-  stringToBoolean,
+  afterTransition,
+  dispatch,
   getClassProperty,
   getClassPropertyAlt,
   isIOS,
   isIpadOS,
-  dispatch,
-  afterTransition,
-  menuSearchHistory
+  menuSearchHistory,
+  stringToBoolean
 } from '../../utils'
 import { IMenuSearchHistory } from '../../utils/interfaces'
 
 import { createPopper, PositioningStrategy, VirtualElement } from '@popperjs/core'
 
-import { IDropdown, IHTMLElementPopper } from './interfaces'
-import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
+import HSBasePlugin from '../base-plugin'
+import { IDropdown, IHTMLElementPopper } from '../dropdown/interfaces'
 
-import { POSITIONS, DROPDOWN_ACCESSIBILITY_KEY_SET } from '../../constants'
+import { DROPDOWN_ACCESSIBILITY_KEY_SET, POSITIONS } from '../../constants'
 
 class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdown {
   private static history: IMenuSearchHistory
@@ -273,6 +273,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
       ' ',
       ''
     )
+    // This is added in FlyonUI
     const skidding = parseInt((window.getComputedStyle(this.el).getPropertyValue('--skidding') || '0').replace(' ', ''))
     const popperInstance = createPopper(_target, this.menu, {
       placement: POSITIONS[placement] || 'bottom-start',
@@ -347,6 +348,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
       ' ',
       ''
     )
+    // This is added in FlyonUI
     const skidding = parseInt((window.getComputedStyle(this.el).getPropertyValue('--skidding') || '0').replace(' ', ''))
 
     if (scope === 'window') document.body.appendChild(this.menu)
@@ -392,10 +394,13 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
       this.animationInProcess = false
 
       if (this.hasAutofocus) this.focusElement()
+
+      this.fireEvent('open', this.el)
+      dispatch('open.dropdown', this.el, this.el)
     })
 
-    this.fireEvent('open', this.el)
-    dispatch('open.dropdown', this.el, this.el)
+    // this.fireEvent('open', this.el);
+    // dispatch('open.dropdown', this.el, this.el);
   }
 
   public close(isAnimated = true) {
@@ -460,6 +465,16 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
   }
 
   // Static methods
+  private static findInCollection(target: HSDropdown | HTMLElement | string): ICollectionItem<HSDropdown> | null {
+    return (
+      window.$hsDropdownCollection.find(el => {
+        if (target instanceof HSDropdown) return el.element.el === target.el
+        else if (typeof target === 'string') return el.element.el === document.querySelector(target)
+        else return el.element.el === target
+      }) || null
+    )
+  }
+
   static getInstance(target: HTMLElement | string, isInstance?: boolean) {
     const elInCollection = window.$hsDropdownCollection.find(
       el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
@@ -497,22 +512,16 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     })
   }
 
-  static open(target: HTMLElement) {
-    const elInCollection = window.$hsDropdownCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static open(target: HSDropdown | HTMLElement | string) {
+    const instance = HSDropdown.findInCollection(target)
 
-    if (elInCollection && elInCollection.element.menu.classList.contains('hidden')) elInCollection.element.open()
+    if (instance && instance.element.menu.classList.contains('hidden')) instance.element.open()
   }
 
-  static close(target: HTMLElement) {
-    const elInCollection = window.$hsDropdownCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static close(target: HSDropdown | HTMLElement | string) {
+    const instance = HSDropdown.findInCollection(target)
 
-    if (elInCollection && !elInCollection.element.menu.classList.contains('hidden')) {
-      elInCollection.element.close()
-    }
+    if (instance && !instance.element.menu.classList.contains('hidden')) instance.element.close()
   }
 
   // Accessibility methods
@@ -601,7 +610,8 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
 
   static onEnter(evt: KeyboardEvent) {
     const target = evt.target as HTMLElement
-    const { element } = window.$hsDropdownCollection.find(el => el.element.el === target.closest('.dropdown')) ?? null
+    const { element } =
+      window.$hsDropdownCollection.find(el => el.element.el === target.closest('.dropdown')) ?? null
 
     if (element && target.classList.contains('dropdown-toggle')) {
       evt.preventDefault()
@@ -660,7 +670,8 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     const closestDropdown = toggle.closest('.dropdown.open')
     const isRootDropdown = !!closestDropdown && !closestDropdown?.parentElement.closest('.dropdown')
     const menuToOpen =
-      (HSDropdown.getInstance(toggle.closest('.dropdown') as HTMLElement, true) as ICollectionItem<HSDropdown>) ?? null
+      (HSDropdown.getInstance(toggle.closest('.dropdown') as HTMLElement, true) as ICollectionItem<HSDropdown>) ??
+      null
     const firstLink = menuToOpen.element.menu.querySelector(
       'a, button, [role="button"], [role^="menuitem"]'
     ) as HTMLButtonElement
@@ -668,8 +679,10 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     if (isRootDropdown && !toggle.classList.contains('dropdown-toggle')) return false
 
     const menuToClose =
-      (HSDropdown.getInstance(toggle.closest('.dropdown.open') as HTMLElement, true) as ICollectionItem<HSDropdown>) ??
-      null
+      (HSDropdown.getInstance(
+        toggle.closest('.dropdown.open') as HTMLElement,
+        true
+      ) as ICollectionItem<HSDropdown>) ?? null
 
     if (
       menuToOpen.element.el.classList.contains('open') &&
@@ -745,7 +758,9 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
 
   static closeCurrentlyOpened(evtTarget: HTMLElement | null = null, isAnimated = true) {
     const parent =
-      evtTarget && evtTarget.closest('.dropdown') && evtTarget.closest('.dropdown').parentElement.closest('.dropdown')
+      evtTarget &&
+      evtTarget.closest('.dropdown') &&
+      evtTarget.closest('.dropdown').parentElement.closest('.dropdown')
         ? evtTarget.closest('.dropdown').parentElement.closest('.dropdown')
         : null
     let currentlyOpened = parent
@@ -763,7 +778,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     ) {
       currentlyOpened = currentlyOpened.filter(el => el.element.el !== evtTarget.closest('.dropdown'))
     }
-
+    // This is added in FlyonUI
     if (
       evtTarget &&
       evtTarget.closest('.dropdown') &&
@@ -794,12 +809,10 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
   }
 
   // Backward compatibility
-  static on(evt: string, target: HTMLElement, cb: Function) {
-    const elInCollection = window.$hsDropdownCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static on(evt: string, target: HSDropdown | HTMLElement | string, cb: Function) {
+    const instance = HSDropdown.findInCollection(target)
 
-    if (elInCollection) elInCollection.element.events[evt] = cb
+    if (instance) instance.element.events[evt] = cb
   }
 }
 

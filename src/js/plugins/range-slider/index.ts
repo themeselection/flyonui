@@ -1,6 +1,6 @@
 /*
  * HSRangeSlider
- * @version: 2.6.0
+ * @version: 2.7.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,10 +8,10 @@
 
 import type { cssClasses, target } from 'nouislider'
 
-import { IRangeSliderCssClassesObject, IRangeSlider, IRangeSliderOptions } from './interfaces'
+import { IRangeSlider, IRangeSliderCssClassesObject, IRangeSliderOptions } from './interfaces'
 
-import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
+import HSBasePlugin from '../base-plugin'
 
 class HSRangeSlider extends HSBasePlugin<IRangeSliderOptions> implements IRangeSlider {
   private readonly concatOptions: IRangeSliderOptions

@@ -3,7 +3,7 @@
   border-end-start-radius: 0;
 }
 .tab {
-  @apply text-base-content/90;
+  @apply text-base-content;
   --tab-bg: theme(colors.base-100);
   --tab-border-color: theme(colors.base-content/0.1);
   padding-inline-start: var(--tab-padding, 1rem);

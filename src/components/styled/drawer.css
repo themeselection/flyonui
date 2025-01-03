@@ -5,7 +5,7 @@
     @apply flex items-center justify-between p-6;
   }
   &-title {
-    @apply text-base-content/90 font-medium;
+    @apply text-base-content font-medium;
   }
   &-body {
     @apply [&::-webkit-scrollbar-track]:bg-base-200 [&::-webkit-scrollbar-thumb]:bg-secondary/50 hover:[&::-webkit-scrollbar-thumb]:bg-secondary/80 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-2;

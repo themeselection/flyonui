@@ -64,7 +64,7 @@
 
   .fc-toolbar .fc-prev-button,
   .fc-toolbar .fc-next-button {
-    @apply !text-base-content/80 hover:!text-base-content/90 bg-transparent px-2 py-0 hover:bg-transparent;
+    @apply !text-base-content/80 hover:!text-base-content bg-transparent px-2 py-0 hover:bg-transparent;
 
     .fc-icon {
       @apply -mt-0.5 hover:scale-110;

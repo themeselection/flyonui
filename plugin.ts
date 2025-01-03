@@ -1,6 +1,6 @@
 /*
  * Plugin
- * @version: 2.5.1
+ * @version: 2.7.0
  * @author: Preline Labs Ltd.
  * @requires: tailwindcss ^3.4.1
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
@@ -37,6 +37,34 @@ export default plugin(function ({ addVariant, e }: PluginAPI) {
       modifySelectors(({ className }) => {
         return `.dropdown.open > .dropdown-menu > .${e(`dropdown-open${separator}${className}`)}`
       })
+    },
+    ({ modifySelectors, separator }: IAddVariantOptions) => {
+      modifySelectors(({ className }) => {
+        return `.dropdown-menu.open.${e(`dropdown-open${separator}${className}`)}`
+      })
+    }
+  ] as TStringFunc[])
+
+  addVariant('dropdown-item-disabled', (({ modifySelectors, separator }: IAddVariantOptions) => {
+    modifySelectors(({ className }) => {
+      return `.dropdown.open > .dropdown-menu .disabled.${e(`dropdown-item-disabled${separator}${className}`)}`
+    })
+  }) as TStringFunc)
+
+  addVariant('dropdown-item-checked', [
+    ({ modifySelectors, separator }: IAddVariantOptions) => {
+      modifySelectors(({ className }) => {
+        return `.dropdown.open > .dropdown-menu [aria-checked="true"].${e(
+          `dropdown-item-checked${separator}${className}`
+        )}`
+      })
+    },
+    ({ modifySelectors, separator }: IAddVariantOptions) => {
+      modifySelectors(({ className }) => {
+        return `.dropdown.open > .dropdown-menu [aria-checked="true"] .${e(
+          `dropdown-item-checked${separator}${className}`
+        )}`
+      })
     }
   ] as TStringFunc[])
 
@@ -46,11 +74,18 @@ export default plugin(function ({ addVariant, e }: PluginAPI) {
     })
   }) as TStringFunc)
 
-  addVariant('tooltip-shown', (({ modifySelectors, separator }: IAddVariantOptions) => {
-    modifySelectors(({ className }) => {
-      return `.tooltip.show .${e(`tooltip-shown${separator}${className}`)}`
-    })
-  }) as TStringFunc)
+  addVariant('tooltip-shown', [
+    ({ modifySelectors, separator }: IAddVariantOptions) => {
+      modifySelectors(({ className }) => {
+        return `.tooltip.show .${e(`tooltip-shown${separator}${className}`)}`
+      })
+    },
+    ({ modifySelectors, separator }: IAddVariantOptions) => {
+      modifySelectors(({ className }) => {
+        return `.tooltip-content.show.${e(`tooltip-shown${separator}${className}`)}`
+      })
+    }
+  ] as TStringFunc[])
 
   addVariant('accordion-item-active', [
     ({ modifySelectors, separator }: IAddVariantOptions) => {
@@ -85,6 +120,11 @@ export default plugin(function ({ addVariant, e }: PluginAPI) {
         return `.accordion-item.active > .accordion-heading > .accordion-toggle.${e(
           `accordion-item-active${separator}${className}`
         )}`
+      })
+    },
+    ({ modifySelectors, separator }: IAddVariantOptions) => {
+      modifySelectors(({ className }) => {
+        return `.accordion-item.active .accordion-force-active.${e(`accordion-item-active${separator}${className}`)}`
       })
     }
   ] as TStringFunc[])

@@ -1,17 +1,17 @@
 /*
  * HSTabs
- * @version: 2.6.0
+ * @version: 2.7.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { dispatch, isIOS, isIpadOS } from '../../utils'
+import { dispatch } from '../../utils'
 
-import { ITabs } from './interfaces'
+import { ITabs, ITabsOnChangePayload } from './interfaces'
 
-import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
+import HSBasePlugin from '../base-plugin'
 
 import { TABS_ACCESSIBILITY_KEY_SET } from '../../constants'
 
@@ -104,12 +104,12 @@ class HSTabs extends HSBasePlugin<{}> implements ITabs {
       el,
       prev: this.prevContentId,
       current: this.currentContentId
-    })
+    } as ITabsOnChangePayload)
     dispatch('change.tab', el, {
       el,
       prev: this.prevContentId,
       current: this.currentContentId
-    })
+    } as ITabsOnChangePayload)
   }
 
   private change(evt: Event) {

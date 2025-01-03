@@ -7,21 +7,14 @@
   &-header {
     @apply rounded-t-box;
     padding: var(--padding-card, 1.5rem);
-
-    & + .card-body {
-      padding-top: 0;
-    }
   }
 
   &-body {
     padding: var(--padding-card, 1.5rem);
-    & + .card-footer {
-      padding-top: 0;
-    }
   }
 
   &-footer {
-    @apply rounded-b-box pt-0;
+    @apply rounded-b-box;
     padding: var(--padding-card, 1.5rem);
   }
 
@@ -66,6 +59,14 @@
       @apply rounded-b-box;
     }
   }
+}
+
+:where(.card-header) + .card-body {
+  padding-top: 0;
+}
+
+:where(.card-body) + .card-footer {
+  padding-top: 0;
 }
 
 .card-group {
