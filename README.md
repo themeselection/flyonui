@@ -153,11 +153,17 @@ For comprehensive documentation, please visit [flyonui.com](https://flyonui.com/
     </td>
   </tr>
   <tr>
+    <td width="20%" align="center">SolidJS</td>
     <td width="20%" align="center">Django</td>
     <td width="20%" align="center">Flask</td>
     <td width="20%" align="center">Laravel</td>
   </tr>
   <tr>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/solidjs/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/solidjs-icon.png" alt="Django logo" width="70" />
+        </a>
+    </td>
     <td width="20%" align="center">
         <a href="https://flyonui.com/framework-integrations/django/">
         <img src="https://cdn.flyonui.com/fy-assets/icons/django-icon.png" alt="Django logo" width="70" />
