@@ -164,7 +164,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     this.dropdownScope = concatOptions?.dropdownScope || 'parent'
     this.searchTemplate = concatOptions?.searchTemplate || null
     this.searchWrapperTemplate = concatOptions?.searchWrapperTemplate || null
-    this.searchWrapperClasses = concatOptions?.searchWrapperClasses || 'bg-white p-2 sticky top-0'
+    this.searchWrapperClasses = concatOptions?.searchWrapperClasses || 'bg-base-100 sticky top-0 mb-2 px-2 pt-3'
     this.searchId = concatOptions?.searchId || null
     this.searchLimit = concatOptions?.searchLimit || Infinity
     this.isSearchDirectMatch =
