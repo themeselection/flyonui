@@ -39,7 +39,7 @@ jobs:
 
       - name: Publish package to NPM
         if: github.repository == 'themeselection/flyonui'
-        run: ${{ env.runtime }} publish
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
