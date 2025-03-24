@@ -19,11 +19,8 @@ jobs:
           fetch-depth: 1
           clean: false
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: "latest"
-          registry-url: https://registry.npmjs.org
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Remove everything first
         run: rm -rf ./base/ ./colors/ ./components/ ./dist/ ./theme/ ./utilities/ ./flyonui.css ./flyonui.js ./flyonui.d.ts ./chunks.css ./imports.js ./themes.css node_modules bun.lock
