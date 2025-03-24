@@ -1,6 +1,6 @@
 /*
  * HSComboBox
- * @version: 2.7.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -94,12 +94,14 @@ class HSComboBox extends HSBasePlugin<IComboBoxOptions> implements IComboBox {
     this.apiGroupField = concatOptions?.apiGroupField ?? null
     this.outputItemTemplate =
       concatOptions?.outputItemTemplate ??
-      `<div class="dropdown-item combo-box-selected:active" data-combo-box-output-item>
-        <div class="flex w-full items-center justify-between">
-          <span data-combo-box-search-text></span>
-          <span class="icon-[tabler--check] text-primary combo-box-selected:block hidden size-4 flex-shrink-0"></span>
-        </div>
-      </div>`
+      `<div class="dropdown-item combo-box-selected:dropdown-active" data-combo-box-output-item>
+				<div class="flex justify-between items-center w-full">
+					<span data-combo-box-search-text></span>
+					<span class="hidden combo-box-selected:block">
+            <svg class="shrink-0 size-4 text-primary" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m5 12l5 5L20 7"/></svg>
+					</span>
+				</div>
+			</div>`
     this.outputEmptyTemplate = concatOptions?.outputEmptyTemplate ?? `<div class="dropdown-item">Nothing found...</div>`
     this.outputLoaderTemplate =
       concatOptions?.outputLoaderTemplate ?? `<span class="loading loading-spinner text-primary"></span>`
@@ -387,7 +389,7 @@ class HSComboBox extends HSBasePlugin<IComboBoxOptions> implements IComboBox {
       this.itemsFromHtml()
     }
 
-    if (this.items[0].classList.contains('selected'))
+    if (this?.items.length && this.items[0].classList.contains('selected'))
       this.currentData = JSON.parse(this.items[0].getAttribute('data-combo-box-item-stored-data'))
   }
 

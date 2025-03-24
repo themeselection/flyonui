@@ -1,0 +1,36 @@
+.kbd {
+  @apply bg-base-200/20 rounded-field inline-flex items-center justify-center text-sm;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  border: var(--border) solid color-mix(in oklab, var(--color-base-content) 25%, #0000);
+  border-bottom-width: calc(var(--border) + 1px);
+  --size: calc(var(--size-selector, 0.25rem) * 6.5);
+  height: var(--size);
+  min-width: var(--size);
+}
+
+/* kbd sizes */
+.kbd-xs {
+  --size: calc(var(--size-selector, 0.25rem) * 4.5);
+  font-size: 0.625rem;
+}
+
+.kbd-sm {
+  @apply text-xs;
+  --size: calc(var(--size-selector, 0.25rem) * 5.5);
+}
+
+.kbd-md {
+  @apply text-sm;
+  --size: calc(var(--size-selector, 0.25rem) * 6.5);
+}
+
+.kbd-lg {
+  @apply text-base;
+  --size: calc(var(--size-selector, 0.25rem) * 7.5);
+}
+
+.kbd-xl {
+  @apply text-lg;
+  --size: calc(var(--size-selector, 0.25rem) * 8.5);
+}

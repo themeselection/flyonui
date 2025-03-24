@@ -1,0 +1,40 @@
+:root .prose {
+  --tw-prose-body: color-mix(in oklab, var(--color-base-content) 80%, #0000);
+  --tw-prose-headings: var(--color-base-content);
+  --tw-prose-lead: var(--tw-prose-body);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-kbd: var(--tw-prose-body);
+  --tw-prose-bold: var(--tw-prose-headings);
+  --tw-prose-counters: var(--tw-prose-headings);
+  --tw-prose-bullets: color-mix(in oklab, var(--color-base-content) 50%, #0000);
+  --tw-prose-hr: color-mix(in oklab, var(--color-base-content) 20%, #0000);
+  --tw-prose-quotes: var(--tw-prose-headings);
+  --tw-prose-quote-borders: color-mix(in oklab, var(--color-base-content) 20%, #0000);
+  --tw-prose-captions: color-mix(in oklab, var(--color-base-content) 40%, #0000);
+  --tw-prose-code: #e83e8c;
+  --tw-prose-pre-code: var(--color-neutral-content);
+  --tw-prose-pre-bg: var(--color-neutral);
+  --tw-prose-th-borders: color-mix(in oklab, var(--color-base-content) 24%, #0000);
+  --tw-prose-td-borders: var(--tw-prose-th-borders);
+  line-height: 1.5rem;
+}
+.prose {
+  & :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before,
+  & :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
+    display: none;
+  }
+  pre {
+    code {
+      border-radius: 0;
+      padding: 0;
+    }
+  }
+  & :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    font-weight: 500;
+    font-size: 0.875rem;
+  }
+
+  & :where(kbd):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply p-0 shadow-none;
+  }
+}

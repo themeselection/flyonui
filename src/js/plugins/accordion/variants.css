@@ -1,0 +1,49 @@
+@custom-variant accordion-item-active {
+  &.accordion-item.active {
+    @slot;
+  }
+
+  .accordion-item.active > & {
+    @slot;
+  }
+
+  .accordion-item.active > .accordion-toggle & {
+    @slot;
+  }
+
+  .accordion-item.active > .accordion-heading > .accordion-toggle & {
+    @slot;
+  }
+
+  &.accordion-toggle {
+    .accordion-item.active > & {
+      @slot;
+    }
+  }
+
+  &.accordion-toggle {
+    .accordion-item.active > .accordion-heading > & {
+      @slot;
+    }
+  }
+
+  &.accordion-force-active {
+    .accordion-item.active & {
+      @slot;
+    }
+  }
+}
+
+@custom-variant accordion-selected {
+  &.selected {
+    .accordion-item & {
+      @slot;
+    }
+  }
+}
+
+@custom-variant accordion-outside-active {
+  &.active {
+    @slot;
+  }
+}

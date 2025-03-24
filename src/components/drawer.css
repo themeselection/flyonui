@@ -1,0 +1,34 @@
+.drawer {
+  @apply bg-base-100 fixed z-80 flex size-full max-w-96 flex-col justify-between shadow-md;
+
+  .drawer-header {
+    @apply flex items-center justify-between p-6;
+  }
+
+  .drawer-title {
+    @apply text-base-content text-lg font-medium;
+  }
+
+  .drawer-body {
+    @apply grow overflow-x-hidden overflow-y-auto px-6 text-base [&::-webkit-scrollbar]:w-2;
+    &:last-child {
+      @apply pb-6;
+    }
+  }
+  .drawer-footer {
+    @apply flex items-center justify-end gap-3 p-6;
+  }
+}
+
+.drawer-start {
+  @apply start-0 end-auto top-0 -translate-x-full transform transition-all duration-300 ease-in-out rtl:translate-x-full;
+}
+.drawer-end {
+  @apply start-auto end-0 top-0 translate-x-full transform transition-all duration-300 ease-in-out rtl:-translate-x-full;
+}
+.drawer-top {
+  @apply inset-x-0 top-0 max-h-60 max-w-none -translate-y-full transform transition-all duration-300 ease-in-out;
+}
+.drawer-bottom {
+  @apply inset-x-0 bottom-0 max-h-60 max-w-none translate-y-full transform transition-all duration-300 ease-in-out;
+}

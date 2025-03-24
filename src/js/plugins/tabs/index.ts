@@ -1,6 +1,6 @@
 /*
  * HSTabs
- * @version: 2.7.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,14 +8,17 @@
 
 import { dispatch } from '../../utils'
 
-import { ITabs, ITabsOnChangePayload } from './interfaces'
+import { ITabs, ITabsOptions, ITabsOnChangePayload } from './interfaces'
 
 import { ICollectionItem } from '../../interfaces'
 import HSBasePlugin from '../base-plugin'
 
-import { TABS_ACCESSIBILITY_KEY_SET } from '../../constants'
+import { TABS_ACCESSIBILITY_KEY_SET, BREAKPOINTS } from '../../constants'
 
-class HSTabs extends HSBasePlugin<{}> implements ITabs {
+class HSTabs extends HSBasePlugin<ITabsOptions> implements ITabs {
+  private readonly eventType: 'click' | 'hover'
+  private readonly preventNavigationResolution: string | number | null
+
   public toggles: NodeListOf<HTMLElement> | null
   private readonly extraToggleId: string | null
   private readonly extraToggle: HTMLSelectElement | null
@@ -26,37 +29,49 @@ class HSTabs extends HSBasePlugin<{}> implements ITabs {
   private prevContentId: string | null
   private prevContent: HTMLElement | null
 
-  private onToggleClickListener:
+  private onToggleHandler:
     | {
         el: HTMLElement
-        fn: () => void
+        fn: (evt: Event) => void
+        preventClickFn: (evt: Event) => void | null
       }[]
     | null
   private onExtraToggleChangeListener: (evt: Event) => void
 
-  private eventType: 'click'
-
-  constructor(el: HTMLElement, options?: {}, events?: {}) {
+  constructor(el: HTMLElement, options?: ITabsOptions, events?: {}) {
     super(el, options, events)
+
+    const data = el.getAttribute('data-tabs')
+    const dataOptions: ITabsOptions = data ? JSON.parse(data) : {}
+    const concatOptions = {
+      ...dataOptions,
+      ...options
+    }
+
+    this.eventType = concatOptions.eventType ?? 'click'
+    this.preventNavigationResolution =
+      typeof concatOptions.preventNavigationResolution === 'number'
+        ? concatOptions.preventNavigationResolution
+        : BREAKPOINTS[concatOptions.preventNavigationResolution] || null
 
     this.toggles = this.el.querySelectorAll('[data-tab]')
     this.extraToggleId = this.el.getAttribute('data-tab-select')
-    this.extraToggle = document.querySelector(this.extraToggleId)
+    this.extraToggle = this.extraToggleId ? (document.querySelector(this.extraToggleId) as HTMLSelectElement) : null
+
     this.current = Array.from(this.toggles).find(el => el.classList.contains('active'))
-    this.currentContentId = this.current.getAttribute('data-tab')
-    this.currentContent = document.querySelector(this.currentContentId)
+    this.currentContentId = this.current?.getAttribute('data-tab') || null
+    this.currentContent = this.currentContentId ? document.querySelector(this.currentContentId) : null
+
     this.prev = null
     this.prevContentId = null
     this.prevContent = null
 
-    this.eventType = 'click'
-
-    this.onToggleClickListener = []
+    this.onToggleHandler = []
 
     this.init()
   }
 
-  private toggleClick(el: HTMLElement) {
+  private toggle(el: HTMLElement) {
     this.open(el)
   }
 
@@ -68,17 +83,31 @@ class HSTabs extends HSBasePlugin<{}> implements ITabs {
     this.createCollection(window.$hsTabsCollection, this)
 
     this.toggles.forEach(el => {
-      this.onToggleClickListener.push({
-        el,
-        fn: () => this.toggleClick(el)
-      })
+      const fn = (evt: Event) => {
+        if (
+          this.eventType === 'click' &&
+          this.preventNavigationResolution &&
+          document.body.clientWidth <= +this.preventNavigationResolution
+        )
+          evt.preventDefault()
+        this.toggle(el)
+      }
+      const preventClickFn = (evt: Event) => {
+        if (this.preventNavigationResolution && document.body.clientWidth <= +this.preventNavigationResolution)
+          evt.preventDefault()
+      }
 
-      el.addEventListener(this.eventType, this.onToggleClickListener.find(toggle => toggle.el === el).fn)
+      this.onToggleHandler.push({ el, fn, preventClickFn })
+
+      if (this.eventType === 'click') el.addEventListener('click', fn)
+      else {
+        el.addEventListener('mouseenter', fn)
+        el.addEventListener('click', preventClickFn)
+      }
     })
 
     if (this.extraToggle) {
       this.onExtraToggleChangeListener = evt => this.extraToggleChange(evt)
-
       this.extraToggle.addEventListener('change', this.onExtraToggleChangeListener)
     }
   }
@@ -89,43 +118,63 @@ class HSTabs extends HSBasePlugin<{}> implements ITabs {
     this.prevContent = this.currentContent
 
     this.current = el
-    this.currentContentId = this.current.getAttribute('data-tab')
-    this.currentContent = document.querySelector(this.currentContentId)
+    this.currentContentId = el.getAttribute('data-tab')
+    this.currentContent = this.currentContentId ? document.querySelector(this.currentContentId) : null
 
-    if (this?.prev?.ariaSelected) this.prev.ariaSelected = 'false'
-    this.prev.classList.remove('active')
-    this.prevContent.classList.add('hidden')
+    if (this?.prev?.ariaSelected) {
+      this.prev.ariaSelected = 'false'
+    }
+    this.prev?.classList.remove('active')
+    this.prevContent?.classList.add('hidden')
 
-    if (this?.current?.ariaSelected) this.current.ariaSelected = 'true'
+    if (this?.current?.ariaSelected) {
+      this.current.ariaSelected = 'true'
+    }
     this.current.classList.add('active')
-    this.currentContent.classList.remove('hidden')
+    this.currentContent?.classList.remove('hidden')
 
     this.fireEvent('change', {
       el,
       prev: this.prevContentId,
-      current: this.currentContentId
+      current: this.currentContentId,
+      tabsId: this.el.id
     } as ITabsOnChangePayload)
     dispatch('change.tab', el, {
       el,
       prev: this.prevContentId,
-      current: this.currentContentId
+      current: this.currentContentId,
+      tabsId: this.el.id
     } as ITabsOnChangePayload)
   }
 
   private change(evt: Event) {
     const toggle: HTMLElement = document.querySelector(`[data-tab="${(evt.target as HTMLSelectElement).value}"]`)
 
-    if (toggle) toggle.click()
+    if (toggle) {
+      if (this.eventType === 'hover') toggle.dispatchEvent(new Event('mouseenter'))
+      else toggle.click()
+    }
   }
 
   // Public methods
   public destroy() {
-    // Clear listeners
-    this.toggles.forEach(el => {
-      el.removeEventListener(this.eventType, this.onToggleClickListener.find(toggle => toggle.el === el).fn)
+    this.toggles.forEach(toggle => {
+      const _toggle = this.onToggleHandler?.find(({ el }) => el === toggle)
+
+      if (_toggle) {
+        if (this.eventType === 'click') toggle.removeEventListener('click', _toggle.fn)
+        else {
+          toggle.removeEventListener('mouseenter', _toggle.fn)
+          toggle.removeEventListener('click', _toggle.preventClickFn)
+        }
+      }
     })
-    this.onToggleClickListener = []
-    if (this.extraToggle) this.extraToggle.removeEventListener('change', this.onExtraToggleChangeListener)
+
+    this.onToggleHandler = []
+
+    if (this.extraToggle) {
+      this.extraToggle.removeEventListener('change', this.onExtraToggleChangeListener)
+    }
 
     window.$hsTabsCollection = window.$hsTabsCollection.filter(({ element }) => element.el !== this.el)
   }
@@ -152,7 +201,9 @@ class HSTabs extends HSBasePlugin<{}> implements ITabs {
     document
       .querySelectorAll('[role="tablist"]:not(select):not(.--prevent-on-load-init)')
       .forEach((el: HTMLElement) => {
-        if (!window.$hsTabsCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSTabs(el)
+        if (!window.$hsTabsCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) {
+          new HSTabs(el)
+        }
       })
   }
 
@@ -160,9 +211,12 @@ class HSTabs extends HSBasePlugin<{}> implements ITabs {
     const elInCollection = window.$hsTabsCollection.find(el =>
       Array.from(el.element.toggles).includes(typeof target === 'string' ? document.querySelector(target) : target)
     )
-    const targetInCollection = Array.from(elInCollection.element.toggles).find(
-      el => el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+
+    const targetInCollection = elInCollection
+      ? Array.from(elInCollection.element.toggles).find(
+          el => el === (typeof target === 'string' ? document.querySelector(target) : target)
+        )
+      : null
 
     if (targetInCollection && !targetInCollection.classList.contains('active'))
       elInCollection.element.open(targetInCollection)
@@ -173,7 +227,7 @@ class HSTabs extends HSBasePlugin<{}> implements ITabs {
     const target = document.querySelector('[data-tab]:focus')
 
     if (target && TABS_ACCESSIBILITY_KEY_SET.includes(evt.code) && !evt.metaKey) {
-      const isVertical = target.closest('[role="tablist"]').getAttribute('data-tabs-vertical')
+      const isVertical = target.closest('[role="tablist"]')?.getAttribute('data-tabs-vertical')
 
       evt.preventDefault()
 
@@ -197,7 +251,9 @@ class HSTabs extends HSBasePlugin<{}> implements ITabs {
   }
 
   static onArrow(isOpposite = true) {
-    const target = document.querySelector('[data-tab]:focus').closest('[role="tablist"]')
+    const target = document.querySelector('[data-tab]:focus')?.closest('[role="tablist"]')
+    if (!target) return
+
     const targetInCollection = window.$hsTabsCollection.find(el => el.element.el === target)
 
     if (targetInCollection) {
@@ -214,7 +270,9 @@ class HSTabs extends HSBasePlugin<{}> implements ITabs {
   }
 
   static onStartEnd(isOpposite = true) {
-    const target = document.querySelector('[data-tab]:focus').closest('[role="tablist"]')
+    const target = document.querySelector('[data-tab]:focus')?.closest('[role="tablist"]')
+    if (!target) return
+
     const targetInCollection = window.$hsTabsCollection.find(el => el.element.el === target)
 
     if (targetInCollection) {
@@ -241,16 +299,13 @@ class HSTabs extends HSBasePlugin<{}> implements ITabs {
 
 declare global {
   interface Window {
-    HSTabs: Function
+    HSTabs: typeof HSTabs
     $hsTabsCollection: ICollectionItem<HSTabs>[]
   }
 }
 
 window.addEventListener('load', () => {
   HSTabs.autoInit()
-
-  // Uncomment for debug
-  // console.log('Tabs collection:', window.$hsTabsCollection);
 })
 
 if (typeof window !== 'undefined') {

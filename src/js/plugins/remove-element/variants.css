@@ -1,0 +1,5 @@
+@custom-variant removing {
+  &.removing {
+    @slot;
+  }
+}

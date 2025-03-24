@@ -1,6 +1,6 @@
 /*
  * HSCarousel
- * @version: 2.7.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -11,9 +11,9 @@ import { classToClassList, debounce, htmlToElement } from '../../utils'
 import { ICarousel, ICarouselOptions } from './interfaces'
 import { TCarouselOptionsSlidesQty } from './types'
 
-import { BREAKPOINTS } from '../../constants'
-import { ICollectionItem } from '../../interfaces'
 import HSBasePlugin from '../base-plugin'
+import { ICollectionItem } from '../../interfaces'
+import { BREAKPOINTS } from '../../constants'
 
 class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
   private currentIndex: number
@@ -267,18 +267,21 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
       if (this.isSnap) this.setIsSnap()
 
       if (this.loadingClassesRemove) {
-        if (typeof this.loadingClassesRemove === 'string') this.inner.classList.remove(this.loadingClassesRemove)
-        else this.inner.classList.remove(...this.loadingClassesRemove)
+        if (typeof this.loadingClassesRemove === 'string') {
+          this.inner.classList.remove(this.loadingClassesRemove)
+        } else this.inner.classList.remove(...this.loadingClassesRemove)
       }
       if (this.loadingClassesAdd) {
-        if (typeof this.loadingClassesAdd === 'string') this.inner.classList.add(this.loadingClassesAdd)
-        else this.inner.classList.add(...this.loadingClassesAdd)
+        if (typeof this.loadingClassesAdd === 'string') {
+          this.inner.classList.add(this.loadingClassesAdd)
+        } else this.inner.classList.add(...this.loadingClassesAdd)
       }
 
       if (this.inner && this.afterLoadingClassesAdd) {
         setTimeout(() => {
-          if (typeof this.afterLoadingClassesAdd === 'string') this.inner.classList.add(this.afterLoadingClassesAdd)
-          else this.inner.classList.add(...this.afterLoadingClassesAdd)
+          if (typeof this.afterLoadingClassesAdd === 'string') {
+            this.inner.classList.add(this.afterLoadingClassesAdd)
+          } else this.inner.classList.add(...this.afterLoadingClassesAdd)
         })
       }
     }, 400)
@@ -431,8 +434,9 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
         if (
           windowWidth >=
           (typeof key + 1 === 'number' ? (this.slidesQty as TCarouselOptionsSlidesQty)[key] : BREAKPOINTS[key])
-        )
+        ) {
           currentRes = (this.slidesQty as TCarouselOptionsSlidesQty)[key]
+        }
       })
 
       return currentRes
@@ -459,8 +463,9 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
   }
 
   private initDots() {
-    if (this.el.querySelectorAll('.carousel-pagination-item').length) this.setDots()
-    else this.buildDots()
+    if (this.el.querySelectorAll('.carousel-pagination-item').length) {
+      this.setDots()
+    } else this.buildDots()
 
     if (this.dots) this.setCurrentDot()
   }
@@ -570,8 +575,9 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
   }
 
   private calculateWidth() {
-    if (!this.isSnap)
+    if (!this.isSnap) {
       this.inner.style.width = `${(this.sliderWidth * this.slides.length) / this.getCurrentSlidesQty()}px`
+    }
 
     this.slides.forEach(el => {
       el.style.width = `${this.sliderWidth / this.getCurrentSlidesQty()}px`
@@ -587,8 +593,9 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
       for (let i = 0; i < this.slides.length; i++) {
         const slide = this.slides[i]
 
-        if (i <= this.currentIndex + itemsQty && i >= this.currentIndex - itemsQty) slide.classList.add('active')
-        else slide.classList.remove('active')
+        if (i <= this.currentIndex + itemsQty && i >= this.currentIndex - itemsQty) {
+          slide.classList.add('active')
+        } else slide.classList.remove('active')
       }
     } else {
       const maxIndex = this.isCentered
@@ -619,18 +626,25 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
       else el.classList.remove('active')
     }
 
-    if (this.dotsItems) this.dotsItems.forEach((el, i) => toggleDotActive(el, i))
-    else this.dots.querySelectorAll(':scope > *').forEach((el, i) => toggleDotActive(el, i))
+    if (this.dotsItems) {
+      this.dotsItems.forEach((el, i) => toggleDotActive(el, i))
+    } else {
+      this.dots.querySelectorAll(':scope > *').forEach((el, i) => toggleDotActive(el, i))
+    }
   }
 
   private setElementToDisabled(el: HTMLElement) {
     el.classList.add('disabled')
-    if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') el.setAttribute('disabled', 'disabled')
+    if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
+      el.setAttribute('disabled', 'disabled')
+    }
   }
 
   private unsetElementToDisabled(el: HTMLElement) {
     el.classList.remove('disabled')
-    if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') el.removeAttribute('disabled')
+    if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
+      el.removeAttribute('disabled')
+    }
   }
 
   private addDisabledClass() {
@@ -700,8 +714,14 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
 
   private calculateTransform(currentIdx?: number | undefined): void {
     if (currentIdx !== undefined) this.currentIndex = currentIdx
-    if (this.currentIndex > this.slides.length - this.getCurrentSlidesQty() && !this.isCentered)
-      this.currentIndex = this.slides.length - this.getCurrentSlidesQty()
+
+    // TODO:: need to test without this setting
+    // if (
+    // 	(this.currentIndex > this.slides.length - this.getCurrentSlidesQty()) &&
+    // 	!this.isCentered
+    // ) {
+    // 	this.currentIndex = this.slides.length - this.getCurrentSlidesQty();
+    // }
 
     const containerWidth = this.sliderWidth
     const itemWidth = containerWidth / this.getCurrentSlidesQty()
@@ -709,8 +729,9 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
 
     // TODO:: need to test auto scrolling to the end if last on resize
     if (this.isSnap && !this.isCentered) {
-      if (this.container.scrollLeft < containerWidth && this.container.scrollLeft + itemWidth / 2 > containerWidth)
+      if (this.container.scrollLeft < containerWidth && this.container.scrollLeft + itemWidth / 2 > containerWidth) {
         this.container.scrollLeft = this.container.scrollWidth
+      }
     }
 
     if (this.isCentered && !this.isSnap) {
@@ -727,10 +748,11 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
       } else translateX = this.currentIndex * itemWidth - centeredOffset
     }
 
-    if (!this.isSnap)
-      this.inner.style.transform = this.isRTL ? `translate(${translateX}px, 0px)` : `translate(${-translateX}px, 0px)`
+    if (!this.isSnap) this.setTransform(translateX)
 
-    if (this.isAutoHeight) this.inner.style.height = `${this.slides[this.currentIndex].clientHeight}px`
+    if (this.isAutoHeight) {
+      this.inner.style.height = `${this.slides[this.currentIndex].clientHeight}px`
+    }
 
     if (this.dotsItems) this.goToCurrentDot()
 
@@ -738,6 +760,12 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
     if (!this.isInfiniteLoop) this.addDisabledClass()
     if (this.isSnap && this.hasSnapSpacers) this.buildSnapSpacers()
     if (this.infoCurrent) this.setInfoCurrent()
+  }
+
+  private setTransform(val: number) {
+    if (this.slides.length > this.getCurrentSlidesQty()) {
+      this.inner.style.transform = this.isRTL ? `translate(${val}px, 0px)` : `translate(${-val}px, 0px)`
+    } else this.inner.style.transform = 'translate(0px, 0px)'
   }
 
   private setTranslate(val: number) {
@@ -757,7 +785,9 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
 
     this.calculateWidth()
 
-    if (this.sliderWidth !== this.inner.parentElement.getBoundingClientRect().width) this.recalculateWidth()
+    if (this.sliderWidth !== this.inner.parentElement.getBoundingClientRect().width) {
+      this.recalculateWidth()
+    }
   }
 
   public goToPrev() {
@@ -834,19 +864,23 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
   public destroy() {
     // Remove classes
     if (this.loadingClassesAdd) {
-      if (typeof this.loadingClassesAdd === 'string') this.inner.classList.remove(this.loadingClassesAdd)
-      else this.inner.classList.remove(...this.loadingClassesAdd)
+      if (typeof this.loadingClassesAdd === 'string') {
+        this.inner.classList.remove(this.loadingClassesAdd)
+      } else this.inner.classList.remove(...this.loadingClassesAdd)
     }
     if (this.inner && this.afterLoadingClassesAdd) {
       setTimeout(() => {
-        if (typeof this.afterLoadingClassesAdd === 'string') this.inner.classList.remove(this.afterLoadingClassesAdd)
-        else this.inner.classList.remove(...this.afterLoadingClassesAdd)
+        if (typeof this.afterLoadingClassesAdd === 'string') {
+          this.inner.classList.remove(this.afterLoadingClassesAdd)
+        } else this.inner.classList.remove(...this.afterLoadingClassesAdd)
       })
     }
     this.el.classList.remove('init')
     this.inner.classList.remove('dragging')
     this.slides.forEach(el => el.classList.remove('active'))
-    if (this?.dotsItems?.length) this.dotsItems.forEach(el => el.classList.remove('active'))
+    if (this?.dotsItems?.length) {
+      this.dotsItems.forEach(el => el.classList.remove('active'))
+    }
     this.prev.classList.remove('disabled')
     this.next.classList.remove('disabled')
 
@@ -905,11 +939,14 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
   static autoInit() {
     if (!window.$hsCarouselCollection) window.$hsCarouselCollection = []
 
-    if (window.$hsCarouselCollection)
+    if (window.$hsCarouselCollection) {
       window.$hsCarouselCollection = window.$hsCarouselCollection.filter(({ element }) => document.contains(element.el))
+    }
 
     document.querySelectorAll('[data-carousel]:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
-      if (!window.$hsCarouselCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSCarousel(el)
+      if (!window.$hsCarouselCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) {
+        new HSCarousel(el)
+      }
     })
   }
 }

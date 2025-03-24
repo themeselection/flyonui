@@ -1,0 +1,69 @@
+@custom-variant stepper-active {
+  &.active {
+    @slot;
+  }
+
+  .active & {
+    @slot;
+  }
+}
+
+@custom-variant stepper-success {
+  &.is-valid {
+    @slot;
+  }
+
+  .is-valid & {
+    @slot;
+  }
+}
+
+@custom-variant stepper-completed {
+  &.completed {
+    @slot;
+  }
+
+  .completed & {
+    @slot;
+  }
+}
+
+@custom-variant stepper-error {
+  &.is-invalid {
+    @slot;
+  }
+
+  .is-invalid & {
+    @slot;
+  }
+}
+
+@custom-variant stepper-processed {
+  &.processed {
+    @slot;
+  }
+
+  .processed & {
+    @slot;
+  }
+}
+
+@custom-variant stepper-disabled {
+  &.disabled {
+    @slot;
+  }
+
+  .disabled & {
+    @slot;
+  }
+}
+
+@custom-variant stepper-skipped {
+  &.skipped {
+    @slot;
+  }
+
+  .skipped & {
+    @slot;
+  }
+}

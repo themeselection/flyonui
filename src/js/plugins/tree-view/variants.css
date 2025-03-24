@@ -1,0 +1,19 @@
+@custom-variant tree-view-selected {
+  &[data-tree-view-item].selected {
+    @slot;
+  }
+
+  [data-tree-view-item].selected > & {
+    @slot;
+  }
+}
+
+@custom-variant tree-view-disabled {
+  &[data-tree-view-item].disabled {
+    @slot;
+  }
+
+  [data-tree-view-item].disabled > & {
+    @slot;
+  }
+}

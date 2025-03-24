@@ -1,0 +1,15 @@
+.label-text {
+  @apply text-base-content block cursor-pointer p-1 text-sm;
+}
+
+.helper-text {
+  @apply text-base-content/80 block p-1 text-xs select-none;
+}
+
+.success-message {
+  @apply text-success hidden p-1 text-sm select-none;
+}
+
+.error-message {
+  @apply text-error hidden p-1 text-sm select-none;
+}

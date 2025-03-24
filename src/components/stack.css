@@ -1,0 +1,102 @@
+.stack {
+  @apply inline-grid place-items-center items-end;
+  & > * {
+    @apply col-start-1 row-start-1 h-full w-full opacity-60;
+    transform: translateY(14%) scale(0.9);
+    z-index: 1;
+  }
+  & > *:nth-child(2) {
+    @apply opacity-80;
+    transform: translateY(7%) scale(0.95);
+    z-index: 2;
+  }
+  & > *:nth-child(1) {
+    @apply opacity-100;
+    transform: translateY(0) scale(1) translateX(0);
+    z-index: 3;
+  }
+}
+
+.stack-bottom-start > * {
+  transform: translateY(14%) scale(0.9) translateX(-14%);
+  z-index: 1;
+}
+.stack-bottom-start > *:nth-child(2) {
+  transform: translateY(7%) scale(0.95) translateX(-7%);
+  z-index: 2;
+}
+.stack-bottom-end > * {
+  transform: translateY(14%) scale(0.9) translateX(14%);
+  z-index: 1;
+}
+.stack-bottom-end > *:nth-child(2) {
+  transform: translateY(7%) scale(0.95) translateX(7%);
+  z-index: 2;
+}
+
+.stack-start > * {
+  transform: translateX(-14%) scale(0.9);
+  z-index: 1;
+}
+.stack-start > *:nth-child(2) {
+  transform: translateX(-7%) scale(0.95);
+  z-index: 2;
+}
+
+.stack-end > * {
+  transform: translateX(14%) scale(0.9);
+  z-index: 1;
+}
+.stack-end > *:nth-child(2) {
+  transform: translateX(7%) scale(0.95);
+  z-index: 2;
+}
+
+.stack-top > * {
+  transform: translateY(-14%) scale(0.9);
+  z-index: 1;
+}
+.stack-top > *:nth-child(2) {
+  transform: translateY(-7%) scale(0.95);
+  z-index: 2;
+}
+.stack-top-start > * {
+  transform: translateY(-14%) scale(0.9) translateX(-14%);
+  z-index: 1;
+}
+.stack-top-start > *:nth-child(2) {
+  transform: translateY(-7%) scale(0.95) translateX(-7%);
+  z-index: 2;
+}
+.stack-top-end > * {
+  transform: translateY(-14%) scale(0.9) translateX(14%);
+  z-index: 1;
+}
+.stack-top-end > *:nth-child(2) {
+  transform: translateY(-7%) scale(0.95) translateX(7%);
+  z-index: 2;
+}
+.stack-animated:hover > * {
+  transform: translateY(7%) scale(1) translateX(0%);
+  @apply transition-transform duration-300 ease-in-out;
+}
+.stack-top.stack-animated:hover > * {
+  transform: translateY(-7%) scale(1);
+  @apply transition-transform duration-300 ease-in-out;
+}
+.stack-bottom-start.stack-animated:hover > * {
+  transform: translateY(7%) scale(1) translateX(-7%);
+  @apply transition-transform duration-300 ease-in-out;
+}
+.stack-bottom-end.stack-animated:hover > * {
+  transform: translateY(7%) scale(1) translateX(7%);
+  @apply transition-transform duration-300 ease-in-out;
+}
+.stack-top-start.stack-animated:hover > * {
+  transform: translateY(-7%) scale(1) translateX(-7%);
+  @apply transition-transform duration-300 ease-in-out;
+}
+.stack-top-end.stack-animated:hover > * {
+  transform: translateY(-7%) scale(1) translateX(7%);
+  @apply transition-transform duration-300 ease-in-out;
+}

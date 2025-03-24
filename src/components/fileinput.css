@@ -1,0 +1,42 @@
+.input::file-selector-button {
+  @apply bg-primary text-primary-content me-4 inline-flex h-full shrink-0 cursor-pointer flex-wrap items-center justify-center border-0 px-4 text-center text-base leading-none font-semibold uppercase no-underline select-none;
+  --input-color: var(--color-primary);
+  &.input-sm {
+    @apply text-sm;
+  }
+  &.input-md {
+    @apply text-base;
+  }
+  &.input-lg {
+    @apply text-lg;
+  }
+  &.input-xl {
+    @apply text-xl;
+  }
+}
+/* File Input sizes */
+.input-xs::file-selector-button {
+  @apply text-xs;
+}
+.input-sm::file-selector-button {
+  @apply text-sm;
+}
+.input-md::file-selector-button {
+  @apply text-base;
+}
+.input-lg::file-selector-button {
+  @apply text-lg;
+}
+.input-xl::file-selector-button {
+  @apply text-xl;
+}
+
+.input[type="file"] {
+  @apply overflow-hidden ps-0;
+}
+
+.input-floating .input::file-selector-button {
+  @apply bg-base-100 text-base-content;
+  border-inline-end: var(--border) solid color-mix(in oklab, var(--color-base-content) 40%, #0000);
+  outline: none;
+}

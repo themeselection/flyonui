@@ -1,0 +1,31 @@
+.breadcrumbs {
+  @apply max-w-full overflow-x-auto;
+
+  > ul,
+  > ol {
+    @apply flex items-center py-2 whitespace-nowrap;
+    min-height: min-content;
+    .breadcrumbs-separator {
+      @apply text-base-content/50 mx-2 inline-flex shrink-0 items-center justify-center;
+    }
+
+    > li {
+      @apply inline-flex items-center;
+
+      > a {
+        @apply hover:text-primary inline-flex items-center gap-1;
+        &:focus {
+          @apply outline-none;
+        }
+        &:focus-visible {
+          outline: 2px solid currentColor;
+          outline-offset: 2px;
+        }
+      }
+
+      &:last-child {
+        @apply text-base-content cursor-text font-medium;
+      }
+    }
+  }
+}

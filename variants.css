@@ -1,0 +1,48 @@
+/* States */
+@custom-variant success {
+  &.success {
+    @slot;
+  }
+
+  .success & {
+    @slot;
+  }
+}
+
+@custom-variant error {
+  &.error {
+    @slot;
+  }
+
+  .error & {
+    @slot;
+  }
+}
+
+/* Preline */
+@import "./src/js/plugins/dropdown/variants.css";
+@import "./src/js/plugins/remove-element/variants.css";
+@import "./src/js/plugins/tooltip/variants.css";
+@import "./src/js/plugins/accordion/variants.css";
+@import "./src/js/plugins/tree-view/variants.css";
+@import "./src/js/plugins/collapse/variants.css";
+@import "./src/js/plugins/tabs/variants.css";
+@import "./src/js/plugins/overlay/variants.css";
+@import "./src/js/plugins/scrollspy/variants.css";
+@import "./src/js/plugins/carousel/variants.css";
+@import "./src/js/plugins/select/variants.css";
+@import "./src/js/plugins/input-number/variants.css";
+@import "./src/js/plugins/pin-input/variants.css";
+@import "./src/js/plugins/strong-password/variants.css";
+@import "./src/js/plugins/stepper/variants.css";
+@import "./src/js/plugins/combobox/variants.css";
+@import "./src/js/plugins/datatable/variants.css";
+@import "./src/js/plugins/range-slider/variants.css";
+@import "./src/js/plugins/file-upload/variants.css";
+
+/* Sortable.js */
+@custom-variant dragged {
+  &.dragged {
+    @slot;
+  }
+}

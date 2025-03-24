@@ -1,7 +1,0 @@
-.textarea {
-  @apply block min-h-20 w-full shrink resize-none px-4 py-2 text-base;
-}
-
-.textarea-filled-focused {
-  @apply relative -top-px z-10 block h-0.5 w-full -translate-y-1/2 scale-0 transition-transform delay-0 duration-300 ease-in;
-}

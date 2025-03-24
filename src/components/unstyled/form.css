@@ -1,3 +1,0 @@
-.label:where(:not(.label-text)) {
-  @apply flex items-center justify-between;
-}

@@ -1,0 +1,91 @@
+.progress {
+  @apply bg-base-200 rounded-box flex h-1.5 w-full overflow-hidden;
+}
+
+.progress-label {
+  @apply border-base-content/25 relative inline w-fit rounded-sm border px-1.5 py-0.5 text-xs font-medium;
+}
+
+.progress-horizontal {
+  @apply rounded-box h-1.5 w-full flex-row justify-start;
+}
+
+.progress-vertical {
+  @apply rounded-box h-full w-1.5 flex-col justify-end;
+}
+
+.progress-striped {
+  background-image: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.15) 75%,
+    transparent 75%,
+    transparent
+  );
+  background-size: 0.75rem 0.75rem;
+}
+
+.progress-animated {
+  animation: progress-bar-stripes 1s linear infinite;
+}
+
+.progress-bar {
+  @apply bg-neutral text-neutral-content rounded-box flex items-center justify-center overflow-hidden text-xs font-medium whitespace-nowrap transition duration-500 ease-in-out;
+}
+
+/* progress colors */
+.progress-primary {
+  @apply bg-primary text-primary-content;
+}
+.progress-secondary {
+  @apply bg-secondary text-secondary-content;
+}
+.progress-accent {
+  @apply bg-accent text-accent-content;
+}
+.progress-info {
+  @apply bg-info text-info-content;
+}
+.progress-success {
+  @apply bg-success text-success-content;
+}
+.progress-warning {
+  @apply bg-warning text-warning-content;
+}
+.progress-error {
+  @apply bg-error text-error-content;
+}
+
+/* progress indeterminate */
+.progress-bar.progress-indeterminate {
+  @apply w-full;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 50%, var(--progress-color) 50%);
+  background-size: 50% 100%;
+  background-repeat: no-repeat;
+  animation: indeterminate-progress 4s infinite ease-in-out;
+}
+
+@keyframes indeterminate-progress {
+  0% {
+    background-position-x: -75%;
+  }
+  50% {
+    background-position-x: 125%;
+  }
+  100% {
+    background-position-x: -75%;
+  }
+}
+
+@keyframes progress-bar-stripes {
+  0% {
+    background-position-x: 0.75rem;
+  }
+}
+/* progress step */
+.progress-step {
+  @apply text-base-100 bg-base-content/10 flex h-1.5 w-full flex-col justify-center text-center text-xs whitespace-nowrap;
+}

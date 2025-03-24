@@ -1,0 +1,29 @@
+@custom-variant carousel-active {
+  &.active {
+    @slot;
+  }
+
+  .active & {
+    @slot;
+  }
+}
+
+@custom-variant carousel-disabled {
+  &.disabled {
+    @slot;
+  }
+
+  .disabled & {
+    @slot;
+  }
+}
+
+@custom-variant carousel-dragging {
+  &.dragging {
+    @slot;
+  }
+
+  .dragging & {
+    @slot;
+  }
+}

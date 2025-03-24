@@ -1,9 +1,0 @@
-.pin-input {
-  &-sm {
-    @apply size-7.5 text-sm;
-  }
-
-  &-lg {
-    @apply size-12 text-lg;
-  }
-}

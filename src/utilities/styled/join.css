@@ -1,3 +1,0 @@
-.join.join-vertical > :where(*:not(:first-child)) {
-  @apply mx-0 -mt-px;
-}

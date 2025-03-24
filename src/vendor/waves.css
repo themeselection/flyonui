@@ -1,0 +1,44 @@
+.waves-effect {
+  display: inline-flex;
+}
+
+.waves-effect .waves-ripple {
+  background: radial-gradient(
+    var(--wave-color) 0,
+    var(--wave-color) 40%,
+    var(--wave-color) 50%,
+    var(--wave-color) 60%,
+    var(--wave-color) 70%
+  );
+}
+
+@layer components {
+  .waves {
+    --wave-color: color-mix(in oklab, var(--color-neutral) 20%, #0000);
+    .waves-ripple {
+      background-color: var(--wave-color);
+    }
+
+    &.waves-primary .waves-ripple {
+      --wave-color: color-mix(in oklab, var(--color-primary) 20%, #0000);
+    }
+    &.waves-secondary .waves-ripple {
+      --wave-color: color-mix(in oklab, var(--color-secondary) 20%, #0000);
+    }
+    &.waves-accent .waves-ripple {
+      --wave-color: color-mix(in oklab, var(--color-accent) 20%, #0000);
+    }
+    &.waves-info .waves-ripple {
+      --wave-color: color-mix(in oklab, var(--color-info) 20%, #0000);
+    }
+    &.waves-success .waves-ripple {
+      --wave-color: color-mix(in oklab, var(--color-success) 20%, #0000);
+    }
+    &.waves-warning .waves-ripple {
+      --wave-color: color-mix(in oklab, var(--color-warning) 20%, #0000);
+    }
+    &.waves-error .waves-ripple {
+      --wave-color: color-mix(in oklab, var(--color-error) 20%, #0000);
+    }
+  }
+}

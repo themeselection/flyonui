@@ -1,0 +1,35 @@
+@custom-variant selected {
+  &.selected {
+    @slot;
+  }
+
+  .selected & {
+    @slot;
+  }
+}
+
+@custom-variant select-disabled {
+  &.disabled {
+    @slot;
+  }
+
+  .disabled & {
+    @slot;
+  }
+}
+
+@custom-variant select-active {
+  &.active {
+    @slot;
+  }
+
+  .active & {
+    @slot;
+  }
+}
+
+@custom-variant select-opened {
+  &.opened {
+    @slot;
+  }
+}

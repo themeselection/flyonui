@@ -18,7 +18,7 @@ We welcome contributions from the community! Whether you're reporting bugs, sugg
 ## Feature Requests
 
 - If you have an idea you'd like to discuss with the community, please [open a discussion](https://github.com/themeselection/flyonui/discussions/new?category=ideas-request-new-feature).
-- Please note that not all feature requests will be accepted, as some may not align with the vision or scope of the library. Don’t take it personally if a request is rejected.
+- Please note that not all feature requests will be accepted, as some may not align with the vision or scope of the library. Don't take it personally if a request is rejected.
 
 ## Pull Requests
 
@@ -36,25 +36,19 @@ To build the FlyonUI package locally, follow these steps:
    ```
 2. Install the necessary package dependencies:
    ```bash
-   npm install
+   bun install
    ```
 3. Build the package:
    ```bash
-   npm run dist
+   bun run build:css && bun run build:js
    ```
-4. You can now import FlyonUI into your `tailwind.config.js`:
-   ```javascript
-   module.exports = {
-     content: [
-       "/path/to/dist/js/*.js" // for JS components
-     ],
-     plugins: [
-       require("/path/to/src/index"),
-       require("/path/to/plugin") // for JS components
-     ],
-   };
+4. You can now import FlyonUI into your `app.css`:
+   ```css
+   @import "tailwindcss";
+   @plugin "./path/to/flyonui/index.js";
+   @import "./path/to/flyonui/variants.css";
+   @source "./path/to/flyonui/dist/index.js" // only include if you have added node_modules/ in .gitignore
    ```
 5. Finally, include the `flyonui.js` file in your HTML:
    ```html
    <script src="/path/to/flyonui.js"></script>
-   ```

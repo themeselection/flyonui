@@ -1,0 +1,26 @@
+@keyframes rating-jump {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-0.3em) scale(1.1);
+  }
+}
+
+.raty-jump {
+  animation: rating-jump 0.5s ease-in-out;
+}
+
+.raty-cancel {
+  @apply ms-2;
+}
+
+.cancel-off-png {
+  @apply text-error;
+}
+
+.star-off-png:before {
+  content: "\f005";
+  opacity: 0.2;
+}

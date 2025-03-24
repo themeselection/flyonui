@@ -1,23 +1,24 @@
 /*
  * HSAccordion
- * @version: 2.7.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { afterTransition, dispatch, getClassProperty, stringToBoolean } from '../../utils'
+import { getClassProperty, stringToBoolean, dispatch, afterTransition } from '../../utils'
 
-import { IAccordion, IAccordionOptions, IAccordionTreeView, IAccordionTreeViewStaticOptions } from './interfaces'
+import { IAccordionOptions, IAccordion, IAccordionTreeView, IAccordionTreeViewStaticOptions } from './interfaces'
 
-import { ICollectionItem } from '../../interfaces'
 import HSBasePlugin from '../base-plugin'
+import { ICollectionItem } from '../../interfaces'
 
 class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion {
   private toggle: HTMLElement | null
   public content: HTMLElement | null
   private group: HTMLElement | null
   private isAlwaysOpened: boolean
+  private keepOneOpen: boolean
   private isToggleStopPropagated: boolean
 
   private onToggleClickListener: (evt: Event) => void
@@ -29,13 +30,15 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
 
     this.toggle = this.el.querySelector('.accordion-toggle') || null
     this.content = this.el.querySelector('.accordion-content') || null
+    this.group = this.el.closest('.accordion') || null
     this.update()
 
-    if (this.toggle) {
-      this.isToggleStopPropagated = stringToBoolean(
-        getClassProperty(this.toggle, '--stop-propagation', 'false') || 'false'
-      )
-    }
+    this.isToggleStopPropagated = stringToBoolean(
+      getClassProperty(this.toggle, '--stop-propagation', 'false') || 'false'
+    )
+    this.keepOneOpen = this.group
+      ? stringToBoolean(getClassProperty(this.group, '--keep-one-open', 'false') || 'false')
+      : false
 
     if (this.toggle && this.content) this.init()
   }
@@ -50,6 +53,8 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
 
   // Public methods
   public toggleClick(evt: Event) {
+    if (this.el.classList.contains('active') && this.keepOneOpen) return false
+
     if (this.isToggleStopPropagated) evt.stopPropagation()
 
     if (this.el.classList.contains('active')) {
@@ -59,7 +64,6 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
     }
   }
 
-  // Public methods
   public show() {
     if (
       this.group &&
@@ -79,18 +83,21 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
     this.el.classList.add('active')
     if (this?.toggle?.ariaExpanded) this.toggle.ariaExpanded = 'true'
 
+    this.fireEvent('beforeOpen', this.el)
+    dispatch('beforeOpen.accordion.item', this.el, this.el)
+
     this.content.style.display = 'block'
     this.content.style.height = '0'
     setTimeout(() => {
       this.content.style.height = `${this.content.scrollHeight}px`
-    })
 
-    afterTransition(this.content, () => {
-      this.content.style.display = 'block'
-      this.content.style.height = ''
+      afterTransition(this.content, () => {
+        this.content.style.display = 'block'
+        this.content.style.height = ''
 
-      this.fireEvent('open', this.el)
-      dispatch('open.accordion.item', this.el, this.el)
+        this.fireEvent('open', this.el)
+        dispatch('open.accordion.item', this.el, this.el)
+      })
     })
   }
 
@@ -99,6 +106,9 @@ class HSAccordion extends HSBasePlugin<IAccordionOptions> implements IAccordion 
 
     this.el.classList.remove('active')
     if (this?.toggle?.ariaExpanded) this.toggle.ariaExpanded = 'false'
+
+    this.fireEvent('beforeClose', this.el)
+    dispatch('beforeClose.accordion.item', this.el, this.el)
 
     this.content.style.height = `${this.content.scrollHeight}px`
     setTimeout(() => {

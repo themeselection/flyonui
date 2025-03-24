@@ -1,6 +1,6 @@
 /*
  * HSRangeSlider
- * @version: 2.7.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,10 +8,10 @@
 
 import type { cssClasses, target } from 'nouislider'
 
-import { IRangeSlider, IRangeSliderCssClassesObject, IRangeSliderOptions } from './interfaces'
+import { IRangeSliderCssClassesObject, IRangeSlider, IRangeSliderOptions } from './interfaces'
 
-import { ICollectionItem } from '../../interfaces'
 import HSBasePlugin from '../base-plugin'
+import { ICollectionItem } from '../../interfaces'
 
 class HSRangeSlider extends HSBasePlugin<IRangeSliderOptions> implements IRangeSlider {
   private readonly concatOptions: IRangeSliderOptions
@@ -168,15 +168,6 @@ class HSRangeSlider extends HSBasePlugin<IRangeSliderOptions> implements IRangeS
     document.querySelectorAll('[data-range-slider]:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
       if (!window.$hsRangeSliderCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSRangeSlider(el)
     })
-  }
-
-  // Backward compatibility
-  static on(evt: string, target: HTMLElement, cb: Function) {
-    const elInCollection = window.$hsRangeSliderCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
-
-    if (elInCollection) elInCollection.element.events[evt] = cb
   }
 }
 

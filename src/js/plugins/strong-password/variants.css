@@ -1,0 +1,35 @@
+@custom-variant password-active {
+  &.active {
+    @slot;
+  }
+
+  .active & {
+    @slot;
+  }
+}
+
+@custom-variant strong-password {
+  &.passed {
+    @slot;
+  }
+
+  .passed & {
+    @slot;
+  }
+}
+
+@custom-variant strong-password-accepted {
+  &.accepted {
+    @slot;
+  }
+
+  .accepted & {
+    @slot;
+  }
+}
+
+@custom-variant strong-password-active {
+  &.active {
+    @slot;
+  }
+}

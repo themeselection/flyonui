@@ -1,0 +1,31 @@
+.accordion-toggle {
+  @apply text-base-content w-full cursor-pointer px-5 py-4 text-lg font-medium disabled:pointer-events-none disabled:opacity-50;
+}
+
+.accordion-shadow :where(.accordion-item) {
+  @apply bg-base-100 rounded-box shadow-base-300/20 my-2 shadow-md;
+
+  .accordion-item:first-of-type {
+    @apply mt-0;
+  }
+  .accordion-item:last-of-type {
+    @apply mb-0;
+  }
+
+  & > *:first-child {
+    @apply rounded-t-box;
+  }
+  & > *:last-child {
+    @apply rounded-b-box;
+  }
+}
+
+.accordion:where(.accordion-bordered) {
+  @apply border-base-content/25 divide-base-content/25 rounded-box bg-base-100 divide-y border;
+}
+
+/* Tree view space */
+
+.tree-view-space {
+  @apply before:bg-base-content/40 relative ms-4 ps-4 before:absolute before:start-0 before:top-0 before:-ms-0.5 before:h-full before:w-0.5;
+}

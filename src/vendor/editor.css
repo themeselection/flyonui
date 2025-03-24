@@ -1,0 +1,192 @@
+/* Toolbar buttons styling */
+.ce-toolbar__plus,
+.ce-toolbar__settings-btn {
+  @apply text-base-content bg-base-100 hover:bg-base-content/5 border-base-content/20;
+}
+
+/* Popover and conversion toolbar styling */
+.ce-popover,
+.ce-conversion-toolbar,
+.tc-popover {
+  @apply !bg-base-100 !rounded-box !shadow-base-300/20 !border-0 !shadow-md;
+
+  .ce-popover__container {
+    @apply bg-base-100 shadow-base-300/20 border-none shadow-md;
+  }
+}
+
+/* Inline toolbar styling */
+.ce-inline-toolbar {
+  @apply bg-base-100 rounded-box shadow-base-300/20 border-0 shadow-md;
+}
+
+/* Search field styling */
+.cdx-search-field {
+  @apply rounded-box bg-base-200/40 text-base-content border-base-content/20;
+}
+
+/* Popover and conversion tool item styling */
+.ce-popover-item,
+.ce-conversion-tool,
+.tc-toolbox__toggler,
+.tc-toolbox__toggler:hover {
+  @apply !text-base-content;
+}
+
+/* Secondary title and label styling */
+.ce-popover-item__secondary-title,
+.ce-conversion-tool__secondary-label {
+  @apply text-base-content/80 ms-auto ml-0;
+}
+
+/* Popover and conversion tool icon styling */
+.ce-popover-item__icon,
+.ce-conversion-tool__icon,
+.tc-popover__item-icon {
+  @apply !bg-base-100 !rounded-box !me-2.5 rtl:!mr-0;
+  box-shadow: 0 0 0 1.35px color-mix(in oklab, var(--color-base-300) 50%, #0000) !important;
+}
+.tc-popover__item-icon {
+  @apply !border-0;
+}
+.tc-popover__item {
+  @apply !ps-0.5 !pe-3.5;
+}
+
+/* Conversion toolbar label styling */
+.ce-conversion-toolbar__label {
+  @apply text-base-content font-medium;
+}
+
+/* Inline toolbar dropdown styling */
+.ce-inline-toolbar__dropdown {
+  @apply rounded-s-box border-base-content/20 ms-0 me-2.5 border-e rtl:border-r-0;
+}
+
+.ce-inline-toolbar__toggler-and-button-wrapper:has(> .ce-inline-toolbar__dropdown) {
+  @apply ps-0;
+}
+
+/* Focused conversion tool styling */
+.ce-conversion-tool--focused {
+  @apply !bg-base-200/80 shadow-none;
+}
+
+/* Inline tool padding */
+.ce-inline-tool {
+  @apply px-1.5;
+}
+
+/* Last conversion tool rounded corners */
+.ce-conversion-tool:last-of-type {
+  @apply rounded-b-box;
+}
+
+/* Text and block Selection  */
+.ce-block--selected .ce-block__content {
+  @apply text-primary bg-primary/20;
+}
+
+.ce-block__content {
+  @apply selection:text-primary selection:bg-primary/20 px-0.5;
+}
+
+/* Codex editor margin */
+.codex-editor {
+  @apply mx-13;
+}
+
+/* Toolbar actions padding */
+.ce-toolbar__actions {
+  @apply pe-1.5;
+}
+
+/* Media query for narrow editor toolbar actions placement */
+.codex-editor--narrow {
+  & .ce-toolbar__actions {
+    @apply min-sm:end-full;
+  }
+  & .ce-toolbox .ce-popover,
+  & .ce-settings .ce-popover {
+    @apply min-sm:start-0 min-sm:end-auto;
+  }
+}
+.codex-editor--narrow .codex-editor__redactor {
+  @apply min-sm:!me-0;
+
+  [dir="rtl"] & {
+    @apply min-sm:!me-10;
+  }
+}
+
+/* Checkbox */
+.cdx-checklist__item-checkbox,
+.cdx-nested-list__item::before {
+  @apply me-1.5;
+}
+
+/* Table */
+
+.tc-add-column,
+.tc-add-row {
+  @apply !text-base-content;
+}
+
+.tc-cell,
+.tc-row,
+.tc-add-column,
+.tc-add-row,
+.tc-table,
+.tc-row:after {
+  @apply !border-base-content/20;
+}
+
+.tc-cell {
+  @apply border-e rtl:border-r-0;
+}
+
+[dir="rtl"] .tc-add-row:before,
+[dir="rtl"] .tc-row:after {
+  left: calc(var(--cell-size) * -1);
+  right: auto;
+}
+[dir="rtl"] .tc-table:after {
+  left: auto;
+  right: calc(var(--cell-size) * -1);
+}
+.tc-cell--selected {
+  @apply !bg-base-200/60;
+}
+
+/* Hover effect for various elements */
+
+.ce-popover-item:hover:not(.ce-popover-item--no-hover),
+.ce-popover-item--focused:not(.ce-popover-item--no-focus),
+.ce-inline-toolbar__dropdown:hover,
+.ce-inline-tool:hover,
+.ce-conversion-tool:hover,
+.tc-add-column:hover,
+.tc-add-row:hover,
+.tc-add-row:hover:before,
+.tc-popover__item:hover {
+  @apply !bg-base-content/5;
+}
+
+h1.ce-header {
+  @apply text-base-content text-4xl font-medium;
+}
+h2.ce-header {
+  @apply text-base-content text-3xl font-medium;
+}
+h3.ce-header {
+  @apply text-base-content text-2xl font-medium;
+}
+h4.ce-header {
+  @apply text-base-content text-xl font-medium;
+}
+h5.ce-header {
+  @apply text-base-content text-lg font-medium;
+}
+h6.ce-header {
+  @apply text-base-content text-base font-medium;
+}

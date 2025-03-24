@@ -1,0 +1,5 @@
+@custom-variant scrollspy-active {
+  &.active {
+    @slot;
+  }
+}

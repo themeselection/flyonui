@@ -27,19 +27,22 @@ Created by [ThemeSelection](https://themeselection.com), with a commitment to em
 
 ## Table of Contents 📋
 
-- [Table of Contents](#table-of-contents)
-- [Overview](#overview)
-- [Why should I use FlyonUI?](#why-should-i-use-flyonui)
-- [Features](#features)
-- [Documentation](#documentation)
-- [Getting Started](#getting-started)
+- [Table of Contents 📋](#table-of-contents-)
+- [Overview 🌏](#overview-)
+- [Why should I use FlyonUI? 💡](#why-should-i-use-flyonui-)
+- [Features ✨](#features-)
+- [Documentation 📚](#documentation-)
+- [Framework guides 🛠️](#framework-guides-️)
+- [Getting Started 🏁](#getting-started-)
   - [Installation via NPM](#installation-via-npm)
   - [RTL (Right-to-Left) Language Support](#rtl-right-to-left-language-support)
-- [Available Components](#available-components)
+- [Available Components 🧩](#available-components-)
   - [Component Examples](#component-examples)
-- [Community](#community)
-- [Credits](#credits)
-- [License](#license)
+- [Community 🤝](#community-)
+- [Contributing 📝](#contributing-)
+- [Credits 🤘](#credits-)
+- [License ©](#license-)
+- [Useful Links 🎁](#useful-links-)
 
 ---
 
@@ -196,31 +199,26 @@ To use FlyonUI, ensure that you have [Node.js](https://nodejs.org/en/) and [Tail
    npm install flyonui
    ```
 
-2. Include FlyonUI as a plugin in your `tailwind.config.js` file:
+2. Include FlyonUI as a plugin in your `app.css` file:
 
-   ```javascript
-   module.exports = {
-     content: ["./node_modules/flyonui/dist/js/*.js"], // Require only if you want to use FlyonUI JS component
+   ```css
+   @import "tailwindcss";
+   @plugin "flyonui";
+   @import "./node_modules/flyonui/variants.css"; // Require only if you want to use FlyonUI JS component
 
-     plugins: [
-       require("flyonui"),
-       require("flyonui/plugin") // Require only if you want to use FlyonUI JS component
-     ]
-   }
+   // If you gitignored node_modules use below method
+   @source "./node_modules/flyonui/dist/index.js"; // Require only if you want to use FlyonUI JS component
    ```
 
    This ensures that FlyonUI's styling is applied correctly throughout your project.
 
    If you want to include specific js component:
 
-   ```javascript
-   module.exports = {
-     content: ["./node_modules/flyonui/dist/js/accordion.js"]
-   }
+   ```css
+   @source "./node_modules/flyonui/dist/accordion.js";
    ```
 
-3. Include FlyonUI JavaScript in HTML
-   To enable interactive elements, include FlyonUI's JavaScript in your HTML file, right before the closing `</body>` tag:
+3. For enabling interactive components such as accordion, dropdown,    modal etc... , include FlyonUI's JavaScript in your HTML file, just before the closing `</body>` tag:
 
    ```html
    <script src="../node_modules/flyonui/flyonui.js"></script>
@@ -229,10 +227,8 @@ To use FlyonUI, ensure that you have [Node.js](https://nodejs.org/en/) and [Tail
    For a single component, use the specific path:
 
    ```html
-   <script src="../node_modules/flyonui/dist/js/accordion.js"></script>
+   <script src="../node_modules/flyonui/dist/accordion.js"></script>
    ```
-
-   This script ensures that all FlyonUI interactivity is correctly applied to your elements.
 
 ### RTL (Right-to-Left) Language Support
 

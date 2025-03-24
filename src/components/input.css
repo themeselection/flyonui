@@ -1,0 +1,233 @@
+.input {
+  @apply bg-base-100 text-base-content placeholder:text-base-content/50 inline-flex w-full shrink cursor-text appearance-none px-3 text-base font-normal;
+  @apply focus-visible:outline-none;
+  border: var(--border) solid #0000;
+  height: var(--size);
+  border-start-start-radius: var(--join-ss, var(--radius-field));
+  border-start-end-radius: var(--join-se, var(--radius-field));
+  border-end-start-radius: var(--join-es, var(--radius-field));
+  border-end-end-radius: var(--join-ee, var(--radius-field));
+  border-color: var(--input-color);
+  --input-color: color-mix(in oklab, var(--color-base-content) 40%, #0000);
+  --size: calc(var(--size-field, 0.25rem) * 9.5);
+
+  &:hover:not(:focus, :focus-within),
+  &:has(:hover):not(:focus, :focus-within) {
+    @apply border-base-content/60;
+  }
+
+  &:where(input) {
+    @apply inline-block;
+  }
+
+  :where(input:not([type="checkbox"]):not([type="radio"])) {
+    @apply inline-block h-full w-full appearance-none bg-transparent;
+    border: none;
+
+    &:focus,
+    &:focus-within,
+    &:focus-visible {
+      @apply outline-none;
+    }
+  }
+
+  &:focus,
+  &:focus-within {
+    @apply shadow-xs;
+    --input-color: var(--color-primary);
+    --tw-shadow-color: color-mix(in oklab, var(--input-color) 30%, #0000);
+    outline: 1px solid var(--input-color);
+    isolation: isolate;
+  }
+
+  &:has(> input[disabled]),
+  &:is(:disabled, [disabled]) {
+    @apply bg-neutral/10 text-base-content/50 cursor-not-allowed border-0;
+    box-shadow: none;
+  }
+
+  &:has(> input[disabled]) > input[disabled] {
+    @apply cursor-not-allowed;
+  }
+
+  &::-webkit-date-and-time-value {
+    text-align: inherit;
+  }
+
+  &[type="number"] {
+    &::-webkit-inner-spin-button {
+      @apply -my-3 -me-3;
+    }
+  }
+}
+
+/* Floating Input */
+
+.input:has(> .input-floating) input {
+  @apply focus:placeholder:text-base-content/50 placeholder:text-transparent;
+}
+
+.input-floating-label {
+  @apply text-base-content/50 pointer-events-none absolute start-0 ms-3 w-fit overflow-hidden bg-transparent text-base text-ellipsis;
+  top: calc(var(--size-field, 0.25rem) * 9.5 / 2);
+  translate: 0 -50%;
+  transition:
+    top 0.1s ease-out,
+    translate 0.1s ease-out,
+    scale 0.1s ease-out,
+    opacity 0.1s ease-out;
+}
+
+.input-floating {
+  @apply relative block w-full;
+
+  .input {
+    @apply focus:placeholder:text-base-content/50 placeholder:text-transparent;
+
+    &:has(> input[disabled]),
+    &:is(:disabled, [disabled]) {
+      @apply border bg-transparent opacity-50;
+      & ~ .input-floating-label {
+        @apply text-base-content/30;
+      }
+    }
+  }
+  &:focus-within,
+  &:not(:has(input:placeholder-shown)),
+  &:has(.input:focus) {
+    .input-floating-label {
+      @apply bg-base-100 text-base-content/50 pointer-events-auto top-0 px-1 font-medium;
+      translate: -12.5% calc(-50% - 0.125em);
+      scale: 0.75;
+    }
+  }
+
+  &:focus-within,
+  &:has(.input:focus) {
+    .input-floating-label {
+      --input-color: var(--color-primary);
+      color: var(--input-color);
+    }
+  }
+
+  &:has(.input-xs) .input-floating-label {
+    @apply ms-2.5 text-xs;
+    top: calc(var(--size-field, 0.25rem) * 6 / 2);
+  }
+  &:has(.input-sm) .input-floating-label {
+    @apply ms-2.5 text-sm;
+    top: calc(var(--size-field, 0.25rem) * 7.5 / 2);
+  }
+  &:has(.input-md) .input-floating-label {
+    @apply ms-3 text-base;
+    top: calc(var(--size-field, 0.25rem) * 9.5 / 2);
+  }
+  &:has(.input-lg) .input-floating-label {
+    @apply ms-4 text-lg;
+    top: calc(var(--size-field, 0.25rem) * 11.5 / 2);
+  }
+  &:has(.input-xl) .input-floating-label {
+    @apply ms-4.5 text-xl;
+    top: calc(var(--size-field, 0.25rem) * 14 / 2);
+  }
+}
+
+/* Floating States */
+
+.input-floating:has(.is-valid),
+.validate .input-floating:has(:valid) {
+  @apply hover:border-success;
+  .input-floating-label {
+    color: var(--color-success);
+  }
+
+  &:focus-within,
+  &:not(:has(input:placeholder-shown)),
+  &:has(.input:focus) {
+    .input-floating-label {
+      color: var(--color-success);
+    }
+  }
+}
+
+/* Error state */
+
+.input-floating:has(.is-invalid),
+.validate .input-floating:has(:invalid) {
+  @apply hover:border-error;
+  .input-floating-label {
+    color: var(--color-error);
+  }
+
+  &:focus-within,
+  &:not(:has(input:placeholder-shown)),
+  &:has(.input:focus) {
+    .input-floating-label {
+      color: var(--color-error);
+    }
+  }
+}
+
+/* Sizes */
+
+.input-xs {
+  @apply px-2.5 text-xs;
+  --size: calc(var(--size-field, 0.25rem) * 6);
+
+  &[type="number"] {
+    &::-webkit-inner-spin-button {
+      @apply -my-1 -me-3;
+    }
+  }
+}
+
+.input-sm {
+  @apply px-2.5 text-sm;
+  --size: calc(var(--size-field, 0.25rem) * 7.5);
+
+  &[type="number"] {
+    &::-webkit-inner-spin-button {
+      @apply -my-2 -me-3;
+    }
+  }
+}
+
+.input-md {
+  @apply px-3 text-base;
+  --size: calc(var(--size-field, 0.25rem) * 9.5);
+
+  &[type="number"] {
+    &::-webkit-inner-spin-button {
+      @apply -my-3 -me-3;
+    }
+  }
+}
+
+.input-lg {
+  @apply px-4 text-lg;
+  --size: calc(var(--size-field, 0.25rem) * 11.5);
+
+  &[type="number"] {
+    &::-webkit-inner-spin-button {
+      @apply -my-3 -me-3;
+    }
+  }
+}
+
+.input-xl {
+  @apply px-4.5 text-xl;
+  --size: calc(var(--size-field, 0.25rem) * 14);
+
+  &[type="number"] {
+    &::-webkit-inner-spin-button {
+      @apply -my-4 -me-3;
+    }
+  }
+}
+
+.no-focus {
+  &:focus,
+  &:focus-within {
+    @apply border-none shadow-none outline-none;
+  }
+}

@@ -1,0 +1,36 @@
+.carousel {
+  @apply relative w-full overflow-hidden rounded-2xl;
+}
+.carousel-body {
+  @apply flex flex-nowrap;
+}
+
+.carousel-prev,
+.carousel-next {
+  @apply text-base-content/80 hover:text-base-content absolute inset-y-0 inline-flex h-full w-[10%] items-center justify-center max-sm:w-[18%];
+}
+
+.carousel-prev.disabled,
+.carousel-next.disabled {
+  @apply text-base-content/30 pointer-events-none;
+}
+
+.carousel-prev {
+  @apply start-0 rounded-s-2xl;
+}
+.carousel-next {
+  @apply end-0 rounded-e-2xl;
+}
+
+.carousel-box {
+  @apply bg-neutral/30 h-1 w-10 cursor-pointer;
+}
+
+.carousel-dot {
+  @apply bg-neutral/30 size-3 cursor-pointer rounded-full;
+}
+
+.carousel-body,
+.carousel-slide {
+  @apply transition-transform duration-700;
+}

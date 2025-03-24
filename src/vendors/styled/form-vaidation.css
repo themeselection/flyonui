@@ -1,9 +1,0 @@
-.invalid-feedback {
-  @apply text-error hidden w-full;
-  font-size: 0.875rem;
-}
-
-.fv-plugins-tailwindcss .invalid-feedback,
-.fv-plugins-tailwindcss .invalid-tooltip {
-  display: block;
-}

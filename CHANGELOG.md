@@ -1,125 +1,272 @@
-## [1.3.0] - [2025-01-03]
+For a detailed overview of the changes, please refer to the [Upgrade Guide](https://flyonui.com/docs/getting-started/upgrade/).
+link
 
-## Added 
+## New DaisyUI Components
 
-**Combo Box** : [Minimum search Length](https://flyonui.com/docs/advanced-forms/combo-box/#minimum-search-length)
+- [Filter](https://flyonui.com/docs/forms/filter/)
+- [Status](https://flyonui.com/docs/components/status/)
 
-**Datatables** : [Multiple Controls](https://flyonui.com/docs/third-party-plugins/datatables/#multiple-controls)
+## New DaisyUI Components
 
-## Updated
+- **Black**
+- **Mintlify**
+- **Shadcn**
+- **Slack**
+- **Valorant**
 
-- Preline v2.7.0
-- Updated divider component border-color from `base-content/10` to `base-content/20`
-- Updated heading color from `text-base-content/90` to `text-base-content`
-- You can now invoke overlay methods directly on the overlay itself without linking it to any button. The previous functionality is retained for backward compatibility.
+## New in Components
+- **Accordion:**
+  - Added new option `[--keep-one-open:*]`.
+  - Added new new events `on:beforeOpen` and `on:beforeClose`.
 
-## Fixes and Improvements
+- **Advance Select:**
+  - Added new option `:minSearchLength` and [example](https://flyonui.com/docs/advanced-forms/advanced-select/#minimum-search-length/) for it.
 
-- Added: A new parameter `optionAllowEmptyOption` has been added for Advanced Select
-- Added: A new parameter `minSearchLength` has been added for Combo Box
-- Added: Enhanced support for multiple `prev` and `next` elements, each with its own event listeners, ensuring proper initialization and cleanup in the destroy method. Improved event listener management for `search` and `pagination` controls to prevent memory leaks and support dynamic elements.
-- Fixed: Removed `flyonui.mjs` as it was creating issues while using `import`
-- Fixed: Improve card style specificity
-- Fixed: Typo in select and textarea. [[PR #30]](https://github.com/themeselection/flyonui/pull/30)
-- Fixed: Improved label styles for better usability in form elements.
-- Fixed: `setValue` method functionality with tags in Advanced Select.
+- **Alert:**
+  - [Dashed Alerts](https://flyonui.com/docs/components/alert/#dashed-alerts/)
+  - [Responsive Alert](https://flyonui.com/docs/components/alert/#responsive-alert/) 
 
-## [1.2.0] - [2024-12-11]
+- **Apex Chart:**
+  - [Candle Stick Chart](https://flyonui.com/docs/third-party-plugins/apex-charts/#candle-stick-chart/)
+
+- **Badge:**
+  - [Dashed Badge](https://flyonui.com/docs/components/badges/#dashed-badges/)
+  - **New badge sizes:** `badge-md` (default) and `badge-xl` for more badge variety.
+  - Added variable structure, creating custom badge became easy.
+
+- **Button:**
+  - **New button sizes:** `btn-md` (default) and `btn-xl` for more button variety.
+  - Added variable structure, creating custom button became easy.
+
+- **Card:**
+  - New `card-border` style that adapts the border width from the theme.
+  - **New card sizes:** `card-xs`, `card-sm`, `card-md` (default), `card-lg` and `card-xl`.
+
+- **Checkbox:**
+  - **New checkbox sizes:** `checkbox-md` (default) and `checkbox-xl`
+  - Improved the checkmark icon and its animation.
+
+- **Dropdown:**
+  - Added new options `[--scope:*]`, `[--has-autofocus:*]` and `[--gpu-acceleration:*]`.
+  
+- **File Input:**
+  - **New file input sizes:** `file-input-md` (default) and `file-input-xl`
+  - Adjusted padding and font size for a more polished look.
+
+- **Input:**
+  - **New input sizes:** `input-md` (default) and `input-xl`
+  - Added helper-text for additional guidance on inputs.
+
+- **Loading:**
+  - **New loading sizes:** `loading-md` (default) and `loading-xl`.
+
+- **Menu:**
+  - **New menu sizes:** `menu-md` (default) and `menu-xl`.
+
+- **Modal:**
+  - Added `modal-dialog-md` as a default modal size.
+  - Added new options `[--auto-close-equality-type:*]` and `[--has-dynamic-z-index:*]`.
+
+- **Pin Input:**
+  - **New pin input sizes:** `pin-input-xs` , `pin-input-md` (default) and `pin-input-xl`.
+  
+- **Progress:**
+  - Added `progress-horizontal` for direction.
+
+- **Radio:**
+  - **New radio sizes:** `radio-md` (default) and `radio-xl`.
+
+- **Range:**
+  - Added `range-xl` class for range size.
+
+- **Select:**
+  - [Select Group](https://flyonui.com/docs/forms/select/#select-group/)
+  - **New select sizes:** `select-md` (default) and `select-xl` for more select variety.
+  - Added new options `data-tabs` and `:eventType`.
+
+- **Stack:**
+  - Added support for stack directions `stack-start` and `stack-end`.
+
+- **Stat:**
+  - Added `stats-border` for bordered variant of stat and `stats-horizontal` or default direction.
+
+- **Switch:**
+  - **New switch sizes:** `switch-md` (default) and `switch-xl`.
+
+- **Table:**
+  - Added `table-xl` class for table size.
+  
+- **Tabs:**
+  - **New tabs sizes:** `tab-md` (default) and `tab-xl`.
+
+- **Textarea:**
+  - [Textarea Group](https://flyonui.com/docs/forms/textarea/#textarea-group/)
+  - **New textarea sizes:** `textarea-xs` , `textarea-sm` , `textarea-md` (default), `textarea-lg` and `textarea-xl` for more textarea variety.
 
 ## Added
+- Introduce new `gradient-bg` class for gradient background with semantic class support like `gradient-bg-primary` etc.
+- Use [tailwindcss-intersect](https://github.com/heidkaemper/tailwindcss-intersect) plugin for scroll-triggered animations.
 
-**New Plugins**
- - Plugins: [Tree View](https://flyonui.com/docs/components/tree-view/)
- - Plugins: [Advanced Range Slider](https://flyonui.com/docs/third-party-plugins/advance-range-slider/)
- - Plugins: [Datatable](https://flyonui.com/docs/third-party-plugins/datatable/)
+## Breaking Changes
 
-**New Components**
- - Third-Party Plugins: [Datatable](https://flyonui.com/docs/third-party-plugins/datatable/)
- - Third-Party Plugins: [Advanced Range Slider](https://flyonui.com/docs/third-party-plugins/advance-range-slider/)
- - Third-Party Plugins: [Drag and Drop (Sortable.js)](https://flyonui.com/docs/third-party-plugins/drag-and-drop/)
- - Third-Party Plugins: [Animation](https://flyonui.com/docs/third-party-plugins/animation/)
- - Navigations: [Sidebar](https://flyonui.com/docs/navigations/sidebar/)
- - Overlays: [Context Menu](https://flyonui.com/docs/overlays/context-menu/)
- 
-**Tree View:**
- - [Multiple selection](https://flyonui.com/docs/components/tree-view/#default)
- - [Draggable](https://flyonui.com/docs/components/tree-view/#draggable)
- - [Draggable and auto collapse one level group](https://flyonui.com/docs/components/tree-view/#draggable-and-close-active-element)
- - [Checkbox based](https://flyonui.com/docs/components/tree-view/#checkbox)
- 
-**Carousel:**
- - [Multiple slides](https://flyonui.com/docs/components/carousel/#multi-slide-carousel)
- - [Centered](https://flyonui.com/docs/components/carousel/#centered)
- - [Draggable](https://flyonui.com/docs/components/carousel/#draggable-slides)
- - [Snap point](https://flyonui.com/docs/components/carousel/#snap-point-scrolling)
- - [Auto height](https://flyonui.com/docs/components/carousel/#auto-height)
- - [Current state info](https://flyonui.com/docs/components/carousel/#info)
- - [Thumbnails (horizontal)](https://flyonui.com/docs/components/carousel/#thumbs-gallery-horizontal)
- - [Thumbnails (vertical)](https://flyonui.com/docs/components/carousel/#thumbs-gallery-vertical)
- - [isRtl](https://flyonui.com/docs/components/carousel/#isrtl)
- 
-**Drawer**
- - [Scoped Based drawer](https://flyonui.com/docs/overlays/drawer/#scoped-based-drawer)
+- The installation steps for third-party components have been updated.
 
-**Advanced Select:**
- - [Fixed Position](https://flyonui.com/docs/advanced-forms/advanced-select/#fixed-position)
- - [Static search limit](https://flyonui.com/docs/advanced-forms/advanced-select/#search-result-limit)
- - [Direct match searching Off](https://flyonui.com/docs/advanced-forms/advanced-select/#direct-match-searching-off)
- - [Generate select according to the remote data (single)](https://flyonui.com/docs/advanced-forms/advanced-select/#remote-data-selection)
- - [Multiple (remote data)](https://flyonui.com/docs/advanced-forms/advanced-select/#remote-data-selection-multiple-options)
- - [Tags (remote data)](https://flyonui.com/docs/advanced-forms/advanced-select/#remote-data-selection-with-removable-tags)
- - [Option template (remote data)](https://flyonui.com/docs/advanced-forms/advanced-select/#multiple-selection-with-option-template-remote-data)
- - [Conditional counter (remote data)](https://flyonui.com/docs/advanced-forms/advanced-select/#multiple-with-conditional-counter-remote-data)
- - [Custom template with avatars (remote data)](https://flyonui.com/docs/advanced-forms/advanced-select/#custom-template-with-avatars-remote-data)
- - [Modal example with overflow:hidden;](https://flyonui.com/docs/advanced-forms/advanced-select/#modal-example-with-overflowhidden)
+- **Avatar:**
+  - Rename `placeholder` with `avatar-placeholder` , `online-top` with `avatar-online-top`, `online-bottom` with `avatar-online-bottom`, `away-top` with `avatar-away-top`, `away-bottom` with `avatar-away-bottom`, `busy-top` with `avatar-busy-top`, `busy-bottom` with `avatar-busy-bottom`, `offline-top` with `avatar-offline-top`, `offline-bottom` with `avatar-offline-bottom`
 
-**Combox**
- - [Json example (based on API pathes)](https://flyonui.com/docs/advanced-forms/combo-box/#json-example-based-on-api-pathes)
- 
-**Theme Generator**
+- **Dropdown:**
+  - Renamed `active` to `dropdown-active` and `disabled` to `dropdown-disabled` of dropdown items to maintain the class consitency.
 
-**New Variant in plugins : Destroy and Reinitialize**
+- **Input:**
+  - Removed `input-group`. Grouping can now be achieved by wrapping inputs with the `input` class. (Structure affected components: Input Number and Toggle Password)
 
-**Helpers**
-- [ApexChart helper](https://flyonui.com/docs/third-party-plugins/apex-charts/)
-- [Clipboard helper](https://flyonui.com/docs/third-party-plugins/clipboard/) 
- 
+- **Input Number:**
+  - Structure impacted due to the removal of the `input-group`.
+
+- **Menu:**
+  - Renamed `disabled` class to `menu-disabled`, `active` class to `menu-active` and `focus` class to `menu-focus`.
+
+- **Phone:**
+  - Renamed `camera` class to `mockup-phone-camera` and `display` class to `mockup-phone-display`.
+  - Removed the use of `artboard` in phone components.
+
+- **Range:**
+  - Rename variable name to `--range-color` from `--range-shdw`.
+
+- **Stack:**
+  - Instead of setting the width and height of the stack items, use width and height for the stack itself.
+
+- **Table:**
+  - Renamed `hover` class to `row-hover` and `active` class to `row-active`.
+
+- **Toggle Password:**
+  - Structure impacted due to the removal of the `input-group`.
+
+## Removed
+
+- The classes `vertical-scrollbar`, `horizontal-scrollbar`, and `rounded-scrollbar` has been removed.
+
+- **Alert:**
+  - Removed `alert-neutral` color.
+
+- **Artboard:**
+  - Removed all `artboard-*` and `phone-*` classes. These classes only set the width and height of the div, and now we recommend using Tailwind CSS `w-*` and `h-*` classes for better control and flexibility.
+
+- **Badge:**
+  - Removed `badge-neutral` color.
+
+- **Button:**
+  - Removed `btn-neutral` color.
+
+- **Card:**
+  - Removed `card-compact` instead use `card-sm` or any other card sizes.
+
+- **Drawer:**
+  - Removed `drawer-close` class.
+
+- **Dropdown:**
+  - Removed `[--skidding:*]` option.
+
+- **Input:**
+  - Removed `input-group`, `input-group-filled`, `input-group-text`, `input-floating-label`, `input-filled-label`, `input-filled-focused`, `label-text-alt` and `input-filled` variant.
+
+- **Progress:**
+  - Removed `progress-neutral` color.
+
+- **Radio:**
+  - The `radio-inset-{size}` and `radio-inset-{semantic-color}` classes have been removed. Now, `radio-inset` is used as a style class instead of a component class.
+
+- **Select:**
+  - Removed `select-filled` variant.
+
+- **Textarea:**
+  - Removed `textarea-filled` variant.
+
+- **Timeline:**
+  - Removed `timeline-trimmed` class.
+
 ## Updated
 
-- Preline V2.6.0
-- Updated button outlined variant [#Issue/20](https://github.com/themeselection/flyonui/issues/20)
-- Update file upload disable state styling [#Issue/22](https://github.com/themeselection/flyonui/issues/22)
-- Update `stat-value` font-size in stat component
-- Update menu-item active state style [#issue/26](https://github.com/themeselection/flyonui/issues/26)
-- Update timeline style
-- Update style for default range slider
-- The class options in Clipboard have been updated for consistency with Preline: `copy-clipboard` is now `js-clipboard`, `copy-clipboard-default` is now `js-clipboard-default`, `copy-clipboard-success` is now `js-clipboard-success`, and `copy-clipboard-success-text` is now `js-clipboard-success-text`.
+- **Updated:** [Tailwind V4.0.0](https://tailwindcss.com/docs/upgrade-guide)
+
+- **Updated:** [DaisyUI V5.0.0](https://daisyui.com/docs/changelog/)
+
+- **Updated:** [Preline V3.0.0](https://preline.co/docs/changelog.html#v3_0_0)
+
+- Updated how to use semantic colors in JS files from `'oklch(var(--bc) / 0.4)'` to `'color-mix(in oklab, var(--color-base-content) 40%, transparent)'`.
+
+- **Alert:**
+  - The neutral alert is now the default.
+
+- **Badge:**
+  - The neutral badge is now the default.
+  - Adjusted the badge sizes based on a new scale for better visual consistency.
+
+- **Button:**
+  - The neutral button is now the default.
+  - Button sizes have been adjusted to fit the new design scale.
+
+- **Checkbox:**
+  - Adjusted the size scale to better align with other components.
+
+- **Dropdown:**
+  - [Floating UI](https://floating-ui.com/) has now completely replaced Popper.js across all plugins.
+
+- **File input:**
+  - Adjusted padding and font size for a more polished look.
+
+- **Input:**
+  - Updated `input-floating` structure.
+  - Adjusted size scale for better uniformity across components.
+
+- **Keyboard:**
+  - Adjusted `kbd` height for all sizes.
+
+- **Link:**
+  - Update `font-weight:500` as default.
+
+- **Modal:**
+  - Updated `backdrop` color to `base-300/60`.
+
+- **Radio:**
+  - Adjusted the size scale to better align with other components.
+
+- **Range:**
+  - Adjusted the size scale to better align with other components.
+
+- **Select:**
+  - Updated `select-floating` structure.
+  - Adjusted size scale for better uniformity across components.
+
+- **Sidebar:**
+  - The structure for collapsible menu/sidebar has been updated.
+
+- **Textarea:**
+  - Updated `textarea-floating` structure.
+  - Adjusted size scale for better uniformity across components.
+
+- **Tooltip/Popover:**
+  - [Floating UI](https://floating-ui.com/) has now completely replaced Popper.js across all plugins.
 
 ## Fixes and Improvements
 
-- Added: global.d.ts for more convenient work with types.
-- Added: plugin.ts, the typed version of plugin.js.
-- Added: mjs versions of plugins.
-- Fixed: Update theme link in src/index.js
-- Fixed: Disabled button make it pointer event none
-- Fixed: In the smaller screen Dropdown inside collapse had a closing issue
-- Fixed: Hamburger transition issue in navbar [#Issues/18](https://github.com/themeselection/flyonui/issues/18)
-- Fixed: Update the code structure for form elements [#Issues/15](https://github.com/themeselection/flyonui/issues/15)
+- **Advance Select:**
+  - Fixed `advanced-select` search bar background not correct with themes. [#Issues/57](https://github.com/themeselection/flyonui/issues/57)
 
-## [1.1.0] - [2024-10-09]
+- **Diff:**
+  - Fixed Firefox lag issue.
 
-### Added
+- **Drawer:**
+  - Fixed edge cuts off in the narrow devices. [#Issues/38](https://github.com/themeselection/flyonui/issues/38)
 
-- Integrated the third-party  [Wave](https://flyonui.com/docs/third-party-plugins/wave-effect/) plugin for a ripple effect, enhancing interactive elements.
+- **Input:**
+  - Fixed floating input label width problem. [#Issues/56](https://github.com/themeselection/flyonui/issues/56)
 
-### Updated
+- **Loading:**
+  - Fixed a bug where Safari sometimes froze the animation.
 
-1. Corrected spelling errors for the stripped class in the table and progress sections.
-2. Fixed class specificity in card.
-3. Fixed a typo in the documentation: changed “sematic” to “semantic”. [#6](https://github.com/themeselection/flyonui/issues/6)
+- **Menu:**
+  - Fixed Menu title will have an active effect by click when it is not plain text. [#Issues/54](https://github.com/themeselection/flyonui/issues/54)
 
-## [1.0.0] - [2024-09-23]
-
-### Added
-
-- Initial Release
+- **Table:**
+  - Fixed table border bottom issue with single row. [#Issues/60](https://github.com/themeselection/flyonui/issues/60)

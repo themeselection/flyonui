@@ -1,0 +1,195 @@
+.select {
+  @apply bg-base-100 text-base-content relative inline-flex w-full shrink cursor-pointer appearance-none ps-3 pe-10 align-middle text-base select-none;
+  height: var(--size);
+  border-start-start-radius: var(--join-ss, var(--radius-field));
+  border-start-end-radius: var(--join-se, var(--radius-field));
+  border-end-start-radius: var(--join-es, var(--radius-field));
+  border-end-end-radius: var(--join-ee, var(--radius-field));
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1em' height='1em' viewBox='0 0 24 24'><path fill='none' stroke='%239293AE' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 9l6 6l6-6'/></svg>");
+  background-size: 1.3em;
+  background-position: calc(100% - 0.5rem) center;
+  background-repeat: no-repeat;
+  text-overflow: ellipsis;
+  border: var(--border) solid #0000;
+  border-color: var(--input-color);
+  --input-color: color-mix(in oklab, var(--color-base-content) 40%, #0000);
+  --size: calc(var(--size-field, 0.25rem) * 9.5);
+
+  [dir="rtl"] & {
+    background-position: calc(0% + 1.3em) center;
+  }
+  select {
+    @apply -me-10 h-full w-[calc(100%+2.75rem)] appearance-none ps-3 pe-10;
+    background-color: transparent;
+    border-style: none;
+    &:focus,
+    &:focus-within {
+      @apply outline-none;
+    }
+  }
+
+  &[multiple] {
+    background-image: none;
+  }
+
+  &:focus,
+  &:focus-within {
+    @apply shadow-xs;
+    --input-color: var(--color-primary);
+    --tw-shadow-color: color-mix(in oklab, var(--input-color) 30%, #0000);
+    outline: 1px solid var(--input-color);
+    border-color: var(--input-color);
+    isolation: isolate;
+  }
+
+  &:has(> select[disabled]),
+  &:is(:disabled, [disabled]) {
+    @apply bg-neutral/10 text-base-content/50 border-base-content/10 placeholder-base-content/50 cursor-not-allowed border-0;
+  }
+
+  &:has(> select[disabled]) > select[disabled] {
+    @apply cursor-not-allowed;
+  }
+}
+
+/*  Misc */
+
+.input > .select {
+  @apply h-auto border-0;
+  &:focus,
+  &:focus-within {
+    @apply shadow-none outline-0;
+  }
+}
+
+/* Floating select */
+
+.select:has(> .select-floating) select {
+  @apply focus:placeholder:text-base-content/50 placeholder:text-transparent;
+}
+
+.select-floating-label {
+  @apply bg-base-100 text-base-content/50 absolute start-0 top-0 ms-3 w-fit overflow-hidden px-1 text-base font-medium text-ellipsis;
+  scale: 0.75;
+  translate: -12.5% calc(-50% - 0.125em);
+}
+
+.select-floating {
+  @apply relative block w-full;
+
+  .select {
+    @apply focus:placeholder:text-base-content/50 placeholder:text-transparent;
+
+    &:has(> select[disabled]),
+    &:is(:disabled, [disabled]) {
+      @apply border bg-transparent opacity-50;
+      & ~ .select-floating-label {
+        @apply text-base-content/30;
+      }
+    }
+  }
+
+  &:focus-within,
+  &:has(.select:focus) {
+    .select-floating-label {
+      --input-color: var(--color-primary);
+      color: var(--input-color);
+    }
+  }
+
+  &:has(.select-xs) .select-floating-label {
+    @apply ms-2.5 text-sm;
+  }
+  &:has(.select-sm) .select-floating-label {
+    @apply ms-2.5 text-sm;
+  }
+  &:has(.select-md) .select-floating-label {
+    @apply ms-3 text-base;
+  }
+  &:has(.select-lg) .select-floating-label {
+    @apply ms-4 text-lg;
+  }
+  &:has(.select-xl) .select-floating-label {
+    @apply ms-4.5 text-xl;
+  }
+}
+
+/* Floating States */
+
+.select-floating:has(.is-valid),
+.validate .select-floating:has(:valid) {
+  .select-floating-label {
+    color: var(--color-success);
+  }
+
+  &:focus-within,
+  &:not(:has(select:placeholder-shown)),
+  &:has(.select:focus) {
+    .select-floating-label {
+      color: var(--color-success);
+    }
+  }
+}
+
+/* Error state */
+
+.select-floating:has(.is-invalid),
+.validate .select-floating:has(:invalid) {
+  .select-floating-label {
+    color: var(--color-error);
+  }
+
+  &:focus-within,
+  &:not(:has(select:placeholder-shown)),
+  &:has(.select:focus) {
+    .select-floating-label {
+      color: var(--color-error);
+    }
+  }
+}
+
+/* Sizes */
+.select-xs {
+  --size: calc(var(--size-field, 0.25rem) * 6);
+  @apply ps-2.5 pe-8 text-xs;
+
+  select {
+    @apply -me-8 ps-2.5 pe-8;
+  }
+}
+
+.select-sm {
+  --size: calc(var(--size-field, 0.25rem) * 7.5);
+  @apply ps-2.5 pe-8 text-sm;
+
+  select {
+    @apply -me-8 ps-2.5 pe-8;
+  }
+}
+
+.select-md {
+  --size: calc(var(--size-field, 0.25rem) * 9.5);
+  @apply ps-3 pe-10 text-base;
+
+  select {
+    @apply -me-10 ps-3 pe-10;
+  }
+}
+
+.select-lg {
+  --size: calc(var(--size-field, 0.25rem) * 11.5);
+  @apply px-4 pe-10 text-lg;
+
+  select {
+    @apply -me-10 ps-4 pe-10;
+  }
+}
+
+.select-xl {
+  --size: calc(var(--size-field, 0.25rem) * 14);
+  @apply px-4.5 pe-10 text-xl;
+
+  select {
+    @apply -me-10 ps-4.5 pe-10;
+  }
+}

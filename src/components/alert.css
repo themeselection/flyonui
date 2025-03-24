@@ -1,0 +1,51 @@
+.alert {
+  @apply rounded-box text-neutral-content relative w-full p-4;
+  text-align: start;
+  background-size: auto, calc(var(--noise) * 100%);
+  background-image: none, var(--fx-noise);
+  background-color: var(--alert-bg);
+  border: var(--border) solid var(--alert-border);
+  box-shadow: 0 0.1875rem 0 -0.125rem oklch(100% 0 0 / calc(var(--depth) * 0.08)) inset;
+  --alert-bg: var(--alert-color, var(--color-neutral));
+  --alert-border: var(--alert-color, var(--color-neutral));
+
+  &.alert-outline {
+    color: var(--alert-color, var(--color-neutral));
+    --alert-bg: transparent;
+    box-shadow: none;
+    background-image: none;
+  }
+
+  &.alert-soft {
+    color: var(--alert-color, var(--color-neutral));
+    --alert-bg: color-mix(in oklab, var(--alert-color, var(--color-neutral)) 10%, var(--color-base-100));
+    box-shadow: none;
+    background-image: none;
+  }
+}
+
+/* alert colors */
+.alert-primary {
+  @apply text-primary-content;
+  --alert-color: var(--color-primary);
+}
+
+.alert-info {
+  @apply text-info-content;
+  --alert-color: var(--color-info);
+}
+
+.alert-success {
+  @apply text-success-content;
+  --alert-color: var(--color-success);
+}
+
+.alert-warning {
+  @apply text-warning-content;
+  --alert-color: var(--color-warning);
+}
+
+.alert-error {
+  @apply text-error-content;
+  --alert-color: var(--color-error);
+}

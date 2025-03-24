@@ -1,5 +1,5 @@
 /*
- * @version: 2.7.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -22,7 +22,7 @@ function buildTooltip(props: IChartProps, options: IBuildTooltipHelperOptions) {
     seriesExtClasses = '',
     titleClasses = '!text-sm !font-semibold !bg-base-100 !border-base-content/40 text-base-content rounded-t-lg !px-2.5',
     titleExtClasses = '',
-    markerClasses = '!w-2.5 !h-2.5 !me-1.5 rtl:!mr-0',
+    markerClasses = '!w-2.5 !h-2.5 !me-1.5 rtl:!mr-0 !rounded-full',
     markerExtClasses = '',
     valueClasses = '!font-medium text-base-content/80 !ms-auto',
     valueExtClasses = '',
@@ -92,7 +92,7 @@ function buildTooltipCompareTwo(props: IChartProps, options: IBuildTooltipHelper
     seriesExtClasses = '',
     titleClasses = '!text-sm !font-semibold !bg-base-100 !border-base-content/40 text-base-content rounded-t-lg !px-2.5',
     titleExtClasses = 'flex justify-between',
-    markerClasses = '!w-2.5 !h-2.5 !me-1.5',
+    markerClasses = '!w-2.5 !h-2.5 !me-1.5 !rounded-full',
     markerExtClasses = '',
     valueClasses = '!font-medium text-base-content/80 !ms-auto',
     valueExtClasses = '',
@@ -172,7 +172,7 @@ function buildTooltipCompareTwoAlt(props: IChartProps, options: IBuildTooltipHel
     seriesExtClasses = '',
     titleClasses = '!text-sm !font-semibold !bg-base-100 !border-base-content/40 text-base-content rounded-t-lg flex !justify-between !px-2.5',
     titleExtClasses = '',
-    markerClasses = '!w-2.5 !h-2.5 !me-1.5',
+    markerClasses = '!w-2.5 !h-2.5 !me-1.5 !rounded-full',
     markerExtClasses = '',
     valueClasses = '!font-medium text-base-content/80 !ms-auto',
     valueExtClasses = '',
@@ -260,4 +260,3 @@ function buildChart(id: string, shared: Function) {
 }
 
 export { buildChart, buildTooltip, buildTooltipCompareTwo, buildTooltipCompareTwoAlt, buildTooltipForDonut }
-

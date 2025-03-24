@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-latest
     env:
-      runtime: npm
+      runtime: bun
     outputs:
       flyonuiversion: ${{ steps.package-version.outputs.version }}
     steps:
@@ -25,11 +25,14 @@ jobs:
           node-version: "latest"
           registry-url: https://registry.npmjs.org
 
+      - name: Remove everything first
+        run: rm -rf ./base/ ./colors/ ./components/ ./dist/ ./theme/ ./utilities/ ./flyonui.css ./flyonui.js ./flyonui.d.ts ./chunks.css ./imports.js ./themes.css node_modules bun.lock
+
       - name: Install package dependencies
         run: ${{ env.runtime }} install
 
       - name: Build package
-        run: ${{ env.runtime }} run dist
+        run: ${{ env.runtime }} build:css && ${{ env.runtime }} build:js && ${{ env.runtime }} build:mjs && ${{ env.runtime }} build:generate-dts && ${{ env.runtime }} build:flyonui
 
       - name: Read package version from package.json
         id: package-version

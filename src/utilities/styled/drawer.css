@@ -1,6 +1,0 @@
-.drawer-start,
-.drawer-end,
-.drawer-top,
-.drawer-bottom {
-  @apply transform transition-all duration-300 ease-in-out;
-}

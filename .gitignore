@@ -1,18 +1,25 @@
+/package
+/base
+/colors
+/components
+/utilities
+/theme
+
+/imports.js
+
+/flyonui.css
+/chunks.css
+/themes.css
+/dist
+
+
 # Dependency directories
 node_modules/
 jspm_packages/
 yarn.lock
 pnpm-lock.yaml
-/package-lock.json
-/documentation/package-lock.json
-
-
-
-#output Folder
-/dist
-/colors
-/index.js
-/coverage
+package-lock.json
+bun.lock
 
 # System Files
 .DS_Store

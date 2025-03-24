@@ -1,0 +1,78 @@
+.modal {
+  @apply pointer-events-none fixed inset-0 z-80 m-0 grid size-full justify-items-center p-4 opacity-0 transition-all duration-500;
+}
+
+.modal-dialog {
+  @apply mx-auto w-full opacity-0 transition-all duration-500 sm:max-w-128;
+}
+
+.modal-content {
+  @apply bg-base-100 pointer-events-auto flex transform flex-col rounded-lg shadow-xl transition duration-300 ease-out;
+  max-height: calc(100vh - 2rem);
+  overscroll-behavior: contain;
+}
+
+.modal-header {
+  @apply relative flex items-center justify-between p-6;
+}
+
+.modal-title {
+  @apply text-base-content text-2xl font-semibold;
+}
+
+.modal-body {
+  @apply overflow-x-hidden overflow-y-auto p-6 text-base font-normal [&::-webkit-scrollbar]:w-2;
+}
+
+.modal-footer {
+  @apply flex items-center justify-end gap-3 p-6;
+}
+
+:where(.modal-header) + .modal-body {
+  padding-top: 0;
+}
+
+:where(.modal-body) + .modal-footer {
+  padding-top: 0;
+}
+
+.modal-top {
+  @apply place-items-start;
+}
+.modal-top-start {
+  @apply justify-start;
+}
+.modal-top-end {
+  @apply justify-end;
+}
+.modal-middle {
+  @apply place-items-center;
+}
+.modal-middle-start {
+  @apply place-items-center justify-start;
+}
+.modal-middle-end {
+  @apply place-items-center justify-end;
+}
+.modal-bottom {
+  @apply place-items-end;
+}
+.modal-bottom-start {
+  @apply place-items-end justify-start;
+}
+.modal-bottom-end {
+  @apply place-items-end justify-end;
+}
+
+.modal-dialog-sm {
+  @apply max-w-96;
+}
+.modal-dialog-md {
+  @apply max-w-128;
+}
+.modal-dialog-lg {
+  @apply max-w-192;
+}
+.modal-dialog-xl {
+  @apply max-w-256;
+}

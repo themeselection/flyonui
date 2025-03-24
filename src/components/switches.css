@@ -1,0 +1,195 @@
+.switch {
+  border: var(--border) solid #0000;
+  color: var(--color-base-100);
+  @apply relative inline-grid shrink-0 cursor-pointer appearance-none place-content-center rounded-full align-middle select-none print:[outline:.25rem_solid];
+  grid-template-columns: 0fr 1fr 1fr;
+  padding: var(--toggle-p);
+  box-shadow: 0 1px color-mix(in oklab, currentColor calc(var(--depth) * 10%), #0000) inset;
+  background-color: var(--input-color);
+  transition:
+    color 0.3s,
+    grid-template-columns 0.2s;
+  --input-color: var(--color-neutral);
+  --toggle-p: 0.1875rem;
+  --size: calc(var(--size-selector, 0.25rem) * 6);
+  width: calc((var(--size) * 2) - (var(--border) + var(--toggle-p)) * 2);
+  height: var(--size);
+
+  &:before {
+    @apply relative start-0 col-start-2 row-start-1 aspect-square h-full rounded-full bg-current print:[outline:.25rem_solid] print:[outline-offset:-1rem];
+    translate: 0;
+    --tw-content: "";
+    content: var(--tw-content);
+    transition:
+      background-color 0.1s,
+      translate 0.2s,
+      inset-inline-start 0.2s;
+    box-shadow:
+      0 -1px oklch(59.99% 0 0 / calc(var(--depth) * 0.08)) inset,
+      0 8px 0 -4px oklch(59.99% 0 0 / calc(var(--depth) * 0.08)) inset,
+      0 1px 2px 0 oklch(0% 0 0 / 0.2);
+    background-size: auto, calc(var(--noise) * 100%);
+    background-image: none, var(--fx-noise);
+    @media (forced-colors: active) {
+      @apply outline -outline-offset-1;
+    }
+  }
+
+  &:focus-visible,
+  &:has(:focus-visible) {
+    outline: 2px solid color-mix(in oklab, var(--input-color, var(--color-neutral)) 30%, #0000);
+    outline-offset: 0px;
+  }
+
+  &:checked,
+  &[aria-checked="true"],
+  &:has(> input:checked) {
+    grid-template-columns: 1fr 1fr 0fr;
+    background-color: var(--input-color);
+
+    &:before {
+      @apply bg-current;
+
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+
+  &:indeterminate {
+    grid-template-columns: 0.5fr 1fr 0.5fr;
+  }
+
+  &:disabled {
+    @apply cursor-not-allowed opacity-40;
+
+    &:before {
+      @apply bg-transparent;
+    }
+  }
+}
+
+/* Variant */
+
+.switch-outline {
+  background-color: var(--color-base-100);
+  color: var(--input-color);
+  border-color: var(--input-color);
+
+  &::before {
+    box-shadow:
+      0 -1px oklch(0% 0 0 / calc(var(--depth) * 0.1)) inset,
+      0 8px 0 -4px oklch(100% 0 0 / calc(var(--depth) * 0.1)) inset,
+      0 1px 2px 0 oklch(0% 0 0 / 0.2);
+  }
+
+  &:checked,
+  &[aria-checked="true"],
+  &:has(> input:checked) {
+    grid-template-columns: 1fr 1fr 0fr;
+    color: var(--input-color);
+    background-color: var(--color-base-100);
+    border-color: var(--input-color);
+
+    &:before {
+      @apply bg-current;
+
+      @starting-style {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+/* Sizes */
+
+.switch-primary {
+  &:checked,
+  &[aria-checked="true"] {
+    --input-color: var(--color-primary);
+  }
+}
+
+.switch-secondary {
+  &:checked,
+  &[aria-checked="true"] {
+    --input-color: var(--color-secondary);
+  }
+}
+
+.switch-accent {
+  &:checked,
+  &[aria-checked="true"] {
+    --input-color: var(--color-accent);
+  }
+}
+
+.switch-success {
+  &:checked,
+  &[aria-checked="true"] {
+    --input-color: var(--color-success);
+  }
+}
+
+.switch-warning {
+  &:checked,
+  &[aria-checked="true"] {
+    --input-color: var(--color-warning);
+  }
+}
+
+.switch-info {
+  &:checked,
+  &[aria-checked="true"] {
+    --input-color: var(--color-info);
+  }
+}
+
+.switch-error {
+  &:checked,
+  &[aria-checked="true"] {
+    --input-color: var(--color-error);
+  }
+}
+
+/* responsive */
+
+.switch-xs {
+  &:is([type="checkbox"]),
+  &:has([type="checkbox"]) {
+    --toggle-p: 0.0625rem;
+    --size: calc(var(--size-selector, 0.25rem) * 4);
+  }
+}
+
+.switch-sm {
+  &:is([type="checkbox"]),
+  &:has([type="checkbox"]) {
+    --toggle-p: 0.125rem;
+    --size: calc(var(--size-selector, 0.25rem) * 5);
+  }
+}
+
+.switch-md {
+  &:is([type="checkbox"]),
+  &:has([type="checkbox"]) {
+    --toggle-p: 0.1875rem;
+    --size: calc(var(--size-selector, 0.25rem) * 6);
+  }
+}
+
+.switch-lg {
+  &:is([type="checkbox"]),
+  &:has([type="checkbox"]) {
+    --toggle-p: 0.25rem;
+    --size: calc(var(--size-selector, 0.25rem) * 7);
+  }
+}
+
+.switch-xl {
+  &:is([type="checkbox"]),
+  &:has([type="checkbox"]) {
+    --toggle-p: 0.3125rem;
+    --size: calc(var(--size-selector, 0.25rem) * 8);
+  }
+}

@@ -1,0 +1,33 @@
+@custom-variant dropdown-open {
+  &.dropdown-menu.open {
+    @slot;
+  }
+
+  .dropdown.open > & {
+    @slot;
+  }
+
+  .dropdown.open > .dropdown-toggle & {
+    @slot;
+  }
+
+  .dropdown.open > .dropdown-menu > & {
+    @slot;
+  }
+}
+
+@custom-variant dropdown-item-disabled {
+  .dropdown.open > .dropdown-menu &.disabled {
+    @slot;
+  }
+}
+
+@custom-variant dropdown-item-checked {
+  .dropdown.open .dropdown-menu [aria-checked="true"] & {
+    @slot;
+  }
+
+  .dropdown.open .dropdown-menu &[aria-checked="true"] {
+    @slot;
+  }
+}

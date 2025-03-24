@@ -1,6 +1,0 @@
-.range {
-  @apply h-2 w-full;
-  &:focus {
-    outline: none;
-  }
-}

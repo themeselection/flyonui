@@ -1,0 +1,9 @@
+@custom-variant pin-input-active {
+  &.active {
+    @slot;
+  }
+
+  .active & {
+    @slot;
+  }
+}

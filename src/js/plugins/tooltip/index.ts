@@ -1,19 +1,19 @@
 /*
  * HSTooltip
- * @version: 2.7.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { createPopper, Instance, PositioningStrategy } from '@popperjs/core'
-import { afterTransition, dispatch, getClassProperty } from '../../utils'
+import { type Strategy, computePosition, autoUpdate, offset, flip, shift } from '@floating-ui/dom'
+import { getClassProperty, dispatch, afterTransition } from '../../utils'
 
 import { ITooltip } from './interfaces'
 import { TTooltipOptionsScope } from './types'
 
-import { ICollectionItem } from '../../interfaces'
 import HSBasePlugin from '../base-plugin'
+import { ICollectionItem } from '../../interfaces'
 
 import { POSITIONS } from '../../constants'
 
@@ -21,12 +21,13 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
   private readonly toggle: HTMLElement | null
   public content: HTMLElement | null
   readonly eventMode: string
-  private readonly preventPopper: string
-  private popperInstance: Instance | null
+  private readonly preventFloatingUI: string
   private readonly placement: string
   private readonly interaction: string
-  private readonly strategy: PositioningStrategy
+  private readonly strategy: Strategy
   private readonly scope: TTooltipOptionsScope
+
+  cleanupAutoUpdate: (() => void) | null = null
 
   private onToggleClickListener: () => void
   private onToggleFocusListener: () => void
@@ -41,10 +42,11 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
       this.toggle = this.el.querySelector('.tooltip-toggle') || this.el
       this.content = this.el.querySelector('.tooltip-content')
       this.eventMode = getClassProperty(this.el, '--trigger') || 'hover'
-      this.preventPopper = getClassProperty(this.el, '--prevent-popper', 'false')
+
+      this.preventFloatingUI = getClassProperty(this.el, '--prevent-popper', 'false')
       this.placement = getClassProperty(this.el, '--placement')
       this.interaction = getClassProperty(this.el, '--interaction', 'true')
-      this.strategy = getClassProperty(this.el, '--strategy') as PositioningStrategy
+      this.strategy = getClassProperty(this.el, '--strategy') as Strategy
       this.scope = (getClassProperty(this.el, '--scope') as TTooltipOptionsScope) || 'parent'
     }
 
@@ -93,7 +95,7 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
       this.toggle.addEventListener('mouseleave', this.onToggleMouseLeaveListener)
     }
 
-    if (this.preventPopper === 'false') this.buildPopper()
+    this.buildFloatingUI()
   }
 
   private enter() {
@@ -103,7 +105,8 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
   private leave() {
     this.hide()
   }
-  //  This function is updated.
+
+  //  This function is updated in flyonui.
   private click() {
     if (this.el.classList.contains('show')) {
       this.hide()
@@ -118,7 +121,8 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
       this.toggle.addEventListener('blur', this.onToggleHandleListener, true)
     }
   }
-  //  This function is updated which add interaction to the tooltip
+
+  //  This is added in FlyonUI
   private focus() {
     this._show()
     if (this.interaction === 'true') {
@@ -146,20 +150,41 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
     }
   }
 
-  private buildPopper() {
+  private buildFloatingUI() {
     if (this.scope === 'window') document.body.appendChild(this.content)
+    const position = POSITIONS[this.placement] ?? 'top'
+    const verticalPositions = new Set(['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end'])
+    const isVerticalPosition = verticalPositions.has(position)
 
-    this.popperInstance = createPopper(this.toggle, this.content, {
+    const isFloatingAllowed = this.preventFloatingUI === 'false'
+    const shouldApplyShift = isFloatingAllowed && isVerticalPosition
+    const shouldApplyFlip = isFloatingAllowed
+
+    const middleware = [offset(0), ...(shouldApplyShift ? [shift()] : []), ...(shouldApplyFlip ? [flip()] : [])]
+
+    computePosition(this.toggle, this.content, {
       placement: POSITIONS[this.placement] || 'top',
       strategy: this.strategy || 'fixed',
-      modifiers: [
-        {
-          name: 'offset',
-          options: {
-            offset: [0, 0]
-          }
-        }
-      ]
+      middleware: middleware
+    }).then(({ x, y }: { x: number; y: number }) => {
+      Object.assign(this.content.style, {
+        position: this.strategy || 'fixed',
+        left: `${x}px`,
+        top: `${y}px`
+      })
+    })
+
+    this.cleanupAutoUpdate = autoUpdate(this.toggle, this.content, () => {
+      computePosition(this.toggle, this.content, {
+        placement: POSITIONS[this.placement] || 'top',
+        strategy: this.strategy || 'fixed',
+        middleware: middleware
+      }).then(({ x, y }: { x: number; y: number }) => {
+        Object.assign(this.content.style, {
+          left: `${x}px`,
+          top: `${y}px`
+        })
+      })
     })
   }
 
@@ -167,20 +192,7 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
     this.content.classList.remove('hidden')
     if (this.scope === 'window') this.content.classList.add('show')
 
-    if (this.preventPopper === 'false') {
-      this.popperInstance.setOptions(options => ({
-        ...options,
-        modifiers: [
-          ...options.modifiers,
-          {
-            name: 'eventListeners',
-            enabled: true
-          }
-        ]
-      }))
-
-      this.popperInstance.update()
-    }
+    if (!this.cleanupAutoUpdate) this.buildFloatingUI()
 
     setTimeout(() => {
       this.el.classList.add('show')
@@ -212,17 +224,10 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
     this.el.classList.remove('show')
     if (this.scope === 'window') this.content.classList.remove('show')
 
-    if (this.preventPopper === 'false') {
-      this.popperInstance.setOptions(options => ({
-        ...options,
-        modifiers: [
-          ...options.modifiers,
-          {
-            name: 'eventListeners',
-            enabled: false
-          }
-        ]
-      }))
+    if (this.cleanupAutoUpdate) {
+      this.cleanupAutoUpdate()
+
+      this.cleanupAutoUpdate = null
     }
 
     this.fireEvent('hide', this.el)
@@ -232,6 +237,7 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
       if (this.el.classList.contains('show')) return false
 
       this.content.classList.add('hidden')
+
       this.toggle.style.outline = ''
     })
   }
@@ -253,8 +259,10 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
     this.toggle.removeEventListener('click', this.onToggleHandleListener, true)
     this.toggle.removeEventListener('blur', this.onToggleHandleListener, true)
 
-    this.popperInstance.destroy()
-    this.popperInstance = null
+    if (this.cleanupAutoUpdate) {
+      this.cleanupAutoUpdate()
+      this.cleanupAutoUpdate = null
+    }
 
     window.$hsTooltipCollection = window.$hsTooltipCollection.filter(({ element }) => element.el !== this.el)
   }

@@ -1,0 +1,13 @@
+.navbar {
+  @apply bg-base-100 flex w-full items-center px-6 py-3;
+}
+
+.navbar-start {
+  @apply flex w-1/2 justify-start;
+}
+.navbar-center {
+  @apply shrink-0;
+}
+.navbar-end {
+  @apply flex w-1/2 justify-end;
+}

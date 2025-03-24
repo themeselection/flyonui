@@ -1,0 +1,93 @@
+.badge {
+  @apply rounded-selector inline-flex items-center justify-center gap-1.5 text-center align-middle text-sm;
+  border: var(--border) solid var(--badge-border);
+  padding-inline: calc(0.25rem * 3 - var(--border));
+  width: fit-content;
+  color: var(--badge-fg);
+  background-size: auto, calc(var(--noise) * 100%);
+  background-image: none, var(--fx-noise);
+  background-color: var(--badge-bg);
+  --badge-border: var(--badge-color, var(--color-neutral));
+  --badge-bg: var(--badge-color, var(--color-neutral));
+  --badge-fg: var(--color-neutral-content);
+  --size: calc(var(--size-selector, 0.25rem) * 6);
+  height: var(--size);
+
+  &.badge-outline {
+    --badge-fg: var(--badge-color, var(--color-neutral));
+    --badge-bg: transparent;
+    background-image: none;
+  }
+
+  &.badge-soft {
+    --badge-border: none;
+    --badge-fg: var(--badge-color, var(--color-neutral));
+    --badge-bg: color-mix(in oklab, var(--badge-color, var(--color-neutral)) 10%, var(--color-base-100));
+    background-image: none;
+  }
+}
+
+.badge-primary {
+  --badge-color: var(--color-primary);
+  --badge-fg: var(--color-primary-content);
+}
+
+.badge-secondary {
+  --badge-color: var(--color-secondary);
+  --badge-fg: var(--color-secondary-content);
+}
+
+.badge-accent {
+  --badge-color: var(--color-accent);
+  --badge-fg: var(--color-accent-content);
+}
+
+.badge-info {
+  --badge-color: var(--color-info);
+  --badge-fg: var(--color-info-content);
+}
+
+.badge-success {
+  --badge-color: var(--color-success);
+  --badge-fg: var(--color-success-content);
+}
+
+.badge-warning {
+  --badge-color: var(--color-warning);
+  --badge-fg: var(--color-warning-content);
+}
+
+.badge-error {
+  --badge-color: var(--color-error);
+  --badge-fg: var(--color-error-content);
+}
+
+.badge-xs {
+  --size: calc(var(--size-selector, 0.25rem) * 4);
+  font-size: 0.625rem;
+  padding-inline: calc(0.25rem * 1.5 - var(--border));
+}
+
+.badge-sm {
+  @apply text-xs;
+  --size: calc(var(--size-selector, 0.25rem) * 5);
+  padding-inline: calc(0.25rem * 2 - var(--border));
+}
+
+.badge-md {
+  @apply text-sm;
+  --size: calc(var(--size-selector, 0.25rem) * 6);
+  padding-inline: calc(0.25rem * 3 - var(--border));
+}
+
+.badge-lg {
+  @apply text-base;
+  --size: calc(var(--size-selector, 0.25rem) * 7);
+  padding-inline: calc(0.25rem * 3.5 - var(--border));
+}
+
+.badge-xl {
+  @apply text-lg;
+  --size: calc(var(--size-selector, 0.25rem) * 8);
+  padding-inline: calc(0.25rem * 4 - var(--border));
+}

@@ -1,9 +1,0 @@
-.radial-progress {
-  --value: 0;
-  --size: 5rem;
-  --thickness: calc(var(--size) / 10);
-  @apply text-base-content font-medium;
-}
-.radial-progress:after {
-  @apply bg-current;
-}

@@ -1,0 +1,190 @@
+.textarea {
+  @apply text-base-content rounded-field placeholder:text-base-content/50 bg-base-100 inline-flex min-h-20 w-full shrink appearance-none px-4 py-2 text-base;
+  @apply hover:border-base-content/60 focus-visible:outline-none;
+  border: var(--border) solid #0000;
+  border-color: var(--input-color);
+  --input-color: color-mix(in oklab, var(--color-base-content) 40%, #0000);
+
+  :where(textarea) {
+    @apply appearance-none bg-transparent;
+    border: none;
+
+    &:focus,
+    &:focus-within {
+      @apply outline-none;
+    }
+  }
+
+  &:focus,
+  &:focus-within {
+    @apply shadow-xs;
+    --input-color: var(--color-primary);
+    --tw-shadow-color: color-mix(in oklab, var(--input-color) 30%, #0000);
+    outline: 1px solid var(--input-color);
+    border-color: var(--input-color);
+    isolation: isolate;
+  }
+
+  &:has(> textarea[disabled]),
+  &:is(:disabled, [disabled]) {
+    @apply border-base-200 bg-base-200 placeholder-base-content text-base-content/40 placeholder-base-content/20 cursor-not-allowed;
+  }
+
+  &:has(> textarea[disabled]) > textarea[disabled] {
+    @apply cursor-not-allowed;
+  }
+}
+
+.textarea:has(> textarea) {
+  @apply p-0;
+
+  textarea {
+    @apply h-auto min-h-20 w-full;
+    &:first-child {
+      @apply py-2 ps-4;
+    }
+    &:last-child {
+      @apply py-2 pe-4;
+    }
+  }
+}
+
+.textarea:has(> .textarea-floating) {
+  @apply p-0;
+
+  :where(.textarea-floating:first-child) > textarea {
+    @apply py-2 ps-4;
+  }
+
+  :where(.textarea-floating:last-child) > textarea {
+    @apply py-2 pe-4;
+  }
+
+  :where(.textarea-floating:last-child) .textarea-floating-label {
+    @apply ms-0;
+  }
+
+  & * > textarea {
+    @apply size-full min-h-20;
+  }
+}
+
+.textarea:has(> .textarea-floating) textarea {
+  @apply focus:placeholder:text-base-content/50 placeholder:text-transparent;
+}
+.textarea-floating-label {
+  @apply text-base-content/50 pointer-events-none absolute start-0 ms-4 w-fit overflow-hidden bg-transparent text-base text-ellipsis;
+  top: 9px;
+  inset-inline-start: 1px;
+  transition:
+    top 0.1s ease-out,
+    translate 0.1s ease-out,
+    scale 0.1s ease-out,
+    opacity 0.1s ease-out;
+}
+
+.textarea-floating {
+  @apply relative block w-full;
+
+  .textarea {
+    @apply focus:placeholder:text-base-content/50 placeholder:text-transparent;
+    field-sizing: content;
+
+    &:has(> textarea[disabled]),
+    &:is(:disabled, [disabled]) {
+      @apply border-base-content/40 border bg-transparent opacity-50 placeholder:text-transparent;
+      & ~ .textarea-floating-label {
+        @apply text-base-content/30;
+      }
+    }
+  }
+  &:focus-within,
+  &:not(:has(textarea:placeholder-shown)),
+  &:has(.textarea:focus) {
+    .textarea-floating-label {
+      @apply bg-base-100 text-base-content/50 pointer-events-auto top-0 px-1 font-medium;
+      translate: -12.5% calc(-50% - 0.125em);
+      scale: 0.75;
+    }
+  }
+
+  &:focus-within,
+  &:has(.textarea:focus) {
+    .textarea-floating-label {
+      --input-color: var(--color-primary);
+      color: var(--input-color);
+    }
+  }
+
+  &:has(.textarea-xs) .textarea-floating-label {
+    @apply text-xs;
+  }
+  &:has(.textarea-sm) .textarea-floating-label {
+    @apply text-sm;
+  }
+  &:has(.textarea-md) .textarea-floating-label {
+    @apply text-base;
+  }
+  &:has(.textarea-lg) .textarea-floating-label {
+    @apply text-lg;
+  }
+  &:has(.textarea-xl) .textarea-floating-label {
+    @apply text-xl;
+  }
+}
+
+/* Floating States */
+
+.textarea-floating:has(.is-valid),
+.validate .textarea-floating:has(:valid) {
+  .textarea-floating-label {
+    color: var(--color-success);
+  }
+
+  &:focus-within,
+  &:not(:has(textarea:placeholder-shown)),
+  &:has(.textarea:focus) {
+    .textarea-floating-label {
+      color: var(--color-success);
+    }
+  }
+}
+
+/* Error state */
+
+.textarea-floating:has(.is-invalid),
+.validate .textarea-floating:has(:invalid) {
+  .textarea-floating-label {
+    color: var(--color-error);
+  }
+
+  &:focus-within,
+  &:not(:has(textarea:placeholder-shown)),
+  &:has(.textarea:focus) {
+    .textarea-floating-label {
+      color: var(--color-error);
+    }
+  }
+}
+
+/* Sizes */
+
+.textarea-xs {
+  @apply text-xs;
+}
+
+.textarea-sm {
+  @apply text-sm;
+}
+
+.textarea-md {
+  @apply text-base;
+}
+
+.textarea-lg {
+  @apply text-lg;
+}
+
+.textarea-xl {
+  @apply text-xl;
+}

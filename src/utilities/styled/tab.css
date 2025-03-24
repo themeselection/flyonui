@@ -1,8 +1,0 @@
-.tabs-bordered.tabs-vertical {
-  @apply flex-col;
-
-  & > .tab {
-    @apply w-full justify-start border-b-0;
-    border-inline-end-width: calc(var(--tab-border, 1px) + 1px);
-  }
-}

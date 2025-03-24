@@ -1,32 +1,40 @@
 /*
  * HSDropdown
- * @version: 2.7.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
 import {
-  afterTransition,
-  dispatch,
+  stringToBoolean,
   getClassProperty,
   getClassPropertyAlt,
   isIOS,
   isIpadOS,
-  menuSearchHistory,
-  stringToBoolean
+  dispatch,
+  afterTransition,
+  menuSearchHistory
 } from '../../utils'
 import { IMenuSearchHistory } from '../../utils/interfaces'
 
-import { createPopper, PositioningStrategy, VirtualElement } from '@popperjs/core'
+import {
+  type Placement,
+  type Strategy,
+  computePosition,
+  autoUpdate,
+  offset,
+  flip,
+  VirtualElement
+} from '@floating-ui/dom'
 
-import { ICollectionItem } from '../../interfaces'
+import { IDropdown, IHTMLElementFloatingUI } from '../dropdown/interfaces'
 import HSBasePlugin from '../base-plugin'
-import { IDropdown, IHTMLElementPopper } from '../dropdown/interfaces'
+import { ICollectionItem } from '../../interfaces'
 
-import { DROPDOWN_ACCESSIBILITY_KEY_SET, POSITIONS } from '../../constants'
+import { POSITIONS, DROPDOWN_ACCESSIBILITY_KEY_SET } from '../../constants'
 
-class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdown {
+class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDropdown {
   private static history: IMenuSearchHistory
   private readonly toggle: HTMLElement | null
   private readonly closers: HTMLElement[] | null
@@ -35,11 +43,14 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
   private closeMode: string
   private hasAutofocus: boolean
   private animationInProcess: boolean
+  private longPressTimer: number | null = null
 
   private onElementMouseEnterListener: () => void | null
   private onElementMouseLeaveListener: () => void | null
   private onToggleClickListener: (evt: Event) => void | null
   private onToggleContextMenuListener: (evt: Event) => void | null
+  private onTouchStartListener: ((evt: TouchEvent) => void) | null = null
+  private onTouchEndListener: ((evt: TouchEvent) => void) | null = null
   private onCloserClickListener:
     | {
         el: HTMLButtonElement
@@ -47,7 +58,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
       }[]
     | null
 
-  constructor(el: IHTMLElementPopper, options?: {}, events?: {}) {
+  constructor(el: IHTMLElementFloatingUI, options?: {}, events?: {}) {
     super(el, options, events)
 
     this.toggle =
@@ -82,6 +93,31 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     evt.preventDefault()
 
     this.onContextMenuHandler(evt)
+  }
+
+  private handleTouchStart(evt: TouchEvent): void {
+    this.longPressTimer = window.setTimeout(() => {
+      evt.preventDefault()
+
+      const touch = evt.touches[0]
+      const contextMenuEvent = new MouseEvent('contextmenu', {
+        bubbles: true,
+        cancelable: true,
+        view: window,
+        clientX: touch.clientX,
+        clientY: touch.clientY
+      })
+
+      if (this.toggle) this.toggle.dispatchEvent(contextMenuEvent)
+    }, 400)
+  }
+
+  private handleTouchEnd(evt: TouchEvent): void {
+    if (this.longPressTimer) {
+      clearTimeout(this.longPressTimer)
+
+      this.longPressTimer = null
+    }
   }
 
   private closerClick() {
@@ -119,8 +155,13 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
 
     if (this.eventMode === 'contextmenu') {
       this.onToggleContextMenuListener = (evt: MouseEvent) => this.toggleContextMenu(evt)
+      this.onTouchStartListener = this.handleTouchStart.bind(this)
+      this.onTouchEndListener = this.handleTouchEnd.bind(this)
 
       this.toggle.addEventListener('contextmenu', this.onToggleContextMenuListener)
+      this.toggle.addEventListener('touchstart', this.onTouchStartListener, { passive: false })
+      this.toggle.addEventListener('touchend', this.onTouchEndListener)
+      this.toggle.addEventListener('touchmove', this.onTouchEndListener)
     } else {
       this.onToggleClickListener = evt => this.toggleClick(evt)
 
@@ -195,7 +236,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
   private onMouseEnterHandler() {
     if (this.eventMode !== 'hover') return false
 
-    if (this.el._popper) this.forceClearState()
+    if (!this.el._floatingUI || (this.el._floatingUI && !this.el.classList.contains('open'))) this.forceClearState()
 
     if (!this.el.classList.contains('open') && this.menu.classList.contains('hidden')) {
       this.open()
@@ -210,8 +251,8 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     }
   }
 
-  private destroyPopper() {
-    const scope = (window.getComputedStyle(this.el).getPropertyValue('--scope') || '').replace(' ', '')
+  private destroyFloatingUI() {
+    const scope = (window.getComputedStyle(this.el).getPropertyValue('--scope') || '').trim()
 
     this.menu.classList.remove('block')
     this.menu.classList.add('hidden')
@@ -219,38 +260,14 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     this.menu.style.inset = null
     this.menu.style.position = null
 
-    if (this.el && this.el._popper) this.el._popper.destroy()
+    if (this.el && this.el._floatingUI) {
+      this.el._floatingUI.destroy()
+      this.el._floatingUI = null
+    }
 
     if (scope === 'window') this.el.appendChild(this.menu)
 
     this.animationInProcess = false
-  }
-
-  private absoluteStrategyModifiers() {
-    return [
-      {
-        name: 'applyStyles',
-        fn: (data: any) => {
-          const strategy = (window.getComputedStyle(this.el).getPropertyValue('--strategy') || 'absolute').replace(
-            ' ',
-            ''
-          )
-          const adaptive = (window.getComputedStyle(this.el).getPropertyValue('--adaptive') || 'adaptive').replace(
-            ' ',
-            ''
-          )
-
-          data.state.elements.popper.style.position = strategy
-          data.state.elements.popper.style.transform =
-            adaptive === 'adaptive' ? data.state.styles.popper.transform : null
-          data.state.elements.popper.style.top = null
-          data.state.elements.popper.style.bottom = null
-          data.state.elements.popper.style.left = null
-          data.state.elements.popper.style.right = null
-          data.state.elements.popper.style.margin = 0
-        }
-      }
-    ]
   }
 
   private focusElement() {
@@ -260,47 +277,77 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     else input.focus()
   }
 
-  private setupPopper(target?: VirtualElement | HTMLElement) {
+  private setupFloatingUI(target?: VirtualElement | HTMLElement) {
     const _target = target || this.el
-    const placement = (window.getComputedStyle(this.el).getPropertyValue('--placement') || '').replace(' ', '')
-    const flip = (window.getComputedStyle(this.el).getPropertyValue('--flip') || 'true').replace(' ', '')
-    const strategy = (window.getComputedStyle(this.el).getPropertyValue('--strategy') || 'fixed').replace(
-      ' ',
-      ''
-    ) as PositioningStrategy
-    const offset = parseInt((window.getComputedStyle(this.el).getPropertyValue('--offset') || '10').replace(' ', ''))
-    const gpuAcceleration = (window.getComputedStyle(this.el).getPropertyValue('--gpu-acceleration') || 'true').replace(
-      ' ',
-      ''
-    )
-    // This is added in FlyonUI
-    const skidding = parseInt((window.getComputedStyle(this.el).getPropertyValue('--skidding') || '0').replace(' ', ''))
-    const popperInstance = createPopper(_target, this.menu, {
-      placement: POSITIONS[placement] || 'bottom-start',
-      strategy: strategy,
-      modifiers: [
-        ...(strategy !== 'fixed' ? this.absoluteStrategyModifiers() : []),
-        {
-          name: 'flip',
-          enabled: flip === 'true'
-        },
-        {
-          name: 'offset',
-          options: {
-            offset: [skidding, offset]
-          }
-        },
-        {
-          name: 'computeStyles',
-          options: {
-            adaptive: strategy !== 'fixed' ? false : true,
-            gpuAcceleration: gpuAcceleration === 'true'
-          }
-        }
-      ]
-    })
+    const computedStyle = window.getComputedStyle(this.el)
 
-    return popperInstance
+    const placementCss = (computedStyle.getPropertyValue('--placement') || '').trim()
+    const flipCss = (computedStyle.getPropertyValue('--flip') || 'true').trim()
+    const strategyCss = (computedStyle.getPropertyValue('--strategy') || 'fixed').trim()
+    const offsetCss = (computedStyle.getPropertyValue('--offset') || '6').trim()
+    const gpuAccelerationCss = (computedStyle.getPropertyValue('--gpu-acceleration') || 'true').trim()
+    const adaptive = (window.getComputedStyle(this.el).getPropertyValue('--adaptive') || 'adaptive').replace(' ', '')
+
+    const strategy = strategyCss as Strategy
+    const offsetValue = parseInt(offsetCss, 10)
+    const placement: Placement = POSITIONS[placementCss] || 'bottom-start'
+
+    const middleware = [...(flipCss === 'true' ? [flip()] : []), offset(offsetValue)]
+
+    const options = {
+      placement,
+      strategy,
+      middleware
+    }
+
+    const update = () => {
+      computePosition(_target, this.menu, options).then(
+        ({ x, y, placement: computedPlacement }: { x: number; y: number; placement: string }) => {
+          if (strategy === 'absolute' && adaptive === 'none') {
+            Object.assign(this.menu.style, {
+              position: strategy,
+              margin: '0'
+            })
+          } else if (strategy === 'absolute') {
+            Object.assign(this.menu.style, {
+              position: strategy,
+              transform: `translate3d(${x}px, ${y}px, 0px)`,
+              margin: '0'
+            })
+          } else {
+            if (gpuAccelerationCss === 'true') {
+              Object.assign(this.menu.style, {
+                position: strategy,
+                left: '',
+                top: '',
+                inset: '0px auto auto 0px',
+                margin: '0',
+                transform: `translate3d(${adaptive === 'adaptive' ? x : 0}px, ${y}px, 0)`
+              })
+            } else {
+              Object.assign(this.menu.style, {
+                position: strategy,
+                left: `${x}px`,
+                top: `${y}px`,
+                margin: '0',
+                transform: ''
+              })
+            }
+          }
+
+          this.menu.setAttribute('data-placement', computedPlacement)
+        }
+      )
+    }
+
+    update()
+
+    const cleanup = autoUpdate(_target, this.menu, update)
+
+    return {
+      update,
+      destroy: cleanup
+    }
   }
 
   private selectCheckbox(target: HTMLElement) {
@@ -319,69 +366,32 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
   }
 
   // Public methods
-  public calculatePopperPosition(target?: VirtualElement | HTMLElement) {
-    const popperInstance = this.setupPopper(target)
-    popperInstance.forceUpdate()
+  public calculateFLoatingUIPosition(target?: VirtualElement | HTMLElement) {
+    const floatingUIInstance = this.setupFloatingUI(target)
+    const floatingUIPosition = this.menu.getAttribute('data-placement')
 
-    const popperPosition = popperInstance.state.placement
-    popperInstance.destroy()
+    floatingUIInstance.update()
+    floatingUIInstance.destroy()
 
-    return popperPosition
+    return floatingUIPosition
   }
 
   public open(target?: VirtualElement | HTMLElement) {
     if (this.el.classList.contains('open') || this.animationInProcess) return false
 
-    const _target = target || this.el
-
     this.animationInProcess = true
 
-    const scope = (window.getComputedStyle(this.el).getPropertyValue('--scope') || '').replace(' ', '')
-    const placement = (window.getComputedStyle(this.el).getPropertyValue('--placement') || '').replace(' ', '')
-    const flip = (window.getComputedStyle(this.el).getPropertyValue('--flip') || 'true').replace(' ', '')
-    const strategy = (window.getComputedStyle(this.el).getPropertyValue('--strategy') || 'fixed').replace(
-      ' ',
-      ''
-    ) as PositioningStrategy
-    const offset = parseInt((window.getComputedStyle(this.el).getPropertyValue('--offset') || '5').replace(' ', ''))
-    const gpuAcceleration = (window.getComputedStyle(this.el).getPropertyValue('--gpu-acceleration') || 'true').replace(
-      ' ',
-      ''
-    )
-    // This is added in FlyonUI
-    const skidding = parseInt((window.getComputedStyle(this.el).getPropertyValue('--skidding') || '0').replace(' ', ''))
+    const _target = target || this.el
+    const computedStyle = window.getComputedStyle(this.el)
+    const scope = (computedStyle.getPropertyValue('--scope') || '').trim()
+    const strategyCss = (computedStyle.getPropertyValue('--strategy') || 'fixed').trim()
+    const strategy = strategyCss as Strategy
 
     if (scope === 'window') document.body.appendChild(this.menu)
 
-    if (strategy !== ('static' as PositioningStrategy)) {
-      this.el._popper = createPopper(_target, this.menu, {
-        placement: POSITIONS[placement] || 'bottom-start',
-        strategy: strategy,
-        modifiers: [
-          ...(strategy !== 'fixed' ? this.absoluteStrategyModifiers() : []),
-          {
-            name: 'flip',
-            enabled: flip === 'true'
-          },
-          {
-            name: 'offset',
-            options: {
-              offset: [skidding, offset]
-            }
-          },
-          {
-            name: 'computeStyles',
-            options: {
-              adaptive: strategy !== 'fixed' ? false : true,
-              gpuAcceleration: gpuAcceleration === 'true' ? true : false
-            }
-          }
-        ]
-      })
-    }
+    if (strategy !== ('static' as Strategy)) this.el._floatingUI = this.setupFloatingUI(_target)
 
     this.menu.style.margin = null
-
     this.menu.classList.remove('hidden')
     this.menu.classList.add('block')
 
@@ -398,22 +408,17 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
       this.fireEvent('open', this.el)
       dispatch('open.dropdown', this.el, this.el)
     })
-
-    // this.fireEvent('open', this.el);
-    // dispatch('open.dropdown', this.el, this.el);
   }
 
   public close(isAnimated = true) {
     if (this.animationInProcess || !this.el.classList.contains('open')) return false
 
-    const scope = (window.getComputedStyle(this.el).getPropertyValue('--scope') || '').replace(' ', '')
+    const scope = (window.getComputedStyle(this.el).getPropertyValue('--scope') || '').trim()
 
     const clearAfterClose = () => {
       this.menu.style.margin = null
-
       if (this?.toggle?.ariaExpanded) this.toggle.ariaExpanded = 'false'
       this.el.classList.remove('open')
-
       this.fireEvent('close', this.el)
       dispatch('close.dropdown', this.el, this.el)
     }
@@ -425,16 +430,20 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     if (isAnimated) {
       const el: HTMLElement = this.el.querySelector('[data-dropdown-transition]') || this.menu
 
-      afterTransition(el, () => this.destroyPopper())
-    } else this.destroyPopper()
+      afterTransition(el, () => this.destroyFloatingUI())
+    } else {
+      this.destroyFloatingUI()
+    }
 
     clearAfterClose()
   }
 
   public forceClearState() {
-    this.destroyPopper()
+    this.destroyFloatingUI()
+
     this.menu.style.margin = null
     this.el.classList.remove('open')
+    this.menu.classList.add('hidden')
   }
 
   public destroy() {
@@ -446,8 +455,24 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
       this.onElementMouseEnterListener = null
       this.onElementMouseLeaveListener = null
     }
-    this.toggle.removeEventListener('click', this.onToggleClickListener)
-    this.onToggleClickListener = null
+
+    if (this.eventMode === 'contextmenu') {
+      if (this.toggle) {
+        this.toggle.removeEventListener('contextmenu', this.onToggleContextMenuListener)
+        this.toggle.removeEventListener('touchstart', this.onTouchStartListener)
+        this.toggle.removeEventListener('touchend', this.onTouchEndListener)
+        this.toggle.removeEventListener('touchmove', this.onTouchEndListener)
+      }
+
+      this.onToggleContextMenuListener = null
+      this.onTouchStartListener = null
+      this.onTouchEndListener = null
+    } else {
+      if (this.toggle) this.toggle.removeEventListener('click', this.onToggleClickListener)
+
+      this.onToggleClickListener = null
+    }
+
     if (this.closers.length) {
       this.closers.forEach((el: HTMLButtonElement) => {
         el.removeEventListener('click', this.onCloserClickListener.find(closer => closer.el === el).fn)
@@ -459,7 +484,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     // Remove classes
     this.el.classList.remove('open')
 
-    this.destroyPopper()
+    this.destroyFloatingUI()
 
     window.$hsDropdownCollection = window.$hsDropdownCollection.filter(({ element }) => element.el !== this.el)
   }
@@ -507,7 +532,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     if (window.$hsDropdownCollection)
       window.$hsDropdownCollection = window.$hsDropdownCollection.filter(({ element }) => document.contains(element.el))
 
-    document.querySelectorAll('.dropdown:not(.--prevent-on-load-init)').forEach((el: IHTMLElementPopper) => {
+    document.querySelectorAll('.dropdown:not(.--prevent-on-load-init)').forEach((el: IHTMLElementFloatingUI) => {
       if (!window.$hsDropdownCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSDropdown(el)
     })
   }
@@ -610,8 +635,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
 
   static onEnter(evt: KeyboardEvent) {
     const target = evt.target as HTMLElement
-    const { element } =
-      window.$hsDropdownCollection.find(el => el.element.el === target.closest('.dropdown')) ?? null
+    const { element } = window.$hsDropdownCollection.find(el => el.element.el === target.closest('.dropdown')) ?? null
 
     if (element && target.classList.contains('dropdown-toggle')) {
       evt.preventDefault()
@@ -638,12 +662,12 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
       const preparedLinks = isArrowUp
         ? Array.from(
             menu.querySelectorAll(
-              'a:not([hidden]), .dropdown > button:not([hidden]), [role="button"]:not([hidden]), [role^="menuitem"]:not([hidden], .dropdown-item, form)'
+              'a:not([hidden]), :scope button:not([hidden]), [role="button"]:not([hidden]), [role^="menuitem"]:not([hidden])'
             )
           ).reverse()
         : Array.from(
             menu.querySelectorAll(
-              'a:not([hidden]), .dropdown > button:not([hidden]), [role="button"]:not([hidden]), [role^="menuitem"]:not([hidden], .dropdown-item, form)'
+              'a:not([hidden]), :scope button:not([hidden]), [role="button"]:not([hidden]), [role^="menuitem"]:not([hidden], .dropdown-item, form)'
             )
           )
       const visiblePreparedLinks = Array.from(preparedLinks).filter(item => {
@@ -670,8 +694,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     const closestDropdown = toggle.closest('.dropdown.open')
     const isRootDropdown = !!closestDropdown && !closestDropdown?.parentElement.closest('.dropdown')
     const menuToOpen =
-      (HSDropdown.getInstance(toggle.closest('.dropdown') as HTMLElement, true) as ICollectionItem<HSDropdown>) ??
-      null
+      (HSDropdown.getInstance(toggle.closest('.dropdown') as HTMLElement, true) as ICollectionItem<HSDropdown>) ?? null
     const firstLink = menuToOpen.element.menu.querySelector(
       'a, button, [role="button"], [role^="menuitem"]'
     ) as HTMLButtonElement
@@ -679,23 +702,19 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
     if (isRootDropdown && !toggle.classList.contains('dropdown-toggle')) return false
 
     const menuToClose =
-      (HSDropdown.getInstance(
-        toggle.closest('.dropdown.open') as HTMLElement,
-        true
-      ) as ICollectionItem<HSDropdown>) ?? null
+      (HSDropdown.getInstance(toggle.closest('.dropdown.open') as HTMLElement, true) as ICollectionItem<HSDropdown>) ??
+      null
 
     if (
       menuToOpen.element.el.classList.contains('open') &&
-      menuToOpen.element.el._popper.state.placement.includes(direction)
+      menuToOpen.element.el._floatingUI.state.placement.includes(direction)
     ) {
       firstLink.focus()
 
       return false
     }
 
-    console.log(menuToOpen)
-
-    const futurePosition = menuToOpen.element.calculatePopperPosition()
+    const futurePosition = menuToOpen.element.calculateFLoatingUIPosition()
 
     if (isRootDropdown && !futurePosition.includes(direction)) return false
 
@@ -758,9 +777,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementPopper> implements IDropdo
 
   static closeCurrentlyOpened(evtTarget: HTMLElement | null = null, isAnimated = true) {
     const parent =
-      evtTarget &&
-      evtTarget.closest('.dropdown') &&
-      evtTarget.closest('.dropdown').parentElement.closest('.dropdown')
+      evtTarget && evtTarget.closest('.dropdown') && evtTarget.closest('.dropdown').parentElement.closest('.dropdown')
         ? evtTarget.closest('.dropdown').parentElement.closest('.dropdown')
         : null
     let currentlyOpened = parent

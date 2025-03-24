@@ -1,0 +1,49 @@
+.diff {
+  @apply relative grid w-full overflow-hidden;
+  container-type: inline-size;
+  grid-template-columns: auto 1fr;
+}
+
+.diff-resizer {
+  @apply top-1/2 z-1 h-1.5 w-[25rem] max-w-[calc(100cqi-1rem)] min-w-4 translate-x-[0.335rem] -translate-y-[0.18rem] scale-y-400 resize-x overflow-hidden opacity-0;
+  clip-path: inset(calc(100% - 0.75rem) 0 0 calc(100% - 0.75rem));
+}
+
+.diff-resizer,
+.diff-item-1,
+.diff-item-2 {
+  @apply relative col-start-1 row-start-1;
+}
+
+.diff-item-1:after {
+  @apply bg-primary/40 border-base-100 outline-base-content/5 shadow-base-300/20 pointer-events-none absolute end-px top-1/2 bottom-0 z-1 size-5 rotate-45 border-2 shadow-sm outline -outline-offset-2 backdrop-blur content-[''];
+  translate: 50% -50%;
+  backdrop-filter: blur(8px);
+}
+
+.diff-item-2 {
+  @apply border-base-100 overflow-hidden border-e-2;
+}
+
+.diff-item-1 > *,
+.diff-item-2 > * {
+  @apply pointer-events-none absolute start-0 top-0 bottom-0 h-full w-[100cqi] max-w-none object-cover object-center;
+}
+
+[dir="rtl"] .diff-resizer {
+  transform-origin: 0 100%;
+  translate: -0.29rem 0.37rem;
+  clip-path: inset(calc(100% - 0.75rem) calc(100% - 0.75rem) 0 0);
+}
+
+[dir="rtl"] .diff-item-1:after {
+  right: auto;
+  left: 1px;
+  translate: -50% -50%;
+}
+
+[dir="rtl"] .diff-item-1 > *,
+[dir="rtl"] .diff-item-2 > * {
+  left: auto;
+  right: 0;
+}

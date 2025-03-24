@@ -1,6 +1,6 @@
 /*
  * HSFileUpload
- * @version: 2.7.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,12 +8,12 @@
 
 import { DropzoneFile } from 'dropzone'
 
-import { classToClassList, htmlToElement } from '../../utils'
+import { htmlToElement, classToClassList } from '../../utils'
 
-import { IFileUpload, IFileUploadOptions } from './interfaces'
+import { IFileUploadOptions, IFileUpload } from '../file-upload/interfaces'
 
-import { ICollectionItem } from '../../interfaces'
 import HSBasePlugin from '../base-plugin'
+import { ICollectionItem } from '../../interfaces'
 
 declare var _: any
 declare var Dropzone: any
@@ -51,7 +51,7 @@ class HSFileUpload extends HSBasePlugin<IFileUploadOptions> implements IFileUplo
 
     this.previewTemplate =
       this.el.querySelector('[data-file-upload-preview]')?.innerHTML ||
-      `<div class="rounded-box shadow-lg bg-base-100 p-4">
+      `<div class="rounded-box shadow-lg shadow-base-300/20 bg-base-100 p-3">
         <div class="mb-1 flex items-center justify-between">
           <div class="flex items-center gap-x-3">
             <span class="text-base-content/80 border-base-content/20 flex size-8 items-center justify-center rounded-lg border p-0.5" data-file-upload-file-icon="" >
@@ -66,7 +66,7 @@ class HSFileUpload extends HSBasePlugin<IFileUploadOptions> implements IFileUplo
           </div>
           <div class="flex items-center gap-x-2">
             <button type="button" class="btn btn-sm btn-circle btn-text" data-file-upload-remove="">
-              <span class="icon-[tabler--trash] size-4 shrink-0"></span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="size-4 shrink-0" viewBox="0 0 24 24"> <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12" /> </svg>
             </button>
           </div>
         </div>

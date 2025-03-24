@@ -1,25 +1,35 @@
 /*
  * HSSelect
- * @version: 2.6.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { afterTransition, classToClassList, debounce, dispatch, htmlToElement, isEnoughSpace } from '../../utils'
+import {
+  isFocused,
+  isEnoughSpace,
+  debounce,
+  dispatch,
+  afterTransition,
+  htmlToElement,
+  classToClassList
+} from '../../utils'
 
-import { IApiFieldMap, ISelect, ISelectOptions, ISingleOption, ISingleOptionOptions } from './interfaces'
+import { ISelect, ISelectOptions, ISingleOption, ISingleOptionOptions, IApiFieldMap } from './interfaces'
 
-import { createPopper } from '@popperjs/core'
-import { ICollectionItem } from '../../interfaces'
+import { type Strategy, computePosition, autoUpdate, offset } from '@floating-ui/dom'
+
 import HSBasePlugin from '../base-plugin'
+import { ICollectionItem } from '../../interfaces'
 
-import { POSITIONS, SELECT_ACCESSIBILITY_KEY_SET } from '../../constants'
+import { SELECT_ACCESSIBILITY_KEY_SET, POSITIONS } from '../../constants'
 
 class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   value: string | string[] | null
   private readonly placeholder: string | null
   private readonly hasSearch: boolean
+  private readonly minSearchLength: number
   private readonly preventSearchFocus: boolean
   private readonly mode: string | null
   private readonly viewport: HTMLElement | null
@@ -87,7 +97,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   private toggleTextWrapper: HTMLElement | null
   private tagsInput: HTMLElement | null
   private dropdown: HTMLElement | null
-  private popperInstance: any
+  private floatingUIInstance: any
   private searchWrapper: HTMLElement | null
   private search: HTMLInputElement | null
   private searchNoResult: HTMLElement | null
@@ -123,6 +133,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     this.value = concatOptions?.value || (this.el as HTMLSelectElement).value || null
     this.placeholder = concatOptions?.placeholder || 'Select...'
     this.hasSearch = concatOptions?.hasSearch || false
+    this.minSearchLength = concatOptions?.minSearchLength ?? 0
     this.preventSearchFocus = concatOptions?.preventSearchFocus || false
     this.mode = concatOptions?.mode || 'default'
     this.viewport =
@@ -171,7 +182,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
       typeof concatOptions?.isSearchDirectMatch !== 'undefined' ? concatOptions?.isSearchDirectMatch : true
     this.searchClasses =
       concatOptions?.searchClasses ||
-      'border-base-content/40 focus:border-primary focus:ring-primary bg-base-100 block w-full rounded-btn border px-3 py-2 text-base focus:ring-1'
+      'border-base-content/40 focus:border-primary focus:outline-primary bg-base-100 block w-full rounded-field border px-3 py-2 text-base focus:outline-1'
     this.searchPlaceholder = concatOptions?.searchPlaceholder || 'Search...'
     this.searchNoResultTemplate = concatOptions?.searchNoResultTemplate || '<span></span>'
     this.searchNoResultText = concatOptions?.searchNoResultText || 'No results found'
@@ -238,12 +249,15 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   }
 
   private searchInput(evt: InputEvent) {
-    if (this.apiUrl) this.remoteSearch((evt.target as HTMLInputElement).value)
-    else this.searchOptions((evt.target as HTMLInputElement).value)
+    const newVal = (evt.target as HTMLInputElement).value
+
+    if (this.apiUrl) this.remoteSearch(newVal)
+    else this.searchOptions(newVal)
   }
 
   public setValue(val: string | string[]) {
     this.value = val
+
     this.clearSelections()
 
     if (Array.isArray(val)) {
@@ -260,17 +274,18 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
         this.reassignTagsInputPlaceholder(this.value.length ? '' : this.placeholder)
       } else {
         this.toggleTextWrapper.innerHTML = this.value.length ? this.stringFromValue() : this.placeholder
+
         this.unselectMultipleItems()
         this.selectMultipleItems()
       }
     } else {
       this.setToggleTitle()
+
       if (this.toggle.querySelector('[data-icon]')) this.setToggleIcon()
       if (this.toggle.querySelector('[data-title]')) this.setToggleTitle()
+
       this.selectSingleItem()
     }
-
-    this.triggerChangeEventForNativeSelect()
   }
 
   private init() {
@@ -428,6 +443,8 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
       title.classList.add('truncate')
 
       this.toggle.append(title)
+    } else {
+      this.toggle.innerText = this.getItemByValue(this.value as string)?.title || this.placeholder
     }
   }
 
@@ -536,6 +553,8 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
         this.selectedItems = !this.selectedItems.includes(val) ? [...this.selectedItems, val] : this.selectedItems
       })
     }
+
+    if (this.isOpened && this.floatingUIInstance) this.floatingUIInstance.update()
   }
 
   private buildTagsInput() {
@@ -586,28 +605,43 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
 
     if (this.apiUrl) this.optionsFromRemoteData()
 
-    if (this.dropdownScope === 'window') this.buildPopper()
+    if (this.dropdownScope === 'window') this.buildFloatingUI()
   }
 
-  // This function has been updated.
-  private buildPopper() {
-    if (typeof createPopper !== 'undefined') {
-      document.body.appendChild(this.dropdown)
+  private buildFloatingUI() {
+    // If it’s okay to append to the document:
+    document.body.appendChild(this.dropdown)
 
-      const referenceElement = this.mode === 'tags' ? this.wrapper : this.toggle
+    const reference = this.mode === 'tags' ? this.wrapper : this.toggle
 
-      this.popperInstance = createPopper(referenceElement, this.dropdown, {
-        placement: POSITIONS[this.dropdownPlacement] || 'bottom',
-        strategy: 'fixed',
-        modifiers: [
-          {
-            name: 'offset',
-            options: {
-              offset: [0, 5]
-            }
-          }
-        ]
-      })
+    const options = {
+      placement: POSITIONS[this.dropdownPlacement] || 'bottom',
+      strategy: 'fixed' as Strategy,
+      middleware: [offset(0)]
+    }
+
+    const update = () => {
+      computePosition(reference, this.dropdown, options).then(
+        ({ x, y, placement: computedPlacement }: { x: number; y: number; placement: string }) => {
+          Object.assign(this.dropdown.style, {
+            position: 'fixed',
+            left: `${x}px`,
+            top: `${y}px`
+          })
+          this.dropdown.setAttribute('data-placement', computedPlacement)
+        }
+      )
+    }
+
+    // Initial positioning
+    update()
+
+    // Auto-update on scroll/resize/layout changes
+    const cleanup = autoUpdate(reference, this.dropdown, update)
+
+    this.floatingUIInstance = {
+      update,
+      destroy: cleanup
     }
   }
 
@@ -623,7 +657,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     if (this.searchWrapperClasses) classToClassList(this.searchWrapperClasses, this.searchWrapper)
     input = this.searchWrapper.querySelector('[data-input]')
 
-    const search = htmlToElement(this.searchTemplate || '<input type="text" />')
+    const search = htmlToElement(this.searchTemplate || '<input type="text">')
     this.search = (search.tagName === 'INPUT' ? search : search.querySelector(':scope input')) as HTMLInputElement
 
     this.search.placeholder = this.searchPlaceholder
@@ -827,6 +861,21 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   }
 
   private async remoteSearch(val: string) {
+    if (val.length <= this.minSearchLength) {
+      const res = await this.apiRequest('')
+      this.remoteOptions = res
+
+      Array.from(this.dropdown.querySelectorAll('[data-value]')).forEach(el => el.remove())
+      Array.from(this.el.querySelectorAll('option[value]')).forEach((el: HTMLOptionElement) => {
+        el.remove()
+      })
+
+      if (res.length) this.buildOptionsFromRemoteData(res)
+      else console.log('No data responded!')
+
+      return false
+    }
+
     const res = await this.apiRequest(val)
     this.remoteOptions = res
     let newIds = res.map((item: { id: string }) => `${item.id}`)
@@ -836,13 +885,11 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
 
     options.forEach((el: HTMLOptionElement) => {
       const dataId = el.getAttribute('data-id')
-
       if (!newIds.includes(dataId) && !this.value?.includes(el.value)) this.destroyOriginalOption(el.value)
     })
 
     pseudoOptions.forEach((el: HTMLElement) => {
       const dataId = el.getAttribute('data-id')
-
       if (!newIds.includes(dataId) && !this.value?.includes(el.getAttribute('data-value')))
         this.destroyOption(el.getAttribute('data-value'))
       else newIds = newIds.filter((item: string) => item !== dataId)
@@ -1152,10 +1199,26 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   }
 
   private searchOptions(val: string) {
+    if (val.length <= this.minSearchLength) {
+      if (this.searchNoResult) {
+        this.searchNoResult.remove()
+        this.searchNoResult = null
+      }
+
+      const options = this.dropdown.querySelectorAll('[data-value]')
+
+      options.forEach(el => {
+        el.classList.remove('hidden')
+      })
+
+      return false
+    }
+
     if (this.searchNoResult) {
       this.searchNoResult.remove()
       this.searchNoResult = null
     }
+
     this.searchNoResult = htmlToElement(this.searchNoResultTemplate)
     this.searchNoResult.innerText = this.searchNoResultText
     classToClassList(this.searchNoResultClasses, this.searchNoResult)
@@ -1163,31 +1226,32 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     const options = this.dropdown.querySelectorAll('[data-value]')
     let hasItems = false
     let countLimit: number
+
     if (this.searchLimit) countLimit = 0
 
     options.forEach(el => {
       const optionVal = el.getAttribute('data-title-value').toLocaleLowerCase()
-      const regexSafeVal = val
-        ? val
-            .split('')
-            .map(char => {
-              return char.match(/\w/) ? `${char}[\\W_]*` : '\\W*'
-            })
-            .join('')
-        : ''
-      const regex = new RegExp(regexSafeVal, 'i')
       const directMatch = this.isSearchDirectMatch
-      const cleanedOptionVal = optionVal.trim()
-      const condition = val
-        ? directMatch
-          ? !cleanedOptionVal.toLowerCase().includes(val.toLowerCase()) || countLimit >= this.searchLimit
-          : !regex.test(cleanedOptionVal) || countLimit >= this.searchLimit
-        : !regex.test(cleanedOptionVal)
+      let condition
+
+      if (directMatch) {
+        condition = !optionVal.includes(val.toLowerCase()) || (this.searchLimit && countLimit >= this.searchLimit)
+      } else {
+        const regexSafeVal = val
+          ? val
+              .split('')
+              .map(char => (/\w/.test(char) ? `${char}[\\W_]*` : '\\W*'))
+              .join('')
+          : ''
+        const regex = new RegExp(regexSafeVal, 'i')
+        condition = !regex.test(optionVal.trim()) || (this.searchLimit && countLimit >= this.searchLimit)
+      }
 
       if (condition) {
         el.classList.add('hidden')
       } else {
         el.classList.remove('hidden')
+
         hasItems = true
 
         if (this.searchLimit) countLimit++
@@ -1237,11 +1301,13 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
 
     const parent = this.el.parentElement.parentElement
 
-    this.el.classList.remove('hidden')
+    this.el.classList.add('hidden')
     this.el.style.display = ''
     parent.prepend(this.el)
     parent.querySelector('.advance-select').remove()
     this.wrapper = null
+
+    window.$hsSelectCollection = window.$hsSelectCollection.filter(({ element }) => element.el !== this.el)
   }
 
   public open() {
@@ -1262,8 +1328,9 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
       this.wrapper.classList.add('active')
       this.dropdown.classList.add('opened')
       if (this.dropdown.classList.contains('w-full') && this.dropdownScope === 'window') this.updateDropdownWidth()
-      if (this.popperInstance && this.dropdownScope === 'window') {
-        this.popperInstance.update()
+
+      if (this.floatingUIInstance && this.dropdownScope === 'window') {
+        this.floatingUIInstance.update()
         this.dropdown.classList.remove('invisible')
       }
       if (this.hasSearch && !this.preventSearchFocus) this.search.focus()
@@ -1390,6 +1457,16 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   }
 
   // Static methods
+  private static findInCollection(target: HSSelect | HTMLElement | string): ICollectionItem<HSSelect> | null {
+    return (
+      window.$hsSelectCollection.find(el => {
+        if (target instanceof HSSelect) return el.element.el === target.el
+        else if (typeof target === 'string') return el.element.el === document.querySelector(target)
+        else return el.element.el === target
+      }) || null
+    )
+  }
+
   static getInstance(target: HTMLElement | string, isInstance?: boolean) {
     const elInCollection = window.$hsSelectCollection.find(
       el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
@@ -1424,33 +1501,26 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     })
   }
 
-  static open(target: HTMLElement | string) {
-    const elInCollection = window.$hsSelectCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static open(target: HSSelect | HTMLElement | string) {
+    const instance = HSSelect.findInCollection(target)
 
-    if (elInCollection && !elInCollection.element.isOpened) elInCollection.element.open()
+    if (instance && !instance.element.isOpened) instance.element.open()
   }
 
-  static close(target: HTMLElement | string) {
-    const elInCollection = window.$hsSelectCollection.find(
-      el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
-    )
+  static close(target: HSSelect | HTMLElement | string) {
+    const instance = HSSelect.findInCollection(target)
 
-    if (elInCollection && elInCollection.element.isOpened) {
-      elInCollection.element.close()
-    }
+    if (instance && instance.element.isOpened) instance.element.close()
   }
 
   static closeCurrentlyOpened(evtTarget: HTMLElement | null = null) {
     if (!evtTarget.closest('.advance-select.active') && !evtTarget.closest('[data-select-dropdown].opened')) {
       const currentlyOpened = window.$hsSelectCollection.filter(el => el.element.isOpened) || null
 
-      if (currentlyOpened) {
+      if (currentlyOpened)
         currentlyOpened.forEach(el => {
           el.element.close()
         })
-      }
     }
   }
 
@@ -1494,6 +1564,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
           this.onEnter(evt)
           break
         case 'Space':
+          if (isFocused(target.element.search)) break
           evt.preventDefault()
           this.onEnter(evt)
           break
@@ -1597,7 +1668,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
       const target = window.$hsSelectCollection.find(el => el.element.el === select)
 
       opened.element.close()
-      target.element.open()
+      if (opened !== target) target.element.open()
     } else {
       const target = window.$hsSelectCollection.find(el => el.element.isOpened)
 

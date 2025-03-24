@@ -1,0 +1,121 @@
+.avatar {
+  @apply relative inline-flex align-middle text-base;
+  & > div {
+    @apply block aspect-square overflow-hidden;
+  }
+  img {
+    @apply h-full w-full object-cover;
+  }
+  &.avatar-placeholder {
+    & > div {
+      @apply flex items-center justify-center;
+    }
+  }
+}
+
+.avatar-group {
+  @apply flex;
+  :where(.avatar) {
+    img {
+      @apply border-base-100 h-full w-full rounded-full border-2 object-cover;
+    }
+    &.avatar-placeholder {
+      & > div {
+        @apply border-base-100 rounded-full border-2;
+      }
+    }
+  }
+}
+
+/* Pull up avatar style */
+.pull-up {
+  .avatar {
+    @apply transition-all duration-[0.25s] ease-in;
+    &:hover {
+      @apply shadow-base-300/20 z-30 -translate-y-1 transform rounded-full shadow-sm;
+    }
+  }
+}
+
+.avatar {
+  &.avatar-online-top {
+    &:before {
+      content: "";
+      @apply bg-success outline-base-100 absolute z-10 block rounded-full outline outline-2;
+      width: 20%;
+      height: 20%;
+      top: 3%;
+      right: 3%;
+    }
+  }
+  &.avatar-offline-top {
+    &:before {
+      content: "";
+      @apply bg-base-200 outline-base-100 absolute z-10 block rounded-full outline outline-2;
+      width: 20%;
+      height: 20%;
+      top: 3%;
+      right: 3%;
+    }
+  }
+  &.avatar-busy-top {
+    &:before {
+      content: "";
+      @apply bg-error outline-base-100 absolute z-10 block rounded-full outline outline-2;
+      width: 20%;
+      height: 20%;
+      top: 3%;
+      right: 3%;
+    }
+  }
+  &.avatar-away-top {
+    &:before {
+      content: "";
+      @apply bg-warning outline-base-100 absolute z-10 block rounded-full outline outline-2;
+      width: 20%;
+      height: 20%;
+      top: 3%;
+      right: 3%;
+    }
+  }
+  &.avatar-online-bottom {
+    &:before {
+      content: "";
+      @apply bg-success outline-base-100 absolute z-10 block rounded-full outline outline-2;
+      width: 20%;
+      height: 20%;
+      bottom: 3%;
+      right: 3%;
+    }
+  }
+  &.avatar-offline-bottom {
+    &:before {
+      content: "";
+      @apply bg-base-200 outline-base-100 absolute z-10 block rounded-full outline outline-2;
+      width: 20%;
+      height: 20%;
+      bottom: 3%;
+      right: 3%;
+    }
+  }
+  &.avatar-busy-bottom {
+    &:before {
+      content: "";
+      @apply bg-error outline-base-100 absolute z-10 block rounded-full outline outline-2;
+      width: 20%;
+      height: 20%;
+      bottom: 3%;
+      right: 3%;
+    }
+  }
+  &.avatar-away-bottom {
+    &:before {
+      content: "";
+      @apply bg-warning outline-base-100 absolute z-10 block rounded-full outline outline-2;
+      width: 20%;
+      height: 20%;
+      bottom: 3%;
+      right: 3%;
+    }
+  }
+}

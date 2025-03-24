@@ -4,11 +4,11 @@ import { ICollectionItem } from './src/js/interfaces'
 
 import { IStaticMethods } from './src/js/static/interfaces'
 
+import type HSCopyMarkup from './src/js/plugins/copy-markup'
 import type HSAccordion from './src/js/plugins/accordion'
 import type HSCarousel from './src/js/plugins/carousel'
 import type HSCollapse from './src/js/plugins/collapse'
 import type HSComboBox from './src/js/plugins/combobox'
-import type HSCopyMarkup from './src/js/plugins/copy-markup'
 import type HSDataTable from './src/js/plugins/datatable'
 import type HSDropdown from './src/js/plugins/dropdown'
 import type HSFileUpload from './src/js/plugins/file-upload'
@@ -29,8 +29,15 @@ import type HSTreeView from './src/js/plugins/tree-view'
 
 declare global {
   var noUiSlider: typeof INoUiSlider
-  var Popper: {
-    createPopper: (referenceEl: Element, popperEl: HTMLElement, options?: any) => any
+  var FloatingUIDOM: {
+    computePosition: (
+      reference: Element,
+      floating: HTMLElement,
+      options?: any
+    ) => Promise<{ x: number; y: number; placement: string }>
+    autoUpdate: (reference: Element, floating: HTMLElement, update: () => void) => () => void
+    offset: (offset: number | [number, number]) => any
+    flip: () => any
   }
 
   interface Window {

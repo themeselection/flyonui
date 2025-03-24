@@ -2,7 +2,7 @@ const fs = require('fs')
 
 const pluginsDir = './src/js/plugins'
 const helpersDir = './src/js/helpers'
-const distDir = './dist/js'
+const distDir = './dist'
 const excludePlugins = ['base-plugin']
 
 const outputConfig = { noBanner: true }
@@ -14,7 +14,7 @@ const config = {
   entries: [
     {
       filePath: './src/js/index.ts',
-      outFile: './dist/js/index.d.ts',
+      outFile: './dist/index.d.ts',
       output: outputConfig
     },
     ...fs

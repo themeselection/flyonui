@@ -1,6 +1,6 @@
 /*
  * HSStepper
- * @version: 2.6.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,10 +8,10 @@
 
 import { dispatch } from '../../utils'
 
-import { IStepper, IStepperItem, IStepperOptions } from './interfaces'
+import { IStepperOptions, IStepper, IStepperItem } from './interfaces'
 
-import { ICollectionItem } from '../../interfaces'
 import HSBasePlugin from '../base-plugin'
+import { ICollectionItem } from '../../interfaces'
 
 class HSStepper extends HSBasePlugin<{}> implements IStepper {
   private currentIndex: number | null
@@ -133,6 +133,7 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
   }
 
   private finishBtnClick() {
+    // Added in Flyonui
     this.fireEvent('beforeFinish', this.currentIndex)
     dispatch('beforeFinish.stepper', this.el, this.currentIndex)
 

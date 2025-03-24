@@ -1,0 +1,204 @@
+/* Message block */
+.validate *:valid ~ .success-message,
+.validate *:has(:valid) ~ .success-message {
+  @apply block;
+}
+
+.validate *:invalid ~ .error-message,
+.validate *:has(:invalid) ~ .error-message {
+  @apply block;
+}
+
+/* Default and focus state for input, select and textarea */
+
+.input,
+.select,
+.textarea {
+  &.is-valid,
+  &:has(.is-valid),
+  .validate &:valid,
+  .validate &:has(:valid) {
+    @apply hover:border-success border-success;
+
+    &:has(:hover):not(:focus, :focus-within) {
+      @apply border-success;
+    }
+
+    &:focus,
+    &:focus-within {
+      --input-color: var(--color-success);
+    }
+  }
+}
+
+.input,
+.select,
+.textarea {
+  &.is-invalid,
+  &:has(.is-invalid),
+  .validate &:invalid,
+  .validate &:has(:invalid) {
+    @apply hover:border-error border-error;
+
+    &:has(:hover):not(:focus, :focus-within) {
+      @apply border-error;
+    }
+    &:focus,
+    &:focus-within {
+      --input-color: var(--color-error);
+    }
+  }
+}
+
+.switch,
+.checkbox,
+.radio,
+.radio-inset {
+  &.is-valid,
+  &:has(.is-valid),
+  .validate &:valid,
+  .validate &:has(:valid) {
+    --input-color: var(--color-success);
+    border-color: var(--input-color);
+    &:checked,
+    &[aria-checked="true"],
+    &:has(> input:checked) {
+      --input-color: var(--color-success);
+    }
+  }
+  &.is-invalid,
+  &:has(.is-invalid),
+  .validate &:invalid,
+  .validate &:has(:invalid) {
+    --input-color: var(--color-error);
+    border-color: var(--input-color);
+    &:checked,
+    &[aria-checked="true"],
+    &:has(> input:checked) {
+      --input-color: var(--color-error);
+    }
+  }
+}
+
+/* For updating check color
+Can't mix it with the above switch and checkbox */
+.checkbox {
+  &.is-valid,
+  &:has(.is-valid),
+  .validate &:valid,
+  .validate &:has(:valid) {
+    color: var(--color-success-content);
+  }
+  &.is-invalid,
+  &:has(.is-invalid),
+  .validate &:invalid,
+  .validate &:has(:invalid) {
+    color: var(--color-error-content);
+  }
+}
+
+/* Custom Options */
+
+.custom-option,
+.custom-soft-option {
+  .validate &:has(:valid),
+  &:has(.is-valid) {
+    --input-color: var(--color-success);
+  }
+
+  .validate &:has(:invalid),
+  &:has(.is-invalid) {
+    --input-color: var(--color-error);
+  }
+}
+
+/* File input state For the button */
+
+/* Apply success styles when the specific .input is valid */
+.input.is-valid::file-selector-button,
+.validate .input:valid::file-selector-button {
+  @apply bg-success text-success-content;
+  --input-color: var(--color-success);
+}
+
+/* Apply error styles when the specific .input is invalid */
+.input.is-invalid::file-selector-button,
+.validate .input:invalid::file-selector-button {
+  @apply bg-error text-error-content;
+  --input-color: var(--color-error);
+}
+
+.input-floating > .input.is-valid::file-selector-button,
+.validate .input-floating > .input:valid::file-selector-button {
+  @apply bg-base-100 text-base-content;
+  border-inline-end: var(--border) solid var(--color-success);
+}
+
+.input-floating > .input.is-invalid::file-selector-button,
+.validate .input-floating > .input:invalid::file-selector-button {
+  @apply bg-base-100 text-base-content;
+  border-inline-end: var(--border) solid var(--color-error);
+}
+
+/* Label and helper text color state */
+
+/* Label/Helper success color */
+/* Label when top */
+.label-text:has(~ .is-valid),
+.label-text:has(~ * .is-valid),
+.validate .label-text:has(~ :valid),
+.validate .label-text:has(~ * :valid),
+:is(.is-valid) ~ .helper-text,
+*:has(.is-valid) ~ .helper-text,
+.validate :is(:valid) ~ .helper-text,
+.validate *:has(:valid) ~ .helper-text,
+/* Label when bottom mainly for checkbox, radio and switch */
+:is(.is-valid) ~ .label-text,
+:is(.is-valid) ~ .label-text  *,
+:is(.is-valid) ~  * >.label-text,
+.validate :is(:valid) ~ .label-text,
+.validate :is(:valid) ~ .label-text  *,
+.validate :is(:valid) ~  * >.label-text {
+  color: var(--color-success);
+}
+
+/* Label/Helper Error color */
+.label-text:has(~ .is-invalid),
+.label-text:has(~ * .is-invalid),
+.validate .label-text:has(~ :invalid),
+.validate .label-text:has(~ * :invalid),
+:is(.is-invalid) ~ .helper-text,
+*:has(.is-invalid) ~ .helper-text,
+.validate :is(:invalid) ~ .helper-text,
+.validate *:has(:invalid) ~ .helper-text,
+/* Label when bottom mainly for checkbox, radio and switch */
+:is(.is-invalid) ~ .label-text,
+:is(.is-invalid) ~ .label-text *,
+:is(.is-invalid) ~  * >.label-text,
+.validate :is(:invalid) ~ .label-text,
+.validate :is(:invalid) ~ .label-text *,
+.validate :is(:invalid) ~  * >.label-text {
+  color: var(--color-error);
+}
+
+/* Advance Select */
+
+select.is-valid + .advance-select-toggle,
+.advance-select-tag:has(> .is-valid),
+.validate select:has(~ * > .selected) + .advance-select-toggle {
+  --input-color: var(--color-success);
+  &:focus,
+  &:focus-within {
+    --input-color: var(--color-success);
+  }
+}
+
+select.is-invalid + .advance-select-toggle,
+.advance-select-tag:has(> .is-invalid),
+.validate select:not(:has(~ * > .selected)) + .advance-select-toggle {
+  --input-color: var(--color-error);
+  &:focus,
+  &:focus-within {
+    --input-color: var(--color-error);
+  }
+}

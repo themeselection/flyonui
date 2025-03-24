@@ -1,0 +1,140 @@
+/* text background colors */
+.text-bg-primary {
+  @apply text-primary-content bg-primary;
+}
+
+.text-bg-secondary {
+  @apply text-secondary-content bg-secondary;
+}
+
+.text-bg-accent {
+  @apply text-accent-content bg-accent;
+}
+
+.text-bg-neutral {
+  @apply text-neutral-content bg-neutral;
+}
+
+.text-bg-info {
+  @apply text-info-content bg-info;
+}
+
+.text-bg-success {
+  @apply text-success-content bg-success;
+}
+
+.text-bg-warning {
+  @apply text-warning-content bg-warning;
+}
+
+.text-bg-error {
+  @apply text-error-content bg-error;
+}
+
+/* Soft text background colors */
+.text-bg-soft-primary {
+  @apply text-primary;
+  background-color: color-mix(in oklab, var(--color-primary) 10%, var(--color-base-100));
+}
+
+.text-bg-soft-secondary {
+  @apply text-secondary;
+  background-color: color-mix(in oklab, var(--color-secondary) 10%, var(--color-base-100));
+}
+
+.text-bg-soft-accent {
+  @apply text-accent;
+  background-color: color-mix(in oklab, var(--color-accent) 10%, var(--color-base-100));
+}
+
+.text-bg-soft-neutral {
+  @apply text-neutral;
+  background-color: color-mix(in oklab, var(--color-neutral) 10%, var(--color-base-100));
+}
+
+.text-bg-soft-info {
+  @apply text-info;
+  background-color: color-mix(in oklab, var(--color-info) 10%, var(--color-base-100));
+}
+
+.text-bg-soft-success {
+  @apply text-success;
+  background-color: color-mix(in oklab, var(--color-success) 10%, var(--color-base-100));
+}
+
+.text-bg-soft-warning {
+  @apply text-warning;
+  background-color: color-mix(in oklab, var(--color-warning) 10%, var(--color-base-100));
+}
+
+.text-bg-soft-error {
+  @apply text-error;
+  background-color: color-mix(in oklab, var(--color-error) 10%, var(--color-base-100));
+}
+
+/* text border colors */
+.text-border-primary {
+  @apply text-primary bg-base-100 border-primary border;
+}
+
+.text-border-secondary {
+  @apply text-secondary bg-base-100 border-secondary border;
+}
+
+.text-border-accent {
+  @apply text-accent bg-base-100 border-accent border;
+}
+
+.text-border-neutral {
+  @apply text-neutral bg-base-100 border-neutral border;
+}
+
+.text-border-info {
+  @apply text-info bg-base-100 border-info border;
+}
+
+.text-border-success {
+  @apply text-success bg-base-100 border-success border;
+}
+
+.text-border-warning {
+  @apply text-warning bg-base-100 border-warning border;
+}
+
+.text-border-error {
+  @apply text-error bg-base-100 border-error border;
+}
+
+/* gradient backgrounds */
+.gradient-bg {
+  --darker-shade: color-mix(in oklab, var(--gradient-color, var(--color-neutral)) 80%, black);
+  background-image: linear-gradient(135deg, var(--gradient-color, var(--color-neutral)) 0%, var(--darker-shade) 100%);
+}
+
+.gradient-bg-primary {
+  --gradient-color: var(--color-primary);
+}
+
+.gradient-bg-secondary {
+  --gradient-color: var(--color-secondary);
+}
+
+.gradient-bg-accent {
+  --gradient-color: var(--color-accent);
+}
+
+.gradient-bg-info {
+  --gradient-color: var(--color-info);
+}
+
+.gradient-bg-success {
+  --gradient-color: var(--color-success);
+}
+
+.gradient-bg-warning {
+  --gradient-color: var(--color-warning);
+}
+
+.gradient-bg-error {
+  --gradient-color: var(--color-error);
+}

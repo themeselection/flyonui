@@ -1,6 +1,6 @@
 /*
  * HSScrollspy
- * @version: 2.7.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,19 +8,21 @@
 
 import { getClassProperty, dispatch } from '../../utils'
 
-import { IScrollspy } from './interfaces'
+import { IScrollspy, IScrollspyOptions } from '../scrollspy/interfaces'
 
 import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
 
-class HSScrollspy extends HSBasePlugin<{}> implements IScrollspy {
-  private activeSection: HTMLElement | null
-  private readonly contentId: string | null
-  private readonly content: HTMLElement | null
+class HSScrollspy extends HSBasePlugin<IScrollspyOptions> implements IScrollspy {
+  private readonly ignoreScrollUp: boolean
+
   private readonly links: NodeListOf<HTMLAnchorElement> | null
   private readonly sections: HTMLElement[] | null
   private readonly scrollableId: string | null
   private readonly scrollable: HTMLElement | Document
+
+  private isScrollingDown: boolean = false
+  private lastScrollTop: number = 0
 
   private onScrollableScrollListener: (evt: Event) => void
   private onLinkClickListener:
@@ -33,9 +35,15 @@ class HSScrollspy extends HSBasePlugin<{}> implements IScrollspy {
   constructor(el: HTMLElement, options = {}) {
     super(el, options)
 
-    this.activeSection = null
-    this.contentId = this.el.getAttribute('data-scrollspy')
-    this.content = document.querySelector(this.contentId)
+    const data = el.getAttribute('data-scrollspy-options')
+    const dataOptions: IScrollspyOptions = data ? JSON.parse(data) : {}
+    const concatOptions: IScrollspyOptions = {
+      ...dataOptions,
+      ...options
+    }
+
+    this.ignoreScrollUp = typeof concatOptions.ignoreScrollUp !== 'undefined' ? concatOptions.ignoreScrollUp : false
+
     this.links = this.el.querySelectorAll('[href]')
     this.sections = []
     this.scrollableId = this.el.getAttribute('data-scrollspy-scrollable-parent')
@@ -49,19 +57,15 @@ class HSScrollspy extends HSBasePlugin<{}> implements IScrollspy {
   }
 
   private scrollableScroll(evt: Event) {
+    const currentScrollTop = this.scrollable instanceof HTMLElement ? this.scrollable.scrollTop : window.scrollY
+    this.isScrollingDown = currentScrollTop > this.lastScrollTop
+    this.lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop
+
     Array.from(this.sections).forEach((section: HTMLElement) => {
       if (!section.getAttribute('id')) return false
 
       this.update(evt, section)
     })
-  }
-
-  private linkClick(evt: Event, el: HTMLAnchorElement) {
-    evt.preventDefault()
-
-    if (el.getAttribute('href') === 'javascript:;') return false
-
-    this.scrollTo(el)
   }
 
   private init() {
@@ -85,6 +89,37 @@ class HSScrollspy extends HSBasePlugin<{}> implements IScrollspy {
     })
   }
 
+  private determineScrollDirection(target: HTMLAnchorElement): boolean {
+    const activeLink = this.el.querySelector('a.active') as HTMLAnchorElement | null
+
+    if (!activeLink) {
+      return true
+    }
+
+    const activeIndex = Array.from(this.links).indexOf(activeLink)
+    const targetIndex = Array.from(this.links).indexOf(target)
+
+    if (targetIndex === -1) {
+      return true
+    }
+
+    return targetIndex > activeIndex
+  }
+
+  private linkClick(evt: Event, el: HTMLAnchorElement) {
+    evt.preventDefault()
+
+    const href = el.getAttribute('href')
+    if (!href || href === 'javascript:;') return
+
+    const target: HTMLElement | null = href ? document.querySelector(href) : null
+    if (!target) return
+
+    this.isScrollingDown = this.determineScrollDirection(el)
+
+    this.scrollTo(el)
+  }
+
   private update(evt: Event, section: HTMLElement) {
     const globalOffset = parseInt(getClassProperty(this.el, '--scrollspy-offset', '0'))
     const userOffset = parseInt(getClassProperty(section, '--scrollspy-offset')) || globalOffset
@@ -92,13 +127,14 @@ class HSScrollspy extends HSBasePlugin<{}> implements IScrollspy {
       evt.target === document ? 0 : parseInt(String((evt.target as HTMLElement).getBoundingClientRect().top))
     const topOffset = parseInt(String(section.getBoundingClientRect().top)) - userOffset - scrollableParentOffset
     const height = section.offsetHeight
+    const statement = this.ignoreScrollUp
+      ? topOffset <= 0 && topOffset + height > 0
+      : this.isScrollingDown
+        ? topOffset <= 0 && topOffset + height > 0
+        : topOffset <= 0 && topOffset < height
 
-    if (topOffset <= 0 && topOffset + height > 0) {
-      if (this.activeSection === section) return false
-
-      this.links.forEach(el => {
-        el.classList.remove('active')
-      })
+    if (statement) {
+      this.links.forEach(el => el.classList.remove('active'))
 
       const current = this.el.querySelector(`[href="#${section.getAttribute('id')}"]`)
 
@@ -114,7 +150,8 @@ class HSScrollspy extends HSBasePlugin<{}> implements IScrollspy {
         }
       }
 
-      this.activeSection = section
+      this.fireEvent('afterScroll', current)
+      dispatch('afterScroll.scrollspy', current, this.el)
     }
   }
 

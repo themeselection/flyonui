@@ -1,17 +1,17 @@
 /*
  * HSCollapse
- * @version: 2.7.0
+ * @version: 3.0.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { afterTransition, dispatch } from '../../utils'
+import { dispatch, afterTransition } from '../../utils'
 
 import { ICollapse } from './interfaces'
 
-import { ICollectionItem } from '../../interfaces'
 import HSBasePlugin from '../base-plugin'
+import { ICollectionItem } from '../../interfaces'
 import HSDropdown from '../dropdown'
 
 class HSCollapse extends HSBasePlugin<{}> implements ICollapse {

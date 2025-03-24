@@ -1,0 +1,220 @@
+:root {
+  --fc-page-bg-color: var(--color-base-100);
+  --fc-neutral-bg-color: color-mix(in oklab, var(--color-neutral) 30%, transparent);
+  --fc-neutral-text-color: var(--color-neutral-content);
+  --fc-border-color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+
+  --fc-button-text-color: var(--color-primary);
+  --fc-button-bg-color: color-mix(in oklab, var(--color-primary) 16%, transparent);
+  --fc-button-border-color: color-mix(in oklab, var(--color-primary) 16%, transparent);
+  --fc-button-hover-bg-color: color-mix(in oklab, var(--color-primary) 24%, transparent);
+  --fc-button-hover-border-color: color-mix(in oklab, var(--color-primary) 24%, transparent);
+  --fc-button-active-bg-color: color-mix(in oklab, var(--color-primary) 24%, transparent);
+  --fc-button-active-border-color: color-mix(in oklab, var(--color-primary) 24%, transparent);
+
+  --fc-event-bg-color: color-mix(in oklab, var(--color-primary) 16%, transparent);
+  --fc-event-border-color: var(--color-primary);
+  --fc-event-text-color: var(--color-primary);
+  --fc-event-selected-overlay-color: color-mix(in oklab, var(--color-secondary) 16%, transparent);
+  --fc-list-event-dot-width: 8px;
+  --fc-list-event-hover-bg-color: color-mix(in oklab, var(--color-secondary) 16%, transparent);
+
+  --fc-more-link-bg-color: color-mix(in oklab, var(--color-secondary) 16%, transparent);
+  --fc-more-link-text-color: var(--color-secondary);
+
+  --fc-event-resizer-thickness: 8px;
+  --fc-event-resizer-dot-total-width: 8px;
+  --fc-event-resizer-dot-border-width: 1px;
+
+  --fc-non-business-color: color-mix(in oklab, var(--color-info) 16%, transparent);
+  --fc-bg-event-color: var(--color-neutral);
+  --fc-bg-event-opacity: 0.3;
+  --fc-highlight-color: color-mix(in oklab, var(--color-secondary) 16%, transparent);
+  --fc-today-bg-color: color-mix(in oklab, var(--color-base-300) 35%, transparent);
+  --fc-now-indicator-color: var(--color-warning);
+}
+
+.fc {
+  .fc-button-primary:not(:disabled).fc-button-active:focus,
+  .fc .fc-button-primary:not(:disabled):active:focus,
+  .fc-button-primary:focus,
+  .fc-button:focus {
+    @apply !shadow-none;
+  }
+
+  .fc-button-primary,
+  .fc-button-primary:not(:disabled).fc-button-active,
+  .fc-button-primary:hover,
+  .fc-button-primary:not(:disabled):active,
+  .fc-button-primary:disabled {
+    @apply border-transparent;
+  }
+
+  .fc-toolbar .fc-button:not(.fc-next-button):not(.fc-prev-button) {
+    @apply px-3.5 py-1.5;
+  }
+
+  .fc-toolbar .fc-toolbar-chunk {
+    @apply flex items-center;
+  }
+
+  .fc-toolbar h2 {
+    @apply text-lg;
+  }
+
+  .fc-toolbar .fc-prev-button,
+  .fc-toolbar .fc-next-button {
+    @apply !text-base-content/80 hover:!text-base-content bg-transparent px-2 py-0 hover:bg-transparent;
+
+    .fc-icon {
+      @apply -mt-0.5 hover:scale-110;
+    }
+  }
+
+  .fc-view-harness .fc-event {
+    @apply px-1.5 py-0.5 text-sm font-medium;
+  }
+
+  .fc-view-harness .fc-event .fc-daygrid-event-dot {
+    @apply hidden;
+  }
+
+  .fc-view-harness .fc-event .fc-event-title {
+    @apply font-medium;
+  }
+
+  .fc-daygrid-event .fc-event-time {
+    @apply text-xs font-semibold;
+  }
+
+  .fc-event-primary {
+    --fc-event-text-color: var(--color-primary);
+    --fc-event-border-color: var(--color-primary);
+    @apply bg-primary/20 text-primary;
+  }
+
+  .fc-event-secondary {
+    --fc-event-text-color: var(--color-secondary);
+    --fc-event-border-color: var(--color-secondary);
+    @apply bg-secondary/20 text-secondary;
+  }
+
+  .fc-event-error {
+    --fc-event-text-color: var(--color-error);
+    --fc-event-border-color: var(--color-error);
+    @apply bg-error/20 text-error;
+  }
+
+  .fc-event-warning {
+    --fc-event-text-color: var(--color-warning);
+    --fc-event-border-color: var(--color-warning);
+    @apply bg-warning/20 text-warning;
+  }
+
+  .fc-event-success {
+    --fc-event-text-color: var(--color-success);
+    --fc-event-border-color: var(--color-success);
+    @apply bg-success/20 text-success;
+  }
+
+  .fc-event-info {
+    --fc-event-text-color: var(--color-info);
+    --fc-event-border-color: var(--color-info);
+    @apply bg-info/20 text-info;
+  }
+
+  .fc-daygrid-event-harness + .fc-daygrid-event-harness .fc-daygrid-event {
+    @apply mt-1.5;
+  }
+
+  .fc-h-event,
+  .fc-v-event {
+    @apply border-none;
+  }
+
+  .fc-daygrid-day-bottom {
+    @apply text-base-content/50 text-xs font-medium;
+  }
+
+  .fc-daygrid-more-link {
+    @apply mt-[3px];
+  }
+
+  .fc-popover .fc-popover-header {
+    @apply bg-base-200/50 rounded-t-field p-2;
+  }
+
+  .fc-popover {
+    @apply rounded-field !border-none;
+  }
+
+  .fc-more-popover .fc-popover-body {
+    @apply !min-w-44;
+  }
+
+  .fc-daygrid-dot-event {
+    @apply mt-1.5;
+  }
+
+  .fc-daygrid-block-event .fc-event-title {
+    @apply p-0;
+  }
+
+  th {
+    @apply text-base-content/80 font-medium;
+  }
+
+  .fc-view-harness .fc-daygrid-body .fc-daygrid-day .fc-daygrid-day-top {
+    @apply flex-row;
+  }
+
+  .fc-scroller {
+    @apply overflow-x-hidden overflow-y-auto;
+  }
+
+  .fc-timegrid-divider {
+    @apply hidden;
+  }
+
+  .fc-daygrid-body-natural .fc-daygrid-day-events {
+    @apply !mt-2 !mb-[0.3rem];
+  }
+
+  .fc-timegrid-col-events {
+    @apply !m-px;
+  }
+
+  .fc-timegrid-slot-label {
+    @apply !border-r-0 !border-l-0;
+  }
+
+  .fc-timegrid-slot-lane {
+    @apply !border-r-0 !border-l-0;
+  }
+
+  .fc-list-day-cushion,
+  .fc-cell-shaded,
+  .fc-day-disabled {
+    @apply !bg-base-200/50 text-sm;
+  }
+
+  .fc-list-table {
+    .fc-event-primary,
+    .fc-event-secondary,
+    .fc-event-error,
+    .fc-event-warning,
+    .fc-event-success,
+    .fc-event-info {
+      --fc-event-bg-color: var(--color-base-100);
+      @apply !bg-base-100;
+    }
+  }
+}
+
+.fc-direction-rtl .fc-toolbar-ltr {
+  @apply !flex-row;
+}
+
+.fc .fc-toolbar {
+  @apply flex-wrap gap-3;
+}

@@ -1,0 +1,46 @@
+.tooltip {
+  @apply inline-block text-center;
+}
+
+.tooltip-content {
+  @apply invisible absolute inline-block p-2 opacity-0 transition-opacity;
+  width: max-content;
+  z-index: 20;
+}
+
+.tooltip-body {
+  --tooltip-color: var(--color-neutral);
+  --tooltip-text-color: var(--color-neutral-content);
+  @apply rounded-selector shadow-base-300/20 px-3 py-1 text-sm leading-5 shadow-md;
+  background-color: var(--tooltip-color);
+  color: var(--tooltip-text-color);
+}
+
+.tooltip-primary {
+  --tooltip-color: var(--color-primary);
+  --tooltip-text-color: var(--color-primary-content);
+}
+.tooltip-secondary {
+  --tooltip-color: var(--color-secondary);
+  --tooltip-text-color: var(--color-secondary-content);
+}
+.tooltip-accent {
+  --tooltip-color: var(--color-accent);
+  --tooltip-text-color: var(--color-accent-content);
+}
+.tooltip-info {
+  --tooltip-color: var(--color-info);
+  --tooltip-text-color: var(--color-info-content);
+}
+.tooltip-success {
+  --tooltip-color: var(--color-success);
+  --tooltip-text-color: var(--color-success-content);
+}
+.tooltip-warning {
+  --tooltip-color: var(--color-warning);
+  --tooltip-text-color: var(--color-warning-content);
+}
+.tooltip-error {
+  --tooltip-color: var(--color-error);
+  --tooltip-text-color: var(--color-error-content);
+}

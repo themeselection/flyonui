@@ -1,0 +1,164 @@
+.table {
+  @apply rounded-box relative w-full overflow-x-hidden overflow-y-auto text-left text-sm rtl:text-right;
+
+  tr.row-hover {
+    &,
+    &:nth-child(even) {
+      @apply hover:bg-base-200/80;
+    }
+  }
+
+  tr.row-active {
+    &,
+    &:nth-child(even) {
+      @apply bg-base-200;
+    }
+  }
+
+  :where(th, td) {
+    @apply px-5 py-3 align-middle text-nowrap;
+  }
+
+  :where(thead, tfoot) {
+    @apply text-base-content text-sm whitespace-nowrap uppercase;
+    letter-spacing: 1px;
+  }
+
+  :where(th) {
+    @apply font-medium;
+  }
+
+  :where(.table-pin-rows thead tr) {
+    @apply bg-base-100 sticky top-0 z-1;
+  }
+
+  :where(.table-pin-rows tfoot tr) {
+    @apply bg-base-100 sticky bottom-0 z-1;
+  }
+
+  :where(.table-pin-cols tr th) {
+    @apply bg-base-100 sticky right-0 left-0;
+  }
+
+  :where(thead tr) {
+    border-bottom: var(--border) solid color-mix(in oklch, var(--color-base-content) 25%, #0000);
+  }
+
+  :where(tbody tr:not(:last-child)) {
+    border-bottom: var(--border) solid color-mix(in oklch, var(--color-base-content) 10%, #0000);
+  }
+
+  :where(tfoot) {
+    border-top: var(--border) solid color-mix(in oklch, var(--color-base-content) 25%, #0000);
+  }
+}
+
+.table-striped {
+  tbody {
+    tr {
+      &:nth-child(even) {
+        @apply bg-base-200;
+
+        :where(.table-pin-cols tr th) {
+          @apply bg-base-200;
+        }
+      }
+
+      &.row-hover {
+        &,
+        &:nth-child(even) {
+          @apply hover:bg-base-200/80;
+        }
+      }
+
+      &.row-active {
+        &,
+        &:nth-child(even) {
+          @apply hover:bg-base-200;
+        }
+      }
+    }
+  }
+}
+
+.table-striped-columns {
+  td:nth-child(even),
+  th:nth-child(even) {
+    @apply bg-base-200;
+  }
+}
+
+.table-borderless {
+  @apply border-none;
+  :where(thead, tbody) {
+    :where(tr:not(:last-child)),
+    :where(tr:first-child:last-child) {
+      @apply border-none;
+    }
+  }
+}
+
+.table-xs {
+  :where(thead, tfoot) {
+    @apply text-xs;
+  }
+
+  :not(thead, tfoot) tr {
+    @apply text-xs;
+  }
+
+  :where(th, td) {
+    @apply px-2 py-1;
+  }
+}
+
+.table-sm {
+  :where(thead, tfoot) {
+    @apply text-xs;
+  }
+
+  :not(thead, tfoot) tr {
+    @apply text-sm;
+  }
+
+  :where(th, td) {
+    @apply px-3 py-2;
+  }
+}
+
+.table-md {
+  :where(thead, tfoot) {
+    @apply text-sm;
+  }
+
+  :not(thead, tfoot) tr {
+    @apply text-sm;
+  }
+  :where(th, td) {
+    @apply px-5 py-3;
+  }
+}
+
+.table-lg {
+  :where(thead, tfoot) {
+    @apply text-sm;
+  }
+  :not(thead, tfoot) tr {
+    @apply text-base;
+  }
+  :where(th, td) {
+    @apply px-6 py-4;
+  }
+}
+
+.table-xl {
+  :where(thead, tfoot) {
+    @apply text-sm;
+  }
+  :not(thead, tfoot) tr {
+    @apply text-base;
+  }
+  :where(th, td) {
+    @apply px-6 py-5;
+  }
+}

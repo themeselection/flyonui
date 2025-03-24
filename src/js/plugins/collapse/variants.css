@@ -1,0 +1,17 @@
+@custom-variant collapse-open {
+  &.collapse.open {
+    @slot;
+  }
+
+  &.collapse-toggle.open {
+    @slot;
+  }
+
+  .collapse.open > & {
+    @slot;
+  }
+
+  .collapse-toggle.open > & {
+    @slot;
+  }
+}

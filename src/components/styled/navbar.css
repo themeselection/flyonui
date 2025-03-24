@@ -1,4 +1,0 @@
-.navbar {
-  padding: var(--navbar-padding, 0.75rem 1.5rem);
-  @apply bg-base-100 w-full;
-}

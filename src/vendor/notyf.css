@@ -1,0 +1,109 @@
+@keyframes notyf-fadeinright {
+  0% {
+    opacity: 0;
+    transform: translateX(-25%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+@keyframes notyf-fadeoutleft {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-25%);
+  }
+}
+
+.notyf__toast {
+  @apply rounded-field shadow-base-300/20 !p-0 shadow-md max-sm:m-2 max-sm:w-11/12;
+
+  .notyf__wrapper {
+    @apply px-3 py-2.5;
+
+    .notyf__dismiss {
+      @apply !mr-0 rtl:!right-auto rtl:!left-0;
+
+      .notyf__dismiss-btn {
+        @apply w-full !opacity-50 hover:!opacity-100 active:!opacity-100;
+      }
+    }
+  }
+
+  .notyf__wrapper:has(> .notyf__dismiss) {
+    @apply !pe-12;
+  }
+}
+
+.notyf__toast--error {
+  .notyf__ripple {
+    @apply !bg-error;
+  }
+  .notyf__icon i {
+    @apply !text-error;
+  }
+}
+
+.notyf__toast--success {
+  .notyf__ripple {
+    @apply !bg-success;
+  }
+  .notyf__icon i {
+    @apply !text-success;
+  }
+}
+
+.notyf__icon {
+  @apply bg-base-100 ring-base-100/40 !me-3 flex size-[26px] shrink-0 items-center justify-center rounded-full ring-4 rtl:!mr-0;
+
+  & i {
+    @apply size-[1.125rem];
+  }
+
+  .notyf__icon--success:before,
+  .notyf__icon--success:after,
+  .notyf__icon--error:before,
+  .notyf__icon--error:after {
+    content: none;
+  }
+
+  .notyf__icon--error,
+  .notyf__icon--success {
+    display: inline-block;
+    width: 1.125rem;
+    height: 1.125rem;
+    background-color: currentColor;
+    -webkit-mask-image: var(--svg);
+    mask-image: var(--svg);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
+
+  .notyf__icon--error {
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0m2.7-6.3l12.6 12.6'/%3E%3C/svg%3E");
+  }
+
+  .notyf__icon--success {
+    --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2'%3E%3Cpath d='M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0'/%3E%3Cpath d='m9 12l2 2l4-4'/%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+.notyf__message {
+  @apply text-base;
+}
+
+[dir="rtl"] .notyf__dismiss {
+  animation: notyf-fadeinright 0.3s forwards !important;
+  animation-delay: 0.35s !important;
+}
+
+[dir="rtl"] .notyf__toast--disappear .notyf__dismiss {
+  animation: notyf-fadeoutleft 0.3s forwards !important;
+}

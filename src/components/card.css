@@ -1,0 +1,203 @@
+.card {
+  @apply rounded-box bg-base-100 text-base-content/80 border-base-content/20 relative flex flex-col border-solid text-base font-normal outline-none;
+  box-shadow: var(
+    --card-shadow,
+    0 1px 3px 0 color-mix(in oklab, var(--color-base-300) 20%, #0000),
+    0 1px 2px -1px color-mix(in oklab, var(--color-base-300) 20%, #0000)
+  );
+  border-width: var(--card-border, 0px);
+
+  &:focus {
+    @apply outline-hidden;
+  }
+
+  :where(figure:first-child) {
+    @apply overflow-hidden;
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+    border-end-start-radius: unset;
+    border-end-end-radius: unset;
+  }
+
+  :where(figure:last-child) {
+    @apply overflow-hidden;
+    border-start-start-radius: unset;
+    border-start-end-radius: unset;
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
+  }
+
+  &:where(.card-border) {
+    border: var(--border) solid color-mix(in oklab, var(--color-base-content) 20%, transparent);
+  }
+
+  &.image-full {
+    @apply grid;
+
+    &:before {
+      @apply bg-neutral rounded-box relative col-start-1 row-start-1 opacity-75;
+      content: "";
+    }
+
+    > * {
+      @apply col-start-1 row-start-1;
+    }
+
+    > .card-body {
+      @apply text-neutral-content relative;
+    }
+
+    :where(figure) {
+      @apply overflow-hidden;
+      border-radius: inherit;
+    }
+
+    > figure img {
+      @apply h-full object-cover;
+    }
+  }
+
+  figure {
+    @apply flex items-center justify-center;
+  }
+  &:has(> input:is(input[type="checkbox"], input[type="radio"])) {
+    @apply cursor-pointer;
+    user-select: none;
+  }
+  &:has(> :checked) {
+    outline: 2px solid currentColor;
+  }
+}
+
+.card-title {
+  @apply text-base-content text-2xl font-semibold;
+}
+
+.card-header {
+  @apply rounded-t-box;
+  padding: var(--card-p, 1.5rem);
+}
+
+.card-body {
+  @apply flex flex-auto flex-col gap-2;
+  padding: var(--card-p, 1.5rem);
+
+  :where(p) {
+    @apply grow;
+  }
+}
+
+.card-actions {
+  @apply flex flex-wrap items-start gap-3;
+}
+
+.card-footer {
+  @apply rounded-b-box;
+  padding: var(--card-p, 1.5rem);
+}
+
+:where(.card-header) + .card-body {
+  padding-top: 0;
+}
+
+:where(.card-body) + .card-footer {
+  padding-top: 0;
+}
+
+.card-xs {
+  --card-p: 0.5rem;
+  @apply text-xs;
+
+  .card-title {
+    @apply text-base;
+  }
+}
+
+.card-sm {
+  --card-p: 1rem;
+  @apply text-sm;
+
+  .card-title {
+    @apply text-lg;
+  }
+}
+
+.card-md {
+  @apply text-base;
+  --card-p: 1.5rem;
+
+  .card-title {
+    @apply text-2xl;
+  }
+}
+
+.card-lg {
+  --card-p: 2rem;
+  @apply text-lg;
+
+  .card-title {
+    @apply text-2xl;
+  }
+}
+
+.card-xl {
+  --card-p: 2.5rem;
+  @apply text-lg;
+
+  .card-title {
+    @apply text-3xl;
+  }
+}
+
+.card .alert {
+  @apply rounded-none;
+  &:first-child {
+    @apply rounded-t-box;
+  }
+  &:last-child {
+    @apply rounded-b-box;
+  }
+}
+
+.card-side {
+  align-items: stretch;
+  flex-direction: row;
+
+  :where(figure:first-child) {
+    @apply overflow-hidden;
+    border-start-start-radius: inherit;
+    border-start-end-radius: unset;
+    border-end-start-radius: inherit;
+    border-end-end-radius: unset;
+  }
+
+  :where(figure:last-child) {
+    @apply overflow-hidden;
+    border-start-start-radius: unset;
+    border-start-end-radius: inherit;
+    border-end-start-radius: unset;
+    border-end-end-radius: inherit;
+  }
+
+  figure > * {
+    max-width: unset;
+  }
+
+  :where(figure > *) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.card-group {
+  @apply rounded-box overflow-hidden;
+  box-shadow: var(--card-shadow, 0 1px 3px 0 var(--color-base-300), 0 1px 2px -1px var(--color-base-300));
+  border-color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
+  border-width: var(--card-border, 0px);
+  & > .card {
+    @apply flex-[1_0_0%] rounded-none;
+    --card-shadow: none;
+    --card-border: 0;
+  }
+}

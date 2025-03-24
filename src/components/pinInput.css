@@ -1,0 +1,61 @@
+.pin-input {
+  @apply border-base-content/25 bg-base-100 placeholder:text-base-content/80 rounded-field border text-center text-base;
+  height: var(--size);
+  width: var(--size);
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  --size: calc(var(--size-field, 0.25rem) * 9.5);
+
+  &:hover:not(:focus, :focus-within) {
+    @apply border-base-content/60;
+  }
+
+  &:focus,
+  &:focus-within {
+    @apply border-primary shadow-xs;
+    --tw-shadow-color: color-mix(in oklab, var(--color-primary) 30%, #0000);
+    outline: 1px solid var(--color-primary);
+    isolation: isolate;
+  }
+
+  &.pin-input-underline {
+    @apply border-base-content/40 rounded-none border-0 border-b bg-transparent;
+
+    &:focus,
+    &:focus-within {
+      @apply border-primary border-b-2 shadow-none outline-none;
+    }
+  }
+
+  &.disabled,
+  &:disabled,
+  &[disabled] {
+    @apply border-base-content/25 bg-base-content/5 placeholder-base-content/40 text-base-content/50 pointer-events-none;
+  }
+}
+
+.pin-input-xs {
+  @apply text-xs;
+  --size: calc(var(--size-field, 0.25rem) * 6);
+}
+
+.pin-input-sm {
+  @apply text-sm;
+  --size: calc(var(--size-field, 0.25rem) * 7.5);
+}
+
+.pin-input-md {
+  @apply text-base;
+  --size: calc(var(--size-field, 0.25rem) * 9.5);
+}
+
+.pin-input-lg {
+  @apply text-lg;
+  --size: calc(var(--size-field, 0.25rem) * 11.5);
+}
+
+.pin-input-xl {
+  @apply text-xl;
+  --size: calc(var(--size-field, 0.25rem) * 14);
+}

@@ -1,0 +1,29 @@
+@custom-variant overlay-open {
+  &.open {
+    @slot;
+  }
+
+  .open & {
+    @slot;
+  }
+}
+
+@custom-variant overlay-layout-open {
+  &.overlay-body-open {
+    @slot;
+  }
+
+  .overlay-body-open & {
+    @slot;
+  }
+}
+
+@custom-variant overlay-backdrop-open {
+  &.overlay-backdrop {
+    @slot;
+  }
+
+  .overlay-backdrop & {
+    @slot;
+  }
+}
