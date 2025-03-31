@@ -17,13 +17,6 @@
   &[disabled] {
     @apply bg-neutral/5 text-base-content/50 pointer-events-none;
   }
-
-  & > .label {
-    @apply text-base-content/80 py-1 text-base;
-    &-text {
-      @apply text-base-content;
-    }
-  }
 }
 
 .dropdown-active,

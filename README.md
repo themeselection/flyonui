@@ -1,5 +1,5 @@
 <a href="https://flyonui.com">
-  <img alt="flyonui logo" width="800" src="https://cdn.flyonui.com/fy-assets/smm/marketing/flyonui-smm-banner.png">
+  <img alt="flyonui logo" width="800" src="https://cdn.themeselection.com/ts-assets/flyonui/tailwindcss/banner/banner.png">
 </a><br/><br/>
 
 [FlyonUI](https://flyonui.com/) is the easiest, free and open-source Tailwind CSS component library with semantic classes. 🚀

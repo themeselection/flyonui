@@ -149,7 +149,7 @@
   }
 }
 
-.card .alert {
+.card .card-alert {
   @apply rounded-none;
   &:first-child {
     @apply rounded-t-box;
@@ -192,7 +192,11 @@
 
 .card-group {
   @apply rounded-box overflow-hidden;
-  box-shadow: var(--card-shadow, 0 1px 3px 0 var(--color-base-300), 0 1px 2px -1px var(--color-base-300));
+  box-shadow: var(
+    --card-shadow,
+    0 1px 3px 0 color-mix(in oklab, var(--color-base-300) 20%, #0000),
+    0 1px 2px -1px color-mix(in oklab, var(--color-base-300) 20%, #0000)
+  );
   border-color: color-mix(in oklab, var(--color-base-content) 30%, transparent);
   border-width: var(--card-border, 0px);
   & > .card {

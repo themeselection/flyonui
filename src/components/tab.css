@@ -76,53 +76,58 @@
   padding-inline-end: calc(var(--tab-p, 1rem) - var(--tab-border, 1px));
   padding-bottom: var(--tab-border, 1px);
   padding-top: 0;
-  &:before {
-    z-index: 1;
-    content: "";
-    display: block;
-    position: absolute;
-    width: calc(100% + var(--radius-field, 0.375rem) * 2);
-    height: var(--radius-field, 0.375rem);
-    bottom: 0;
-    background-size: var(--radius-field, 0.375rem);
-    background-position:
-      top left,
-      top right;
-    background-repeat: no-repeat;
-    --tab-grad: calc(69% - var(--tab-border, 1px));
-    --radius-start: radial-gradient(
-      circle at top left,
-      transparent var(--tab-grad),
-      var(--tab-border-color) calc(var(--tab-grad) + 0.25px),
-      var(--tab-border-color) calc(var(--tab-grad) + var(--tab-border, 1px)),
-      var(--tab-bg) calc(var(--tab-grad) + var(--tab-border, 1px) + 0.25px)
-    );
-    --radius-end: radial-gradient(
-      circle at top right,
-      transparent var(--tab-grad),
-      var(--tab-border-color) calc(var(--tab-grad) + 0.25px),
-      var(--tab-border-color) calc(var(--tab-grad) + var(--tab-border, 1px)),
-      var(--tab-bg) calc(var(--tab-grad) + var(--tab-border, 1px) + 0.25px)
-    );
-    background-image: var(--radius-start), var(--radius-end);
-  }
+}
 
-  &:first-child:before {
-    background-image: var(--radius-end);
-    background-position: top right;
-    [dir="rtl"] & {
-      background-image: var(--radius-start);
-      background-position: top left;
-    }
-  }
-  &:last-child:before {
-    background-image: var(--radius-start);
-    background-position: top left;
-    [dir="rtl"] & {
-      background-image: var(--radius-end);
-      background-position: top right;
-    }
-  }
+.tabs-lifted > .tab.tab-active:not([disabled]):before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 1;
+  width: calc(100% + var(--radius-field, 0.375rem) * 2);
+  height: var(--radius-field, 0.375rem);
+  bottom: 0;
+  background-size: var(--radius-field, 0.375rem);
+  background-repeat: no-repeat;
+  background-position:
+    top left,
+    top right;
+  --tab-grad: calc(69% - var(--tab-border, 1px));
+  --radius-start: radial-gradient(
+    circle at top left,
+    transparent var(--tab-grad),
+    var(--tab-border-color) calc(var(--tab-grad) + 0.25px),
+    var(--tab-border-color) calc(var(--tab-grad) + var(--tab-border, 1px)),
+    var(--tab-bg) calc(var(--tab-grad) + var(--tab-border, 1px) + 0.25px)
+  );
+  --radius-end: radial-gradient(
+    circle at top right,
+    transparent var(--tab-grad),
+    var(--tab-border-color) calc(var(--tab-grad) + 0.25px),
+    var(--tab-border-color) calc(var(--tab-grad) + var(--tab-border, 1px)),
+    var(--tab-bg) calc(var(--tab-grad) + var(--tab-border, 1px) + 0.25px)
+  );
+  background-image: var(--radius-start), var(--radius-end);
+}
+
+.tabs-lifted > .tab.tab-active:not([disabled]):first-child:before {
+  background-image: var(--radius-end);
+  background-position: top right;
+}
+
+.tabs-lifted > .tab.tab-active:not([disabled]):last-child:before {
+  background-image: var(--radius-start);
+  background-position: top left;
+}
+
+/* RTL Styles */
+[dir="rtl"] .tabs-lifted > .tab.tab-active:not([disabled]):first-child:before {
+  background-image: var(--radius-start);
+  background-position: top left;
+}
+
+[dir="rtl"] .tabs-lifted > .tab.tab-active:not([disabled]):last-child:before {
+  background-image: var(--radius-end);
+  background-position: top right;
 }
 
 .tabs-lifted > .tab-active:not([disabled]) + .tabs-lifted .tab-active:not([disabled]) {

@@ -1,3 +1,27 @@
+# Changelog 
+
+All notable changes to this project will be documented in this file.
+
+## [2.0.1] - [31-March-2025]
+
+## New in Components
+- **Card:** Introduced `card-alert` class to style alert messages inside a card with rounded corners.
+
+
+## Updated
+
+- **Framework Guides:** The framework integration documentation has been updated for all frameworks.
+
+## Fixes and Improvements
+
+- **Dropdown:**
+  - Removed unused `label` class.
+
+- **Tabs:**
+  - Resolved the `tab-lifted` warning during the build process.
+
+## [2.0.0] - [24-March-2025]
+
 For a detailed overview of the changes, please refer to the [Upgrade Guide](https://flyonui.com/docs/getting-started/upgrade/).
 link
 

@@ -63,15 +63,9 @@ SOFTWARE.
 
 The below files are from daisyUI (https://github.com/saadeghi/daisyui) under daisyUI MIT license and using them in other projects requires including daisyUI MIT license text:
 
-- `src/base/\*`
-- `src/components/\*` (modified)
-- `src/full/\*`
-- `src/lib/\*`
-- `src/themes/\*`
-- `src/theming/\*` (modified)
-- `src/utilities/\*` (modified)
-- `src/index.js` (modified)
-- `src/release.js`
+- `functions/\*`
+- `src/\*` (modified)
+- `index.js`
 
 ---
 
@@ -135,9 +129,11 @@ Preline UI Fair Use License
 The below files are from Preline (https://github.com/htmlstreamofficial/preline) under the Preline MIT license and using them in other projects requires including Preline MIT license text:
 
 - `src/js/plugins/` (modified)
-- `src/dts-config.js`
-- `src/flyonui.d.ts`
-- `src/flyonui.js` (modified)
-- `src/plugin.js` (modified)
-- `src/tsconfig.json`
-- `src/webpack.config.js`
+- `dts-config.js`
+- `preline.d.ts` (modified)
+- `preline.js` (modified)
+- `variants.css` (modified)
+- `tsconfig.json`
+- `tsconfig.mjs.json`
+- `webpack.config.js` (modified)
+- `webpack.config.mjs`

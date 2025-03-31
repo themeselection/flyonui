@@ -1,24 +1,3 @@
-/* States */
-@custom-variant success {
-  &.success {
-    @slot;
-  }
-
-  .success & {
-    @slot;
-  }
-}
-
-@custom-variant error {
-  &.error {
-    @slot;
-  }
-
-  .error & {
-    @slot;
-  }
-}
-
 /* Preline */
 @import "./src/js/plugins/dropdown/variants.css";
 @import "./src/js/plugins/remove-element/variants.css";
@@ -43,6 +22,27 @@
 /* Sortable.js */
 @custom-variant dragged {
   &.dragged {
+    @slot;
+  }
+}
+
+/* States */
+@custom-variant success {
+  &.success {
+    @slot;
+  }
+
+  .success & {
+    @slot;
+  }
+}
+
+@custom-variant error {
+  &.error {
+    @slot;
+  }
+
+  .error & {
     @slot;
   }
 }
