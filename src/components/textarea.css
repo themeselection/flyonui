@@ -43,9 +43,9 @@
     &:first-child {
       @apply py-2 ps-4;
     }
-      &:nth-child(2) {
-        @apply py-2;
-      }
+    &:nth-child(2) {
+      @apply py-2;
+    }
     &:last-child {
       @apply py-2 pe-4;
     }
