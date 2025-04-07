@@ -202,3 +202,111 @@ select.is-invalid + .advance-select-toggle,
     --input-color: var(--color-error);
   }
 }
+
+/* Floating States */
+/* Input */
+
+.input-floating:has(.is-valid),
+.validate .input-floating:has(:valid) {
+  @apply hover:border-success;
+  .input-floating-label {
+    color: var(--color-success);
+  }
+
+  &:focus-within,
+  &:not(:has(input:placeholder-shown)),
+  &:has(.input:focus) {
+    .input-floating-label {
+      color: var(--color-success);
+    }
+  }
+}
+
+/* Error state */
+
+.input-floating:has(.is-invalid),
+.validate .input-floating:has(:invalid) {
+  @apply hover:border-error;
+  .input-floating-label {
+    color: var(--color-error);
+  }
+
+  &:focus-within,
+  &:not(:has(input:placeholder-shown)),
+  &:has(.input:focus) {
+    .input-floating-label {
+      color: var(--color-error);
+    }
+  }
+}
+
+/*  Textarea */
+/* Floating States */
+
+.textarea-floating:has(.is-valid),
+.validate .textarea-floating:has(:valid) {
+  .textarea-floating-label {
+    color: var(--color-success);
+  }
+
+  &:focus-within,
+  &:not(:has(textarea:placeholder-shown)),
+  &:has(.textarea:focus) {
+    .textarea-floating-label {
+      color: var(--color-success);
+    }
+  }
+}
+
+/* Error state */
+
+.textarea-floating:has(.is-invalid),
+.validate .textarea-floating:has(:invalid) {
+  .textarea-floating-label {
+    color: var(--color-error);
+  }
+
+  &:focus-within,
+  &:not(:has(textarea:placeholder-shown)),
+  &:has(.textarea:focus) {
+    .textarea-floating-label {
+      color: var(--color-error);
+    }
+  }
+}
+
+/* Select */
+
+/* Floating States */
+
+.select-floating:has(.is-valid),
+.validate .select-floating:has(:valid) {
+  .select-floating-label {
+    color: var(--color-success);
+  }
+
+  &:focus-within,
+  &:not(:has(select:placeholder-shown)),
+  &:has(.select:focus) {
+    .select-floating-label {
+      color: var(--color-success);
+    }
+  }
+}
+
+/* Error state */
+
+.select-floating:has(.is-invalid),
+.validate .select-floating:has(:invalid) {
+  .select-floating-label {
+    color: var(--color-error);
+  }
+
+  &:focus-within,
+  &:not(:has(select:placeholder-shown)),
+  &:has(.select:focus) {
+    .select-floating-label {
+      color: var(--color-error);
+    }
+  }
+}

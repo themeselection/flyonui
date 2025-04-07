@@ -3,6 +3,7 @@ export default [
   'dark',
   'black',
   'corporate',
+  'ghibli',
   'gourmet',
   'luxury',
   'mintlify',

@@ -37,7 +37,6 @@
 
 .textarea:has(> textarea) {
   @apply p-0;
-
   textarea {
     @apply h-auto min-h-20 w-full;
     &:first-child {
@@ -51,10 +50,8 @@
     }
   }
 }
-
 .textarea:has(> .textarea-floating) {
   @apply p-0;
-
   :where(.textarea-floating:first-child) > textarea {
     @apply py-2 ps-4;
   }
@@ -138,40 +135,6 @@
   }
   &:has(.textarea-xl) .textarea-floating-label {
     @apply text-xl;
-  }
-}
-
-/* Floating States */
-
-.textarea-floating:has(.is-valid),
-.validate .textarea-floating:has(:valid) {
-  .textarea-floating-label {
-    color: var(--color-success);
-  }
-
-  &:focus-within,
-  &:not(:has(textarea:placeholder-shown)),
-  &:has(.textarea:focus) {
-    .textarea-floating-label {
-      color: var(--color-success);
-    }
-  }
-}
-
-/* Error state */
-
-.textarea-floating:has(.is-invalid),
-.validate .textarea-floating:has(:invalid) {
-  .textarea-floating-label {
-    color: var(--color-error);
-  }
-
-  &:focus-within,
-  &:not(:has(textarea:placeholder-shown)),
-  &:has(.textarea:focus) {
-    .textarea-floating-label {
-      color: var(--color-error);
-    }
   }
 }
 

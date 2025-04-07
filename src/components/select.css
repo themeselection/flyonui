@@ -114,40 +114,6 @@
   }
 }
 
-/* Floating States */
-
-.select-floating:has(.is-valid),
-.validate .select-floating:has(:valid) {
-  .select-floating-label {
-    color: var(--color-success);
-  }
-
-  &:focus-within,
-  &:not(:has(select:placeholder-shown)),
-  &:has(.select:focus) {
-    .select-floating-label {
-      color: var(--color-success);
-    }
-  }
-}
-
-/* Error state */
-
-.select-floating:has(.is-invalid),
-.validate .select-floating:has(:invalid) {
-  .select-floating-label {
-    color: var(--color-error);
-  }
-
-  &:focus-within,
-  &:not(:has(select:placeholder-shown)),
-  &:has(.select:focus) {
-    .select-floating-label {
-      color: var(--color-error);
-    }
-  }
-}
-
 /* Sizes */
 .select-xs {
   --size: calc(var(--size-field, 0.25rem) * 6);

@@ -1,5 +1,5 @@
 <a href="https://flyonui.com">
-  <img alt="flyonui logo" width="800" src="https://cdn.themeselection.com/ts-assets/flyonui/tailwindcss/banner/banner.png">
+  <img alt="flyonui logo" width="800" src="https://cdn.flyonui.com/fy-assets/smm/marketing/flyonui-smm-banner.png">
 </a><br/><br/>
 
 [FlyonUI](https://flyonui.com/) is the easiest, free and open-source Tailwind CSS component library with semantic classes. 🚀
@@ -160,6 +160,7 @@ For comprehensive documentation, please visit [flyonui.com](https://flyonui.com/
     <td width="20%" align="center">Django</td>
     <td width="20%" align="center">Flask</td>
     <td width="20%" align="center">Laravel</td>
+    <td width="20%" align="center">11ty</td>
   </tr>
   <tr>
     <td width="20%" align="center">
@@ -180,6 +181,11 @@ For comprehensive documentation, please visit [flyonui.com](https://flyonui.com/
     <td width="20%" align="center">
         <a href="https://flyonui.com/framework-integrations/laravel/">
         <img src="https://cdn.flyonui.com/fy-assets/icons/laravel-icon.png" alt="Laravel logo" width="70" />
+        </a>
+    </td>
+    <td width="20%" align="center">
+        <a href="https://flyonui.com/framework-integrations/eleventy/">
+        <img src="https://cdn.flyonui.com/fy-assets/icons/11ty-icon.png" alt="11ty logo" width="70" />
         </a>
     </td>
   </tr>

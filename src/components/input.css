@@ -132,42 +132,6 @@
   }
 }
 
-/* Floating States */
-
-.input-floating:has(.is-valid),
-.validate .input-floating:has(:valid) {
-  @apply hover:border-success;
-  .input-floating-label {
-    color: var(--color-success);
-  }
-
-  &:focus-within,
-  &:not(:has(input:placeholder-shown)),
-  &:has(.input:focus) {
-    .input-floating-label {
-      color: var(--color-success);
-    }
-  }
-}
-
-/* Error state */
-
-.input-floating:has(.is-invalid),
-.validate .input-floating:has(:invalid) {
-  @apply hover:border-error;
-  .input-floating-label {
-    color: var(--color-error);
-  }
-
-  &:focus-within,
-  &:not(:has(input:placeholder-shown)),
-  &:has(.input:focus) {
-    .input-floating-label {
-      color: var(--color-error);
-    }
-  }
-}
-
 /* Sizes */
 
 .input-xs {

@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - [07-April-2025]
+
+## New Theme
+
+- Ghibli
+
+## New Framework Guide
+
+- Added framework guide for [11ty](https://flyonui.com/framework-integrations/eleventy/)
+
+## Fixes and Improvements
+
+- **Fixed:** Floating textarea placeholder and label positioning issue when using both trailing and leading icons. [PR #83](https://github.com/themeselection/flyonui/pull/83)
+- Improves `neutral-content` color in light theme and `neutral` color in luxury theme.
+
 ## [2.0.1] - [31-March-2025]
 
 ## New in Components
@@ -30,7 +45,7 @@ link
 - [Filter](https://flyonui.com/docs/forms/filter/)
 - [Status](https://flyonui.com/docs/components/status/)
 
-## New DaisyUI Components
+## New Themes
 
 - **Black**
 - **Mintlify**

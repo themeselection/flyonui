@@ -1,15 +1,15 @@
 .divider {
   @apply flex w-full items-center self-stretch text-sm whitespace-nowrap;
 
-  &:before,
-  &:after {
-    content: "";
-    @apply border-base-content/20 h-px w-full grow border-e-0 border-t;
-  }
-
   &:not(:empty) {
     @apply gap-4;
   }
+}
+
+.divider:before,
+.divider:after {
+  content: "";
+  @apply border-base-content/20 h-px w-full grow border-e-0 border-t border-solid;
 }
 
 /* divider direction */

@@ -1,6 +1,6 @@
 {
   "name": "flyonui",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "The easiest, free and open-source Tailwind CSS component library with semantic classes.",
   "author": "ThemeSelection",
   "license": "MIT",
@@ -124,7 +124,7 @@
     "postcss": "^8.5.3",
     "postcss-js": "^4.0.1",
     "postcss-selector-parser": "^7.1.0",
-    "tailwindcss": "^4.0.15",
+    "tailwindcss": "4.1.1",
     "nouislider": "^15.8.1"
   },
   "dependencies": {
