@@ -43,6 +43,9 @@
     &:first-child {
       @apply py-2 ps-4;
     }
+    &:nth-child(2) {
+      @apply py-2;
+    }
     &:last-child {
       @apply py-2 pe-4;
     }
@@ -56,10 +59,15 @@
     @apply py-2 ps-4;
   }
 
+  :where(.textarea-floating:nth-child(2)) > textarea {
+    @apply py-2;
+  }
+
   :where(.textarea-floating:last-child) > textarea {
     @apply py-2 pe-4;
   }
 
+  :where(.textarea-floating:nth-child(2)) .textarea-floating-label,
   :where(.textarea-floating:last-child) .textarea-floating-label {
     @apply ms-0;
   }
