@@ -1,8 +1,10 @@
 .apexcharts-tooltip-series-group.apexcharts-active {
-  @apply !pb-0;
+  padding-bottom: 0 !important;
 }
 
 .apexcharts-tooltip.apexcharts-theme-light,
 .apexcharts-tooltip.apexcharts-theme-dark {
-  @apply !bg-base-100 !border-none !shadow;
+  background-color: var(--tw-bg-opacity) !important;
+  border: none !important;
+  box-shadow: var(--tw-shadow) !important;
 }
