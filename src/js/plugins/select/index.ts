@@ -800,13 +800,14 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
         options.rest[key] = el[key]
       })
 
-      this.buildOriginalOption(title, `${value}`, id, false, false, options as ISingleOptionOptions & IApiFieldMap)
+      const isSelected = (typeof this.value === 'string' && this.value === `${value}`) || (Array.isArray(this.value) && this.value.includes(`${value}`));
+      this.buildOriginalOption(title, `${value}`, id, false, isSelected, options as ISingleOptionOptions & IApiFieldMap)
 
       this.buildOptionFromRemoteData(
         title,
         `${value}`,
         false,
-        false,
+        isSelected,
         `${i}`,
         id,
         options as ISingleOptionOptions & IApiFieldMap
