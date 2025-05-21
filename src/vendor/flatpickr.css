@@ -133,12 +133,12 @@ span.flatpickr-weekday,
   &.nextMonthDay:focus {
     @apply cursor-pointer outline-none;
   }
-  &:hover:not(.selected, .today),
-  &:focus:not(.selected, .today),
-  &.prevMonthDay:hover:not(.selected, .today),
-  &.nextMonthDay:hover:not(.selected, .today),
-  &.prevMonthDay:focus:not(.selected, .today),
-  &.nextMonthDay:focus:not(.selected, .today) {
+  &:hover:not(.selected, .today, .inRange, .endRange),
+  &:focus:not(.selected, .today, .inRange, .endRange),
+  &.prevMonthDay:hover:not(.selected, .today, .inRange, .endRange),
+  &.nextMonthDay:hover:not(.selected, .today, .inRange, .endRange),
+  &.prevMonthDay:focus:not(.selected, .today, .inRange, .endRange),
+  &.nextMonthDay:focus:not(.selected, .today, .inRange, .endRange) {
     @apply bg-neutral/10 border-transparent;
   }
   &.selected,
@@ -208,6 +208,7 @@ span.flatpickr-weekday,
 /* Inrange */
 
 .flatpickr-day.inRange,
+.flatpickr-day.nextMonthDay.inRange
 .flatpickr-day.inRange:hover {
   @apply bg-primary/20 text-primary;
   box-shadow: unset;

@@ -71,7 +71,7 @@
 .range.disabled,
 .range:disabled,
 .range[disabled] {
-  @apply pointer-events-none opacity-30;
+  @apply pointer-events-none opacity-50;
 }
 
 /* Direction */

@@ -7,19 +7,19 @@
 
 .carousel-prev,
 .carousel-next {
-  @apply text-base-content/80 hover:text-base-content absolute inset-y-0 inline-flex h-full w-[10%] items-center justify-center max-sm:w-[18%];
+  @apply absolute inset-y-0 my-auto inline-flex h-max cursor-pointer items-center justify-center;
 }
 
 .carousel-prev.disabled,
 .carousel-next.disabled {
-  @apply text-base-content/30 pointer-events-none;
+  @apply pointer-events-none;
 }
 
 .carousel-prev {
-  @apply start-0 rounded-s-2xl;
+  @apply rounded-s-2xl;
 }
 .carousel-next {
-  @apply end-0 rounded-e-2xl;
+  @apply rounded-e-2xl;
 }
 
 .carousel-box {

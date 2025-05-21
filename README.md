@@ -212,7 +212,7 @@ To use FlyonUI, ensure that you have [Node.js](https://nodejs.org/en/) and [Tail
    @plugin "flyonui";
    @import "./node_modules/flyonui/variants.css"; // Require only if you want to use FlyonUI JS component
 
-   // If you gitignored node_modules use below method
+ 
    @source "./node_modules/flyonui/dist/index.js"; // Require only if you want to use FlyonUI JS component
    ```
 

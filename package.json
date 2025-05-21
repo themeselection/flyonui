@@ -1,6 +1,7 @@
 {
   "name": "flyonui",
-  "version": "2.1.0",
+  "version": "2.2.0",
+  "type": "module",
   "description": "The easiest, free and open-source Tailwind CSS component library with semantic classes.",
   "author": "ThemeSelection",
   "license": "MIT",
@@ -85,12 +86,12 @@
     "src/vendor/",
     "src/js/",
     "./variants.css",
-    "./dts-config.js",
+    "./dts-config.cjs",
     "./tsconfig.json",
     "./tsconfig.mjs.json",
     "dist/*",
-    "./webpack.config.js",
-    "./webpack.config.mjs.js",
+    "./webpack.config.cjs",
+    "./webpack.config.mjs.cjs",
     "./global.d.ts",
     "./flyonui.d.ts",
     "./flyonui.js",
@@ -99,12 +100,12 @@
     "./README.md"
   ],
   "scripts": {
-    "watch:js": "webpack --config webpack.config.js --watch",
-    "watch:mjs": "webpack --config webpack.config.mjs.js --watch",
+    "watch:js": "webpack --config webpack.config.cjs --watch",
+    "watch:mjs": "webpack --config webpack.config.mjs.cjs --watch",
     "build:css": "bun build.js",
-    "build:js": "webpack --config webpack.config.js",
-    "build:mjs": "webpack --config webpack.config.mjs.js",
-    "build:generate-dts": "dts-bundle-generator --config dts-config.js",
+    "build:js": "webpack --config webpack.config.cjs",
+    "build:mjs": "webpack --config webpack.config.mjs.cjs",
+    "build:generate-dts": "dts-bundle-generator --config dts-config.cjs",
     "build:flyonui": "cp dist/index.js flyonui.js && cp dist/index.d.ts flyonui.d.ts"
   },
   "devDependencies": {

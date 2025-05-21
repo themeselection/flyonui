@@ -19,7 +19,7 @@ color-scheme: light;
 --color-warning-content: oklch(47% 0.137 46.201);
 --color-error: oklch(67.08% 0.2165 25.19);
 --color-error-content: oklch(97% 0.014 343.198);
---radius-selector: 2rem;
+--radius-selector: 0rem;
 --radius-field: 0rem;
 --radius-box: 0rem;
 --size-selector: 0.25rem;

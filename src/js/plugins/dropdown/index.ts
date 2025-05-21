@@ -1,30 +1,30 @@
 /*
  * HSDropdown
- * @version: 3.0.0
+ * @version: 3.0.1
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
 import {
-  stringToBoolean,
+  afterTransition,
+  dispatch,
   getClassProperty,
   getClassPropertyAlt,
   isIOS,
   isIpadOS,
-  dispatch,
-  afterTransition,
-  menuSearchHistory
+  menuSearchHistory,
+  stringToBoolean
 } from '../../utils'
 import { IMenuSearchHistory } from '../../utils/interfaces'
 
 import {
+  autoUpdate,
+  computePosition,
+  flip,
+  offset,
   type Placement,
   type Strategy,
-  computePosition,
-  autoUpdate,
-  offset,
-  flip,
   VirtualElement
 } from '@floating-ui/dom'
 
@@ -32,7 +32,7 @@ import { IDropdown, IHTMLElementFloatingUI } from '../dropdown/interfaces'
 import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
 
-import { POSITIONS, DROPDOWN_ACCESSIBILITY_KEY_SET } from '../../constants'
+import { DROPDOWN_ACCESSIBILITY_KEY_SET, POSITIONS } from '../../constants'
 
 class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDropdown {
   private static history: IMenuSearchHistory
@@ -159,7 +159,9 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
       this.onTouchEndListener = this.handleTouchEnd.bind(this)
 
       this.toggle.addEventListener('contextmenu', this.onToggleContextMenuListener)
-      this.toggle.addEventListener('touchstart', this.onTouchStartListener, { passive: false })
+      this.toggle.addEventListener('touchstart', this.onTouchStartListener, {
+        passive: false
+      })
       this.toggle.addEventListener('touchend', this.onTouchEndListener)
       this.toggle.addEventListener('touchmove', this.onTouchEndListener)
     } else {
@@ -300,9 +302,26 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
       middleware
     }
 
+    const checkSpaceAndAdjust = (x: number) => {
+      const menuRect = this.menu.getBoundingClientRect()
+      const viewportWidth = window.innerWidth
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+      const availableWidth = viewportWidth - scrollbarWidth
+
+      if (x + menuRect.width > availableWidth) {
+        x = availableWidth - menuRect.width
+      }
+
+      if (x < 0) x = 0
+
+      return x
+    }
+
     const update = () => {
       computePosition(_target, this.menu, options).then(
-        ({ x, y, placement: computedPlacement }: { x: number; y: number; placement: string }) => {
+        ({ x, y, placement: computedPlacement }: { x: number; y: number; placement: Placement }) => {
+          const adjustedX = checkSpaceAndAdjust(x)
+
           if (strategy === 'absolute' && adaptive === 'none') {
             Object.assign(this.menu.style, {
               position: strategy,
@@ -322,7 +341,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
                 top: '',
                 inset: '0px auto auto 0px',
                 margin: '0',
-                transform: `translate3d(${adaptive === 'adaptive' ? x : 0}px, ${y}px, 0)`
+                transform: `translate3d(${adaptive === 'adaptive' ? adjustedX : 0}px, ${y}px, 0)`
               })
             } else {
               Object.assign(this.menu.style, {
@@ -377,9 +396,12 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
   }
 
   public open(target?: VirtualElement | HTMLElement) {
-    if (this.el.classList.contains('open') || this.animationInProcess) return false
+    if (this.el.classList.contains('open') || this.animationInProcess) {
+      return false
+    }
 
     this.animationInProcess = true
+    this.menu.style.cssText = ''
 
     const _target = target || this.el
     const computedStyle = window.getComputedStyle(this.el)
@@ -389,7 +411,9 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
 
     if (scope === 'window') document.body.appendChild(this.menu)
 
-    if (strategy !== ('static' as Strategy)) this.el._floatingUI = this.setupFloatingUI(_target)
+    if (strategy !== ('static' as Strategy)) {
+      this.el._floatingUI = this.setupFloatingUI(_target)
+    }
 
     this.menu.style.margin = null
     this.menu.classList.remove('hidden')
@@ -411,7 +435,9 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
   }
 
   public close(isAnimated = true) {
-    if (this.animationInProcess || !this.el.classList.contains('open')) return false
+    if (this.animationInProcess || !this.el.classList.contains('open')) {
+      return false
+    }
 
     const scope = (window.getComputedStyle(this.el).getPropertyValue('--scope') || '').trim()
 
@@ -468,7 +494,9 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
       this.onTouchStartListener = null
       this.onTouchEndListener = null
     } else {
-      if (this.toggle) this.toggle.removeEventListener('click', this.onToggleClickListener)
+      if (this.toggle) {
+        this.toggle.removeEventListener('click', this.onToggleClickListener)
+      }
 
       this.onToggleClickListener = null
     }
@@ -494,8 +522,9 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
     return (
       window.$hsDropdownCollection.find(el => {
         if (target instanceof HSDropdown) return el.element.el === target.el
-        else if (typeof target === 'string') return el.element.el === document.querySelector(target)
-        else return el.element.el === target
+        else if (typeof target === 'string') {
+          return el.element.el === document.querySelector(target)
+        } else return el.element.el === target
       }) || null
     )
   }
@@ -529,11 +558,14 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
       })
     }
 
-    if (window.$hsDropdownCollection)
+    if (window.$hsDropdownCollection) {
       window.$hsDropdownCollection = window.$hsDropdownCollection.filter(({ element }) => document.contains(element.el))
+    }
 
     document.querySelectorAll('.dropdown:not(.--prevent-on-load-init)').forEach((el: IHTMLElementFloatingUI) => {
-      if (!window.$hsDropdownCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSDropdown(el)
+      if (!window.$hsDropdownCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) {
+        new HSDropdown(el)
+      }
     })
   }
 
@@ -699,7 +731,9 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
       'a, button, [role="button"], [role^="menuitem"]'
     ) as HTMLButtonElement
 
-    if (isRootDropdown && !toggle.classList.contains('dropdown-toggle')) return false
+    if (isRootDropdown && !toggle.classList.contains('dropdown-toggle')) {
+      return false
+    }
 
     const menuToClose =
       (HSDropdown.getInstance(toggle.closest('.dropdown.open') as HTMLElement, true) as ICollectionItem<HSDropdown>) ??
@@ -809,7 +843,9 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
 
     if (currentlyOpened) {
       currentlyOpened.forEach(el => {
-        if (el.element.closeMode === 'false' || el.element.closeMode === 'outside') return false
+        if (el.element.closeMode === 'false' || el.element.closeMode === 'outside') {
+          return false
+        }
 
         el.element.close(isAnimated)
       })
@@ -817,7 +853,9 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
 
     if (currentlyOpened) {
       currentlyOpened.forEach(el => {
-        if (getClassPropertyAlt(el.element.el, '--trigger') !== 'contextmenu') return false
+        if (getClassPropertyAlt(el.element.el, '--trigger') !== 'contextmenu') {
+          return false
+        }
 
         document.body.style.overflow = ''
         document.body.style.paddingRight = ''

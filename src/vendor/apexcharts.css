@@ -6,3 +6,8 @@
 .apexcharts-tooltip.apexcharts-theme-dark {
   @apply !bg-base-100 !border-none !shadow;
 }
+
+.apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title,
+.apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-title {
+  @apply !bg-base-100;
+}

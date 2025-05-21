@@ -109,7 +109,7 @@
 }
 
 .checkbox:disabled {
-  @apply cursor-not-allowed opacity-40;
+  @apply cursor-not-allowed opacity-50;
 }
 
 /* Size */

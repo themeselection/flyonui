@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0] - [21-May-2025]
+
+## Updated
+
+- **Updated:** [Preline V3.0.1](https://preline.co/docs/changelog.html#v3_0_1)
+
+## Fixes and Improvements
+
+- **Themes:** Updated the `radius-selector` variable for the Valorant theme and `--color-accent` variable in Black theme.
+- **Switch:** Updated default switch color.
+- **FlatPickr:** Fixed styling for the range date picker.
+- **Form Element:** Adjusted the opacity of disabled states to 50%.
+- **Badge:** Fine-tuned horizontal padding across all badge sizes.
+- **Select:** Added hover state for better interactivity.
+- **Accordion:** Reduced shadow depth to `sm` for a cleaner look.
+- **Carousel:** Updated navigation button styles for improved usability.
+- **Footer:** Resolved specificity issue with the `footer-title` class.
+- **Fixed:** Keep selected value when building options of HSSelect [PR #93](https://github.com/themeselection/flyonui/pull/93)
+- **Updated** the `package.json` configuration by setting `"type"` to `"module"`.
+- **Renamed** the files from "webpack.config.js" to "webpack.config.cjs", "webpack.config.mjs.js" to "webpack.config.mjs.cjs", and "dts-config.js" to "dts-config.cjs" to accommodate `"type": "module"`.
+
 ## [2.1.0] - [07-April-2025]
 
 ## New Theme

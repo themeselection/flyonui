@@ -36,14 +36,30 @@ module.exports = {
   module: {
     rules: [
       { test: /\.ts?$/, enforce: 'pre', use: ['source-map-loader'] },
-      { test: /\.ts?$/, use: 'ts-loader', exclude: /node_modules/ }
+      {
+        test: /\.ts?$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: 'tsconfig.mjs.json'
+            }
+          }
+        ],
+        exclude: /node_modules/
+      }
     ]
   },
-  resolve: { extensions: ['.ts', '.js'] },
+  experiments: {
+    outputModule: true
+  },
+  resolve: {
+    extensions: ['.ts', '.js']
+  },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js',
-    library: { type: 'umd' }
+    path: path.resolve(__dirname, 'dist/'),
+    filename: '[name].mjs',
+    libraryTarget: 'module'
   },
   externals: {
     jquery: 'jQuery',
@@ -60,5 +76,10 @@ module.exports = {
         extractComments: false
       })
     ]
+  },
+  performance: {
+    hints: 'warning',
+    maxEntrypointSize: 400000, // 400 KiB
+    maxAssetSize: 400000 // 400 KiB
   }
 }

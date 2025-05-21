@@ -1,20 +1,16 @@
-import { version } from "./package.json"
-import { pluginOptionsHandler } from "./functions/pluginOptionsHandler.js"
-import { plugin } from "./functions/plugin.js"
-import variables from "./functions/variables.js"
-import themesObject from "./theme/object.js"
-import { base, components, utilities } from "./imports.js"
+import { version } from './package.json'
+import { pluginOptionsHandler } from './functions/pluginOptionsHandler.js'
+import { plugin } from './functions/plugin.js'
+import variables from './functions/variables.js'
+import themesObject from './theme/object.js'
+import { base, components, utilities } from './imports.js'
 
 export default plugin.withOptions(
-  (options) => {
+  options => {
     return ({ addBase, addComponents, addUtilities }) => {
-      const {
-        include,
-        exclude,
-        prefix = "",
-      } = pluginOptionsHandler(options, addBase, themesObject, version)
+      const { include, exclude, prefix = '' } = pluginOptionsHandler(options, addBase, themesObject, version)
 
-      const shouldIncludeItem = (name) => {
+      const shouldIncludeItem = name => {
         if (include && exclude) {
           return include.includes(name) && !exclude.includes(name)
         }
@@ -45,7 +41,7 @@ export default plugin.withOptions(
   },
   () => ({
     theme: {
-      extend: variables,
-    },
-  }),
+      extend: variables
+    }
+  })
 )

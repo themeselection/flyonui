@@ -15,6 +15,11 @@
   --input-color: color-mix(in oklab, var(--color-base-content) 40%, #0000);
   --size: calc(var(--size-field, 0.25rem) * 9.5);
 
+  &:hover:not(:focus, :focus-within),
+  &:has(:hover):not(:focus, :focus-within) {
+    @apply border-base-content/60;
+  }
+
   [dir="rtl"] & {
     background-position: calc(0% + 1.3em) center;
   }

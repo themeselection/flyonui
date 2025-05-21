@@ -375,3 +375,49 @@ test('addPrefix with child combinator and :where with pseudo-class', () => {
   }
   expect(addPrefix(input, prefix)).toEqual(expected)
 })
+
+// has in not
+test('addPrefix with nested combinators and :not(:has()) selector', () => {
+  const input = {
+    '.steps': {
+      '.step': {
+        '> .step-icon, &:not(:has(.step-icon)):after': {
+          color: 'red'
+        }
+      }
+    }
+  }
+  const prefix = 'prefix-'
+  const expected = {
+    '.prefix-steps': {
+      '.prefix-step': {
+        '> .prefix-step-icon, &:not(:has(.prefix-step-icon)):after': {
+          color: 'red'
+        }
+      }
+    }
+  }
+  expect(addPrefix(input, prefix)).toEqual(expected)
+})
+
+// with 0 prefix
+test('addPrefix with 0 prefix should not affect CSS variables', () => {
+  const input = {
+    '--custom-var': '10px',
+    '--another-var': 'var(--custom-var)',
+    '.btn': {
+      margin: 'var(--custom-var)',
+      '--local-var': '20px'
+    }
+  }
+  const prefix = 0
+  const expected = {
+    '--custom-var': '10px',
+    '--another-var': 'var(--custom-var)',
+    '.btn': {
+      margin: 'var(--custom-var)',
+      '--local-var': '20px'
+    }
+  }
+  expect(addPrefix(input, prefix)).toEqual(expected)
+})

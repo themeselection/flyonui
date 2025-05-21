@@ -9,7 +9,7 @@
   transition:
     color 0.3s,
     grid-template-columns 0.2s;
-  --input-color: var(--color-neutral);
+  --input-color: color-mix(in oklab, var(--color-neutral) 22%, #0000);
   --toggle-p: 0.1875rem;
   --size: calc(var(--size-selector, 0.25rem) * 6);
   width: calc((var(--size) * 2) - (var(--border) + var(--toggle-p)) * 2);
@@ -45,6 +45,7 @@
   &[aria-checked="true"],
   &:has(> input:checked) {
     grid-template-columns: 1fr 1fr 0fr;
+    --input-color: var(--color-neutral);
     background-color: var(--input-color);
 
     &:before {
@@ -61,7 +62,7 @@
   }
 
   &:disabled {
-    @apply cursor-not-allowed opacity-40;
+    @apply cursor-not-allowed opacity-50;
 
     &:before {
       @apply bg-transparent;
@@ -72,11 +73,11 @@
 /* Variant */
 
 .switch-outline {
-  background-color: var(--color-base-100);
+  background-color: color-mix(in oklab, var(--color-neutral) 22%, #0000);
   color: var(--input-color);
-  border-color: var(--input-color);
 
   &::before {
+    background-color: var(--color-base-100);
     box-shadow:
       0 -1px oklch(0% 0 0 / calc(var(--depth) * 0.1)) inset,
       0 8px 0 -4px oklch(100% 0 0 / calc(var(--depth) * 0.1)) inset,

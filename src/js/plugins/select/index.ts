@@ -1,29 +1,29 @@
 /*
  * HSSelect
- * @version: 3.0.0
+ * @version: 3.0.1
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
 import {
-  isFocused,
-  isEnoughSpace,
+  afterTransition,
+  classToClassList,
   debounce,
   dispatch,
-  afterTransition,
   htmlToElement,
-  classToClassList
+  isEnoughSpace,
+  isFocused
 } from '../../utils'
 
-import { ISelect, ISelectOptions, ISingleOption, ISingleOptionOptions, IApiFieldMap } from './interfaces'
+import { IApiFieldMap, ISelect, ISelectOptions, ISingleOption, ISingleOptionOptions } from './interfaces'
 
-import { type Strategy, computePosition, autoUpdate, offset } from '@floating-ui/dom'
+import { type Strategy, autoUpdate, computePosition, offset } from '@floating-ui/dom'
 
-import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
+import HSBasePlugin from '../base-plugin'
 
-import { SELECT_ACCESSIBILITY_KEY_SET, POSITIONS } from '../../constants'
+import { POSITIONS, SELECT_ACCESSIBILITY_KEY_SET } from '../../constants'
 
 class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   value: string | string[] | null
@@ -800,7 +800,10 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
         options.rest[key] = el[key]
       })
 
-      const isSelected = (typeof this.value === 'string' && this.value === `${value}`) || (Array.isArray(this.value) && this.value.includes(`${value}`));
+      const isSelected =
+        (typeof this.value === 'string' && this.value === `${value}`) ||
+        (Array.isArray(this.value) && this.value.includes(`${value}`))
+
       this.buildOriginalOption(title, `${value}`, id, false, isSelected, options as ISingleOptionOptions & IApiFieldMap)
 
       this.buildOptionFromRemoteData(

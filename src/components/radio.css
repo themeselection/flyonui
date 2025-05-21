@@ -96,7 +96,7 @@
 }
 
 .radio:disabled {
-  @apply cursor-not-allowed opacity-20;
+  @apply cursor-not-allowed opacity-50;
 }
 
 .radio-xs {

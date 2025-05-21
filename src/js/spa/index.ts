@@ -1,9 +1,15 @@
 /*
- * @version: 3.0.0
+ * @version: 3.0.1
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
+
+declare var _: any
+declare var DataTable: any
+declare var Dropzone: any
+declare var noUiSlider: any
+
 import { ISpaCollectionItem } from '../spa/interfaces'
 
 import HSCopyMarkup from '../plugins/copy-markup'
@@ -11,13 +17,15 @@ import HSAccordion from '../plugins/accordion'
 import HSCarousel from '../plugins/carousel'
 import HSCollapse from '../plugins/collapse'
 import HSComboBox from '../plugins/combobox'
-import HSDataTable from '../plugins/datatable'
+
+let HSDataTable
+let HSFileUpload
+let HSRangeSlider
+
 import HSDropdown from '../plugins/dropdown'
-import HSFileUpload from '../plugins/file-upload'
 import HSInputNumber from '../plugins/input-number'
 import HSOverlay from '../plugins/overlay'
 import HSPinInput from '../plugins/pin-input'
-import HSRangeSlider from '../plugins/range-slider'
 import HSRemoveElement from '../plugins/remove-element'
 import HSScrollspy from '../plugins/scrollspy'
 import HSSelect from '../plugins/select'
@@ -29,20 +37,53 @@ import HSTogglePassword from '../plugins/toggle-password'
 import HSTooltip from '../plugins/tooltip'
 import HSTreeView from '../plugins/tree-view'
 
+if (typeof window !== 'undefined') {
+  try {
+    if (typeof DataTable !== 'undefined' && typeof jQuery !== 'undefined') {
+      HSDataTable = require('../plugins/datatable').default
+    }
+  } catch (e) {
+    console.warn('HSDataTable: Required dependencies not found')
+    HSDataTable = null
+  }
+
+  try {
+    if (typeof _ !== 'undefined' && typeof Dropzone !== 'undefined') {
+      HSFileUpload = require('../plugins/file-upload').default
+    }
+  } catch (e) {
+    console.warn('HSFileUpload: Required dependencies not found')
+    HSFileUpload = null
+  }
+
+  try {
+    if (typeof noUiSlider !== 'undefined') {
+      HSRangeSlider = require('../plugins/range-slider').default
+    }
+  } catch (e) {
+    console.warn('HSRangeSlider: Required dependencies not found')
+    HSRangeSlider = null
+  }
+}
+
 export const COLLECTIONS: ISpaCollectionItem[] = [
   { key: 'copy-markup', fn: HSCopyMarkup, collection: '$hsCopyMarkupCollection' },
   { key: 'accordion', fn: HSAccordion, collection: '$hsAccordionCollection' },
   { key: 'carousel', fn: HSCarousel, collection: '$hsCarouselCollection' },
   { key: 'collapse', fn: HSCollapse, collection: '$hsCollapseCollection' },
   { key: 'combobox', fn: HSComboBox, collection: '$hsComboBoxCollection' },
-  { key: 'datatable', fn: HSDataTable, collection: '$hsDataTableCollection' },
+  ...(HSDataTable ? [{ key: 'datatable', fn: HSDataTable, collection: '$hsDataTableCollection' }] : []),
   { key: 'dropdown', fn: HSDropdown, collection: '$hsDropdownCollection' },
-  { key: 'file-upload', fn: HSFileUpload, collection: '$hsFileUploadCollection' },
+  ...(HSFileUpload ? [{ key: 'file-upload', fn: HSFileUpload, collection: '$hsFileUploadCollection' }] : []),
   { key: 'input-number', fn: HSInputNumber, collection: '$hsInputNumberCollection' },
   { key: 'overlay', fn: HSOverlay, collection: '$hsOverlayCollection' },
   { key: 'pin-input', fn: HSPinInput, collection: '$hsPinInputCollection' },
-  { key: 'range-slider', fn: HSRangeSlider, collection: '$hsRangeSliderCollection' },
-  { key: 'remove-element', fn: HSRemoveElement, collection: '$hsRemoveElementCollection' },
+  ...(HSRangeSlider ? [{ key: 'range-slider', fn: HSRangeSlider, collection: '$hsRangeSliderCollection' }] : []),
+  {
+    key: 'remove-element',
+    fn: HSRemoveElement,
+    collection: '$hsRemoveElementCollection'
+  },
   { key: 'scrollspy', fn: HSScrollspy, collection: '$hsScrollspyCollection' },
   { key: 'select', fn: HSSelect, collection: '$hsSelectCollection' },
   { key: 'stepper', fn: HSStepper, collection: '$hsStepperCollection' },

@@ -17,20 +17,24 @@
   &:disabled {
     @apply pointer-events-none opacity-50;
   }
-  &.link-hover {
-    @apply no-underline [@media(hover:hover)]:hover:underline;
-  }
-  &.link-animated {
-    @apply relative no-underline before:pointer-events-none before:absolute before:start-0 before:bottom-0 before:h-px before:w-full before:bg-current before:transition-transform before:duration-300 before:ease-in-out before:content-[''];
-  }
-  &.link-animated::before {
-    transform-origin: 100% 50%;
-    transform: scale3d(0, 1, 1);
-  }
-  &.link-animated:hover::before {
-    transform-origin: 0% 50%;
-    transform: scale3d(1, 1, 1);
-  }
+}
+
+.link:where(.link-hover) {
+  @apply no-underline [@media(hover:hover)]:hover:underline;
+}
+
+.link:where(.link-animated) {
+  @apply relative no-underline before:pointer-events-none before:absolute before:start-0 before:bottom-0 before:h-px before:w-full before:bg-current before:transition-transform before:duration-300 before:ease-in-out before:content-[''];
+}
+
+.link:where(.link-animated)::before {
+  transform-origin: 100% 50%;
+  transform: scale3d(0, 1, 1);
+}
+
+.link:where(.link-animated):hover::before {
+  transform-origin: 0% 50%;
+  transform: scale3d(1, 1, 1);
 }
 
 .link-primary {

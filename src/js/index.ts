@@ -1,5 +1,5 @@
 /*
- * @version: 3.0.0
+ * @version: 3.0.1
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -35,16 +35,35 @@ export { default as HSTooltip } from './plugins/tooltip'
 export { default as HSTreeView } from './plugins/tree-view'
 export { default as HSStaticMethods } from './static'
 
-if (typeof DataTable !== 'undefined' && typeof jQuery !== 'undefined')
-  HSDataTableModule = require('./plugins/datatable').default
-else HSDataTableModule = null
+if (typeof window !== 'undefined') {
+  try {
+    if (typeof DataTable !== 'undefined' && typeof jQuery !== 'undefined') {
+      HSDataTableModule = require('./plugins/datatable').default
+    }
+  } catch (e) {
+    console.warn('HSDataTable: Required dependencies not found')
+    HSDataTableModule = null
+  }
+
+  try {
+    if (typeof _ !== 'undefined' && typeof Dropzone !== 'undefined') {
+      HSFileUploadModule = require('./plugins/file-upload').default
+    }
+  } catch (e) {
+    console.warn('HSFileUpload: Required dependencies not found')
+    HSFileUploadModule = null
+  }
+
+  try {
+    if (typeof noUiSlider !== 'undefined') {
+      HSRangeSliderModule = require('./plugins/range-slider').default
+    }
+  } catch (e) {
+    console.warn('HSRangeSlider: Required dependencies not found')
+    HSRangeSliderModule = null
+  }
+}
+
 export { HSDataTableModule as HSDataTable }
-
-if (typeof _ !== 'undefined' && typeof Dropzone !== 'undefined')
-  HSFileUploadModule = require('./plugins/file-upload').default
-else HSFileUploadModule = null
 export { HSFileUploadModule as HSFileUpload }
-
-if (typeof noUiSlider !== 'undefined') HSRangeSliderModule = require('./plugins/range-slider').default
-else HSRangeSliderModule = null
 export { HSRangeSliderModule as HSRangeSlider }
