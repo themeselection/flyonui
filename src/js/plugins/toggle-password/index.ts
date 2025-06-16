@@ -125,7 +125,7 @@ class HSTogglePassword extends HSBasePlugin<ITogglePasswordOptions> implements I
   public destroy() {
     // Remove classes
     if (this.isMultiple) {
-      this.el.closest('[data-toggle-password-group]').classList.remove('active')
+      this.el.closest('[data-toggle-password-group]')?.classList.remove('active')
     } else {
       this.el.classList.remove('active')
     }

@@ -915,8 +915,8 @@ class HSCarousel extends HSBasePlugin<ICarouselOptions> implements ICarousel {
     }
 
     // Remove elements
-    this.inner.querySelector('.snap-before').remove()
-    this.inner.querySelector('.snap-after').remove()
+    this.inner.querySelector('.snap-before')?.remove()
+    this.inner.querySelector('.snap-after')?.remove()
 
     this.dotsItems = null
 

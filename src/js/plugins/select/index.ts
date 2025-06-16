@@ -1308,7 +1308,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     this.el.classList.add('hidden')
     this.el.style.display = ''
     parent.prepend(this.el)
-    parent.querySelector('.advance-select').remove()
+    parent.querySelector('.advance-select')?.remove()
     this.wrapper = null
 
     window.$hsSelectCollection = window.$hsSelectCollection.filter(({ element }) => element.el !== this.el)
