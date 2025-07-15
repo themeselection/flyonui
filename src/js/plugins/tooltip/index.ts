@@ -1,13 +1,13 @@
 /*
  * HSTooltip
- * @version: 3.0.1
+ * @version: 3.1.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
 import { type Strategy, computePosition, autoUpdate, offset, flip, shift } from '@floating-ui/dom'
-import { getClassProperty, dispatch, afterTransition } from '../../utils'
+import { afterTransition, dispatch, getClassProperty } from '../../utils'
 
 import { ITooltip } from './interfaces'
 import { TTooltipOptionsScope } from './types'
@@ -42,7 +42,6 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
       this.toggle = this.el.querySelector('.tooltip-toggle') || this.el
       this.content = this.el.querySelector('.tooltip-content')
       this.eventMode = getClassProperty(this.el, '--trigger') || 'hover'
-
       this.preventFloatingUI = getClassProperty(this.el, '--prevent-popper', 'false')
       this.placement = getClassProperty(this.el, '--placement')
       this.interaction = getClassProperty(this.el, '--interaction', 'true')
@@ -95,7 +94,7 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
       this.toggle.addEventListener('mouseleave', this.onToggleMouseLeaveListener)
     }
 
-    this.buildFloatingUI()
+    if (this.preventFloatingUI === 'false') this.buildFloatingUI()
   }
 
   private enter() {
@@ -192,7 +191,9 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
     this.content.classList.remove('hidden')
     if (this.scope === 'window') this.content.classList.add('show')
 
-    if (!this.cleanupAutoUpdate) this.buildFloatingUI()
+    if (this.preventFloatingUI === 'false' && !this.cleanupAutoUpdate) {
+      this.buildFloatingUI()
+    }
 
     setTimeout(() => {
       this.el.classList.add('show')
@@ -224,7 +225,7 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
     this.el.classList.remove('show')
     if (this.scope === 'window') this.content.classList.remove('show')
 
-    if (this.cleanupAutoUpdate) {
+    if (this.preventFloatingUI === 'false' && this.cleanupAutoUpdate) {
       this.cleanupAutoUpdate()
 
       this.cleanupAutoUpdate = null
@@ -272,8 +273,9 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
     return (
       window.$hsTooltipCollection.find(el => {
         if (target instanceof HSTooltip) return el.element.el === target.el
-        else if (typeof target === 'string') return el.element.el === document.querySelector(target)
-        else return el.element.el === target
+        else if (typeof target === 'string') {
+          return el.element.el === document.querySelector(target)
+        } else return el.element.el === target
       }) || null
     )
   }
@@ -289,11 +291,14 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
   static autoInit() {
     if (!window.$hsTooltipCollection) window.$hsTooltipCollection = []
 
-    if (window.$hsTooltipCollection)
+    if (window.$hsTooltipCollection) {
       window.$hsTooltipCollection = window.$hsTooltipCollection.filter(({ element }) => document.contains(element.el))
+    }
 
     document.querySelectorAll('.tooltip:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
-      if (!window.$hsTooltipCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSTooltip(el)
+      if (!window.$hsTooltipCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) {
+        new HSTooltip(el)
+      }
     })
   }
 

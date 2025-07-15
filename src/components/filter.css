@@ -6,6 +6,7 @@
   input {
     @apply overflow-hidden opacity-100;
     scale: 1;
+    border-width: 0;
     transition:
       margin 0.1s,
       opacity 0.3s,

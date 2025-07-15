@@ -37,7 +37,7 @@ declare global {
     ) => Promise<{ x: number; y: number; placement: string }>
     autoUpdate: (reference: Element, floating: HTMLElement, update: () => void) => () => void
     offset: (offset: number | [number, number]) => any
-    flip: () => any
+    flip: (options?: { fallbackPlacements?: string[] }) => any
   }
 
   interface Window {

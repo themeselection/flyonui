@@ -1,6 +1,6 @@
 /*
  * HSRemoveElement
- * @version: 3.0.1
+ * @version: 3.1.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,7 +8,7 @@
 
 import { afterTransition } from '../../utils'
 
-import { IRemoveElement, IRemoveElementOptions } from '../remove-element/interfaces'
+import { IRemoveElement, IRemoveElementOptions } from './interfaces'
 
 import { ICollectionItem } from '../../interfaces'
 import HSBasePlugin from '../base-plugin'

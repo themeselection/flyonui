@@ -2,11 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.2.0] - [21-May-2025]
+## [2.3.0] - [15-July-2025]
+
+## Added
+
+- **AI and MCP Setup:**
+  - Included guidelines for setting up the Context7 MCP server for FlyonUI. For details, refer to the [AI and MCP Setup](https://flyonui.com/docs/ai-mcp-setup/code-editors/) documentation.
+  - Integrated the [Copy Prompt](https://flyonui.com/docs/ai-mcp-setup/copy-prompt/) functionality into the documentation to streamline the process of copying code snippets, enabling faster implementation with AI Editor.
+
+- **New Themes:**
+  - Claude
+  - Pastel
+  - Perplexity
+  - Spotify
+  - Vs Code
+
+- **Skeleton Component:** Introduced a new [skeleton-striped](https://flyonui.com/docs/components/skeleton/#striped-skeleton) variant.
 
 ## Updated
 
 - **Updated:** [Preline V3.0.1](https://preline.co/docs/changelog.html#v3_0_1)
+- **Switch:** Border-radius now uses `var(--radius-selector)` for enhanced consistency.
+- **Radial Progress:** Circular background color has been refined.
+- **gradient-bg:** Added a configurable gradient angle variable.
+
+## Fixes and Improvements
+
+- **Class Specificity:** Addressed specificity conflicts in Avatar, Breadcrumb, Drawer, Pin Input, and Stat components.
+- **Avatar:** CSS now supports usage with `<span>` elements for button integrations.
+- **Modals:** Resolved animation delay issue when closing modals.
+- **Indicator:** Corrected typo error in class naming.
+- **Dropdown:** Removed unnecessary hover effect from active states.
+- **Menu:** Improved compatibility between menu styles and accordion behavior.
+
+## [2.2.0] - [21-May-2025]
+
+## Updated
+
+- **Updated:** [Preline V3.1.1](https://preline.co/docs/changelog.html#v3_1_0)
 
 ## Fixes and Improvements
 
@@ -21,7 +54,7 @@ All notable changes to this project will be documented in this file.
 - **Footer:** Resolved specificity issue with the `footer-title` class.
 - **Fixed:** Keep selected value when building options of HSSelect [PR #93](https://github.com/themeselection/flyonui/pull/93)
 - **Updated** the `package.json` configuration by setting `"type"` to `"module"`.
-- **Renamed** the files from "webpack.config.js" to "webpack.config.cjs", "webpack.config.mjs.js" to "webpack.config.mjs.cjs", and "dts-config.js" to "dts-config.cjs" to accommodate `"type": "module"`.
+- **Renamed** the files from `"webpack.config.js"` to `"webpack.config.cjs"`, `"webpack.config.mjs.js"` to `"webpack.config.mjs.cjs"`, and `"dts-config.js"` to `"dts-config.cjs"` to accommodate `"type": "module"`.
 
 ## [2.1.0] - [07-April-2025]
 

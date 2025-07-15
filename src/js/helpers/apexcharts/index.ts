@@ -5,7 +5,14 @@
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { IBuildTooltipHelperOptions, IChartDonutProps, IChartProps, IChartPropsSeries } from './interfaces'
+import {
+  IBuildTooltipHelperOptions,
+  IBuildTooltipHelperSingleOptions,
+  IChartDonutProps,
+  IChartProps,
+  IChartPropsSeries
+} from './interfaces'
+import ApexCharts from 'apexcharts'
 
 function buildTooltip(props: IChartProps, options: IBuildTooltipHelperOptions) {
   const {
@@ -34,7 +41,7 @@ function buildTooltip(props: IChartProps, options: IBuildTooltipHelperOptions) {
   const series = props.ctx.opts.series as IChartPropsSeries[]
   let seriesGroups = ''
 
-  series.forEach((single, i) => {
+  series.forEach((_, i) => {
     const val =
       props.series[i][dataPointIndex] ||
       (typeof series[i].data[dataPointIndex] !== 'object'
@@ -72,12 +79,39 @@ function buildTooltip(props: IChartProps, options: IBuildTooltipHelperOptions) {
   </div>`
 }
 
-function buildTooltipCompareTwo(props: IChartProps, options: IBuildTooltipHelperOptions) {
-  const { dataPointIndex } = props
-  const { categories } = props.ctx.opts.xaxis
-  const { colors } = props.ctx.opts
-  const series = props.ctx.opts.series as IChartPropsSeries[]
+function buildHeatmapTooltip(props: IChartProps, options: IBuildTooltipHelperSingleOptions) {
+  const {
+    valuePrefix = '$',
+    valuePostfix = '',
+    divider = '',
+    wrapperClasses = 'ms-0.5 mb-2 bg-base-100 border border-base-content/20 text-base-content rounded-box shadow-md',
+    wrapperExtClasses = '',
+    markerClasses = '!w-2.5 !h-2.5 !me-1.5',
+    markerStyles = '',
+    markerExtClasses = '!rounded-xs',
+    valueClasses = '!font-medium text-base-content !ms-auto',
+    valueExtClasses = ''
+  } = options
+  const { dataPointIndex, seriesIndex, series } = props
+  const { name } = props.ctx.opts.series[seriesIndex] as IChartPropsSeries
+  const val = `${valuePrefix}${series[seriesIndex][dataPointIndex]}${valuePostfix}`
 
+  return `<div class="${wrapperClasses} ${wrapperExtClasses}">
+    <div class="apexcharts-tooltip-series-group !flex">
+      <span class="apexcharts-tooltip-marker ${markerClasses} ${markerExtClasses}" style="${markerStyles}"></span>
+      <span class="flex items-center">
+        <div class="apexcharts-tooltip-text">
+          <div class="apexcharts-tooltip-y-group !py-0.5">
+            <span class="apexcharts-tooltip-text-y-value ${valueClasses} ${valueExtClasses}">${name}${divider}</span>
+          </div>
+        </div>
+      </span>
+      <span class="apexcharts-tooltip-text-y-value ${valueClasses} ${valueExtClasses}">${val}</span>
+    </div>
+  </div>`
+}
+
+function buildTooltipCompareTwo(props: IChartProps, options: IBuildTooltipHelperOptions) {
   const {
     title,
     valuePrefix = '$',
@@ -96,9 +130,13 @@ function buildTooltipCompareTwo(props: IChartProps, options: IBuildTooltipHelper
     markerExtClasses = '',
     valueClasses = '!font-medium text-base-content/80 !ms-auto',
     valueExtClasses = '',
-    labelClasses = 'text-base-content !fw-medium',
+    labelClasses = 'text-base-content !font-medium',
     labelExtClasses = ''
   } = options
+  const { dataPointIndex } = props
+  const { categories } = props.ctx.opts.xaxis
+  const { colors } = props.ctx.opts
+  const series = props.ctx.opts.series as IChartPropsSeries[]
 
   let seriesGroups = ''
   const s0 = series[0].data[dataPointIndex]
@@ -153,11 +191,6 @@ function buildTooltipCompareTwo(props: IChartProps, options: IBuildTooltipHelper
 }
 
 function buildTooltipCompareTwoAlt(props: IChartProps, options: IBuildTooltipHelperOptions) {
-  const { dataPointIndex } = props
-  const { categories } = props.ctx.opts.xaxis
-  const { colors } = props.ctx.opts
-  const series = props.ctx.opts.series as IChartPropsSeries[]
-
   const {
     title,
     valuePrefix = '$',
@@ -176,9 +209,14 @@ function buildTooltipCompareTwoAlt(props: IChartProps, options: IBuildTooltipHel
     markerExtClasses = '',
     valueClasses = '!font-medium text-base-content/80 !ms-auto',
     valueExtClasses = '',
-    labelClasses = 'text-base-content !fw-medium',
+    labelClasses = 'text-base-content !font-medium',
     labelExtClasses = ''
   } = options
+
+  const { dataPointIndex } = props
+  const { categories } = props.ctx.opts.xaxis
+  const { colors } = props.ctx.opts
+  const series = props.ctx.opts.series as IChartPropsSeries[]
 
   let seriesGroups = ''
   const s0 = series[0].data[dataPointIndex]
@@ -194,7 +232,7 @@ function buildTooltipCompareTwoAlt(props: IChartProps, options: IBuildTooltipHel
     ? `<span class="icon-[tabler--trending-up] size-5"></span>`
     : `<span class="icon-[tabler--trending-down] size-5"></span>`
 
-  series.forEach((single, i) => {
+  series.forEach((_, i) => {
     const val =
       props.series[i][dataPointIndex] ||
       (typeof series[i].data[dataPointIndex] !== 'object'
@@ -259,4 +297,104 @@ function buildChart(id: string, shared: Function) {
   return chart
 }
 
-export { buildChart, buildTooltip, buildTooltipCompareTwo, buildTooltipCompareTwoAlt, buildTooltipForDonut }
+function fullBarHoverEffect(
+  chartCtx: ApexCharts & {
+    el: HTMLElement
+    w: { config: { xaxis?: { categories?: any[] } } }
+  },
+  { shadowClasses = 'fill-gray-200' }: { shadowClasses?: string } = {}
+): void {
+  const grid = chartCtx.el.querySelector<HTMLElement>('.apexcharts-grid')
+  const svg = chartCtx.el.querySelector('svg')
+  if (!grid || !svg) return
+
+  const categories: any[] = chartCtx.w.config.xaxis?.categories || []
+  if (categories.length === 0) return
+
+  let shadowRect: SVGRectElement | null = null
+  let isVisible = false
+  let isRemoving = false
+
+  function cleanup() {
+    shadowRect?.remove()
+    shadowRect = null
+    isVisible = false
+    isRemoving = false
+  }
+
+  function showForIndex(index: number) {
+    const seriesGroup = chartCtx.el.querySelector('.apexcharts-bar-series')
+    if (!seriesGroup) return
+
+    const bars = seriesGroup.querySelectorAll<SVGPathElement>('path')
+    const bar = bars[index]
+    if (!bar) return
+
+    const bbox = bar.getBBox()
+    const x = bbox.x
+    const y = bbox.y
+    const width = bbox.width
+    if (y <= 0) return
+
+    if (!shadowRect) {
+      shadowRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect')
+      shadowRect.setAttribute('y', '0')
+      shadowRect.setAttribute('class', shadowClasses)
+      bar.parentNode?.insertBefore(shadowRect, bar)
+    }
+
+    shadowRect.setAttribute('x', x.toString())
+    shadowRect.setAttribute('width', width.toString())
+    shadowRect.setAttribute('height', y.toString())
+
+    requestAnimationFrame(() => {
+      shadowRect?.classList.add('opacity-100')
+    })
+
+    isVisible = true
+    isRemoving = false
+  }
+
+  function hide() {
+    if (!shadowRect || !isVisible || isRemoving) return
+    isRemoving = true
+    shadowRect.classList.remove('opacity-100')
+    cleanup()
+  }
+
+  svg.addEventListener('mousemove', (e: MouseEvent) => {
+    const gridRect = grid.getBoundingClientRect()
+    if (
+      e.clientX < gridRect.left ||
+      e.clientX > gridRect.right ||
+      e.clientY < gridRect.top ||
+      e.clientY > gridRect.bottom
+    ) {
+      hide()
+      return
+    }
+
+    const relativeX = e.clientX - gridRect.left
+    const ratio = relativeX / gridRect.width
+    const index = Math.floor(ratio * categories.length)
+
+    if (index < 0 || index >= categories.length) {
+      hide()
+      return
+    }
+
+    showForIndex(index)
+  })
+
+  svg.addEventListener('mouseleave', hide)
+}
+
+export {
+  buildChart,
+  buildTooltip,
+  buildHeatmapTooltip,
+  buildTooltipCompareTwo,
+  buildTooltipCompareTwoAlt,
+  buildTooltipForDonut,
+  fullBarHoverEffect
+}

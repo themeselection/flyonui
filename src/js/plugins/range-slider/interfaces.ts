@@ -14,7 +14,12 @@ export interface IRangeSliderOptionsFormatterOptions {
 
 export interface IRangeSliderOptions extends Options {
   disabled?: boolean
+  wrapper?: HTMLElement
+  currentValue?: HTMLElement[]
   formatter?: IRangeSliderOptionsFormatterOptions | TRangeSliderOptionsFormatterType
+  icons?: {
+    handle?: string
+  }
 }
 
 export interface IRangeSlider {

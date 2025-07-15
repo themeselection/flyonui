@@ -1,31 +1,35 @@
 .breadcrumbs {
   @apply max-w-full overflow-x-auto;
+}
 
-  > ul,
-  > ol {
-    @apply flex items-center py-2 whitespace-nowrap;
-    min-height: min-content;
-    .breadcrumbs-separator {
-      @apply text-base-content/50 mx-2 inline-flex shrink-0 items-center justify-center;
-    }
+:where(.breadcrumbs > ul),
+:where(.breadcrumbs > ol) {
+  @apply flex items-center px-1 py-2 whitespace-nowrap;
+  min-height: min-content;
+}
 
-    > li {
-      @apply inline-flex items-center;
+.breadcrumbs-separator {
+  @apply text-base-content/50 mx-2 inline-flex shrink-0 items-center justify-center;
+}
 
-      > a {
-        @apply hover:text-primary inline-flex items-center gap-1;
-        &:focus {
-          @apply outline-none;
-        }
-        &:focus-visible {
-          outline: 2px solid currentColor;
-          outline-offset: 2px;
-        }
-      }
+:where(.breadcrumbs > ul > li),
+:where(.breadcrumbs > ol > li) {
+  @apply inline-flex items-center;
+}
 
-      &:last-child {
-        @apply text-base-content cursor-text font-medium;
-      }
-    }
+:where(.breadcrumbs > ul > li > a),
+:where(.breadcrumbs > ol > li > a) {
+  @apply hover:text-primary inline-flex items-center gap-1;
+  &:focus {
+    @apply outline-none;
   }
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+:where(.breadcrumbs > ul > li:last-child),
+:where(.breadcrumbs > ol > li:last-child) {
+  @apply text-base-content cursor-text font-medium;
 }

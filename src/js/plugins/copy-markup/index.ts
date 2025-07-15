@@ -1,6 +1,6 @@
 /*
  * HSCopyMarkup
- * @version: 3.0.1
+ * @version: 3.1.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,7 +8,7 @@
 
 import { dispatch } from '../../utils'
 
-import { ICopyMarkupOptions, ICopyMarkup } from './interfaces'
+import { ICopyMarkup, ICopyMarkupOptions } from './interfaces'
 
 import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
@@ -76,7 +76,9 @@ class HSCopyMarkup extends HSBasePlugin<ICopyMarkupOptions> implements ICopyMark
 
     this.addToItems(copiedElement)
 
-    if (this.limit && this.items.length >= this.limit) this.el.setAttribute('disabled', 'disabled')
+    if (this.limit && this.items.length >= this.limit) {
+      this.el.setAttribute('disabled', 'disabled')
+    }
 
     this.fireEvent('copy', copiedElement)
     dispatch('copy.copyMarkup', copiedElement, copiedElement)
@@ -89,9 +91,11 @@ class HSCopyMarkup extends HSBasePlugin<ICopyMarkupOptions> implements ICopyMark
         this.addToItems(el)
       })
 
-    if (this.limit && this.items.length >= this.limit) this.el.setAttribute('disabled', 'disabled')
+    if (this.limit && this.items.length >= this.limit) {
+      this.el.setAttribute('disabled', 'disabled')
+    }
   }
-
+  // Updated in FlyonUI
   private setTarget() {
     const target: HTMLElement =
       typeof this.targetSelector === 'string'
@@ -121,6 +125,7 @@ class HSCopyMarkup extends HSBasePlugin<ICopyMarkupOptions> implements ICopyMark
   }
 
   // Public methods
+  // Updated in FlyonUI
   public delete(target: HTMLElement) {
     if (target) {
       const index = this.items.indexOf(target)
@@ -167,10 +172,11 @@ class HSCopyMarkup extends HSBasePlugin<ICopyMarkupOptions> implements ICopyMark
   static autoInit() {
     if (!window.$hsCopyMarkupCollection) window.$hsCopyMarkupCollection = []
 
-    if (window.$hsCopyMarkupCollection)
+    if (window.$hsCopyMarkupCollection) {
       window.$hsCopyMarkupCollection = window.$hsCopyMarkupCollection.filter(({ element }) =>
         document.contains(element.el)
       )
+    }
 
     document.querySelectorAll('[data-copy-markup]:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
       if (!window.$hsCopyMarkupCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) {
@@ -194,7 +200,7 @@ window.addEventListener('load', () => {
   HSCopyMarkup.autoInit()
 
   // Uncomment for debug
-  // console.log('Copy markup collection:', window.$hsCopyMarkupCollection)
+  // console.log('Copy markup collection:', window.$hsCopyMarkupCollection);
 })
 
 if (typeof window !== 'undefined') {

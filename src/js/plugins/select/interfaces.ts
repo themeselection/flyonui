@@ -17,6 +17,9 @@ export interface IApiFieldMap {
   title: string
   icon?: string | null
   description?: string | null
+  page?: string
+  offset?: string
+  limit?: string
   [key: string]: unknown
 }
 
@@ -39,7 +42,14 @@ export interface ISelectOptions {
   apiDataPart?: string | null
   apiSearchQueryKey?: string | null
   apiFieldsMap?: IApiFieldMap | null
+  apiSelectedValues?: string | string[]
   apiIconTag?: string | null
+  apiLoadMore?:
+    | boolean
+    | {
+        perPage: number
+        scrollThreshold: number
+      }
 
   toggleTag?: string
   toggleClasses?: string
@@ -92,6 +102,9 @@ export interface ISelectOptions {
   iconClasses?: string
 
   isAddTagOnEnter?: boolean
+  dropdownAutoPlacement?: boolean
+
+  isSelectedOptionOnTop?: boolean
 }
 
 export interface ISelect {

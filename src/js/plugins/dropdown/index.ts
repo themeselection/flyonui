@@ -1,6 +1,6 @@
 /*
  * HSDropdown
- * @version: 3.0.1
+ * @version: 3.1.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -28,7 +28,7 @@ import {
   VirtualElement
 } from '@floating-ui/dom'
 
-import { IDropdown, IHTMLElementFloatingUI } from '../dropdown/interfaces'
+import { IDropdown, IHTMLElementFloatingUI } from './interfaces'
 import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
 
@@ -348,7 +348,6 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
                 position: strategy,
                 left: `${x}px`,
                 top: `${y}px`,
-                margin: '0',
                 transform: ''
               })
             }
@@ -385,7 +384,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
   }
 
   // Public methods
-  public calculateFLoatingUIPosition(target?: VirtualElement | HTMLElement) {
+  public calculateFloatingUIPosition(target?: VirtualElement | HTMLElement) {
     const floatingUIInstance = this.setupFloatingUI(target)
     const floatingUIPosition = this.menu.getAttribute('data-placement')
 
@@ -534,7 +533,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
       el => el.element.el === (typeof target === 'string' ? document.querySelector(target) : target)
     )
 
-    return elInCollection ? (isInstance ? elInCollection : elInCollection.element.el) : null
+    return elInCollection ? (isInstance ? elInCollection : elInCollection.element) : null
   }
 
   static autoInit() {
@@ -748,7 +747,7 @@ class HSDropdown extends HSBasePlugin<{}, IHTMLElementFloatingUI> implements IDr
       return false
     }
 
-    const futurePosition = menuToOpen.element.calculateFLoatingUIPosition()
+    const futurePosition = menuToOpen.element.calculateFloatingUIPosition()
 
     if (isRootDropdown && !futurePosition.includes(direction)) return false
 

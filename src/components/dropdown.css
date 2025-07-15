@@ -5,10 +5,10 @@
 .dropdown-item {
   @apply text-base-content rounded-field clear-both flex w-full items-center gap-x-2 bg-transparent px-4 py-2.5 no-underline decoration-0;
   text-align: inherit;
-  &:hover,
-  &:focus,
-  &:focus-within,
-  &:focus-visible {
+  &:hover:not(.dropdown-active),
+  &:focus:not(.dropdown-active),
+  &:focus-within:not(.dropdown-active),
+  &:focus-visible:not(.dropdown-active) {
     @apply bg-neutral/10 outline-none;
   }
 
@@ -19,14 +19,13 @@
   }
 }
 
-.dropdown-active,
-.dropdown-item:active {
+.dropdown-active {
   @apply bg-primary/10 text-primary;
 }
 
 .dropdown-header,
 .dropdown-footer {
-  @apply text-base-content/80 border-base-content/10 static flex items-center px-4 py-2.5;
+  @apply text-base-content/80 border-base-content/20 static flex items-center px-4 py-2.5;
 }
 
 .dropdown-header {

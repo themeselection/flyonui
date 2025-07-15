@@ -1,7 +1,9 @@
 .menu {
-  @apply bg-base-100 rounded-box flex flex-col flex-wrap gap-0.5 p-2 text-base;
+  @apply rounded-box flex flex-col flex-wrap gap-0.5 p-2 text-base;
   --menu-active-fg: var(--color-primary);
   --menu-active-bg: color-mix(in oklab, var(--color-primary) 10%, #0000);
+  --menu-hover-fg: var(--color-base-content);
+  --menu-hover-bg: color-mix(in oklab, var(--color-neutral) 10%, #0000);
 
   :where(li ul) {
     @apply relative whitespace-nowrap;
@@ -26,18 +28,18 @@
     height: 1px;
   }
 
-  :where(li:not(.menu-title, .tooltip) > *:not(ul, .collapse, .menu-title, .btn)) {
+  :where(li:not(.menu-title, .tooltip) > *:not(ul, .collapse, .accordion-content, .menu-title, .btn)) {
     @apply rounded-field px-4 py-2.5 text-start transition duration-200 ease-out;
     text-wrap: balance;
   }
 
-  :where(li:not(.menu-title) > *:not(ul, .collapse, .menu-title, .btn)) {
+  :where(li:not(.menu-title) > *:not(ul, .collapse, .accordion-content, .menu-title, .btn)) {
     @apply grid grid-flow-col content-start items-center gap-2;
     grid-auto-columns: minmax(auto, max-content) auto max-content;
     user-select: none;
   }
 
-  li.tooltip > * {
+  :where(li.tooltip) > * {
     @apply rounded-field px-4 py-2.5 text-start;
   }
 
@@ -46,20 +48,22 @@
   }
 
   /* menu focus and hover */
-  :where(.menu li:not(.menu-title, .menu-disabled) > *:not(ul, .collapse, .menu-title)) {
-    &:not(.btn).menu-focus,
+  :where(.menu li:not(.menu-title, .menu-disabled) > *:not(ul, .collapse, .accordion-content, .menu-title)) {
     &:not(.btn):focus-visible {
-      @apply bg-neutral/10 text-base-content cursor-pointer outline-none;
+      @apply cursor-pointer outline-none;
+      color: var(--menu-hover-fg);
+      background-color: var(--menu-hover-bg);
     }
 
     &:hover {
-      @apply bg-neutral/10 text-base-content cursor-pointer outline-none;
+      @apply cursor-pointer outline-none;
+      color: var(--menu-hover-fg);
+      background-color: var(--menu-hover-bg);
     }
   }
 
   /* menu active */
-  li:not(.menu-title, .menu-disabled) > :not(ul, .menu-title, .collapse, .btn):active,
-  li:not(.menu-title, .menu-disabled) > :not(ul, .menu-title, .collapse, .btn).menu-active {
+  li:not(.menu-title, .menu-disabled) > :not(ul, .menu-title, .collapse, .accordion-content, .btn).menu-active {
     color: var(--menu-active-fg);
     background-color: var(--menu-active-bg);
     background-size: auto, calc(var(--noise) * 100%);
@@ -109,7 +113,7 @@
 
 /* menu sizes */
 .menu-xs {
-  :where(li:not(.menu-title) > *:not(ul, .collapse, .menu-title)) {
+  :where(li:not(.menu-title) > *:not(ul, .collapse, .accordion-content, .menu-title)) {
     @apply rounded-field px-2 py-1 text-xs;
   }
   .menu-title {
@@ -118,7 +122,7 @@
 }
 
 .menu-sm {
-  :where(li:not(.menu-title) > *:not(ul, .collapse, .menu-title)) {
+  :where(li:not(.menu-title) > *:not(ul, .collapse, .accordion-content, .menu-title)) {
     @apply rounded-field px-3 py-2 text-sm;
   }
   .menu-title {
@@ -127,7 +131,7 @@
 }
 
 .menu-md {
-  :where(li:not(.menu-title) > *:not(ul, .collapse, .menu-title)) {
+  :where(li:not(.menu-title) > *:not(ul, .collapse, .accordion-content, .menu-title)) {
     @apply rounded-field px-4 py-2.5 text-base;
   }
   .menu-title {
@@ -136,7 +140,7 @@
 }
 
 .menu-lg {
-  :where(li:not(.menu-title) > *:not(ul, .collapse, .menu-title)) {
+  :where(li:not(.menu-title) > *:not(ul, .collapse, .accordion-content, .menu-title)) {
     @apply rounded-field px-5 py-3 text-lg;
   }
   .menu-title {
@@ -145,7 +149,7 @@
 }
 
 .menu-xl {
-  :where(li:not(.menu-title) > *:not(ul, .collapse, .menu-title)) {
+  :where(li:not(.menu-title) > *:not(ul, .collapse, .accordion-content, .menu-title)) {
     @apply rounded-field px-6 py-3.5 text-xl;
   }
   .menu-title {

@@ -3,6 +3,7 @@
   @apply hover:border-base-content/60 focus-visible:outline-none;
   border: var(--border) solid #0000;
   border-color: var(--input-color);
+  touch-action: manipulation;
   --input-color: color-mix(in oklab, var(--color-base-content) 40%, #0000);
 
   :where(textarea) {

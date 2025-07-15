@@ -1,6 +1,6 @@
 {
   "name": "flyonui",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "type": "module",
   "description": "The easiest, free and open-source Tailwind CSS component library with semantic classes.",
   "author": "ThemeSelection",
@@ -112,16 +112,16 @@
     "@types/clipboard": "^2.0.7",
     "@types/dropzone": "^5.7.9",
     "@types/jquery": "^3.5.32",
-    "@types/lodash": "^4.17.16",
+    "@types/lodash": "^4.17.18",
     "dts-bundle-generator": "^9.5.1",
     "source-map-loader": "^5.0.0",
     "terser-webpack-plugin": "^5.3.12",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.2",
     "webpack-cli": "^6.0.1",
-    "apexcharts": "^4.5.0",
+    "apexcharts": "^5.2.0",
     "datatables.net": "^2.2.2",
-    "lightningcss": "1.29.1",
+    "lightningcss": "1.30.1",
     "postcss": "^8.5.3",
     "postcss-js": "^4.0.1",
     "postcss-selector-parser": "^7.1.0",
@@ -129,6 +129,6 @@
     "nouislider": "^15.8.1"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.6.13"
+    "@floating-ui/dom": "^1.7.1"
   }
 }

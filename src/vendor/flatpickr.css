@@ -208,7 +208,7 @@ span.flatpickr-weekday,
 /* Inrange */
 
 .flatpickr-day.inRange,
-.flatpickr-day.nextMonthDay.inRange
+.flatpickr-day.nextMonthDay.inRange,
 .flatpickr-day.inRange:hover {
   @apply bg-primary/20 text-primary;
   box-shadow: unset;

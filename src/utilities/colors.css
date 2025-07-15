@@ -108,7 +108,11 @@
 /* gradient backgrounds */
 .gradient-bg {
   --darker-shade: color-mix(in oklab, var(--gradient-color, var(--color-neutral)) 80%, black);
-  background-image: linear-gradient(135deg, var(--gradient-color, var(--color-neutral)) 0%, var(--darker-shade) 100%);
+  background-image: linear-gradient(
+    var(--gradient-angle, 135deg),
+    var(--gradient-color, var(--color-neutral)) 0%,
+    var(--darker-shade) 100%
+  );
 }
 
 .gradient-bg-primary {

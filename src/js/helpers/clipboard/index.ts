@@ -1,5 +1,5 @@
 /*
- * @version: 3.0.1
+ * @version: 3.1.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -9,8 +9,8 @@ declare var ClipboardJS: any
 
 const clipboardSelector = window?.HS_CLIPBOARD_SELECTOR ?? '.js-clipboard'
 
-window.addEventListener('load', () => {
-  const $clipboards = document.querySelectorAll(clipboardSelector)
+function clipboardHelper(selector: string) {
+  const $clipboards = document.querySelectorAll(selector)
 
   $clipboards.forEach((el: HTMLElement) => {
     const clipboard = new ClipboardJS(el, {
@@ -23,9 +23,9 @@ window.addEventListener('load', () => {
         const $element: HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement =
           document.querySelector(clipboardTarget)
 
-        if ($element.tagName === 'SELECT' || $element.tagName === 'INPUT' || $element.tagName === 'TEXTAREA')
+        if ($element.tagName === 'SELECT' || $element.tagName === 'INPUT' || $element.tagName === 'TEXTAREA') {
           return $element.value
-        else return $element.textContent
+        } else return $element.textContent
       }
     })
     clipboard.on('success', () => {
@@ -47,7 +47,9 @@ window.addEventListener('load', () => {
       if (tooltip) (window.HSTooltip as any).show(tooltip)
 
       setTimeout(function () {
-        if ($successText && oldSuccessText) $successText.textContent = oldSuccessText
+        if ($successText && oldSuccessText) {
+          $successText.textContent = oldSuccessText
+        }
         if (tooltip) (window.HSTooltip as any).hide(tooltip)
         if ($default && $success) {
           $success.style.display = ''
@@ -56,6 +58,10 @@ window.addEventListener('load', () => {
       }, 2000)
     })
   })
+}
+
+window.addEventListener('load', () => {
+  clipboardHelper(clipboardSelector)
 })
 
-export {}
+export default clipboardHelper

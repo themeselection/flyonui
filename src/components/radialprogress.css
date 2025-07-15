@@ -14,7 +14,11 @@
     content: "";
     background:
       radial-gradient(farthest-side, currentColor 98%, #0000) top/var(--thickness) var(--thickness) no-repeat,
-      conic-gradient(currentColor var(--radialprogress), #0000 0);
+      conic-gradient(
+        currentColor var(--radialprogress),
+        color-mix(in oklab, var(--color-base-content) 20%, transparent) 0
+      );
+
     -webkit-mask: radial-gradient(
       farthest-side,
       #0000 calc(100% - var(--thickness)),

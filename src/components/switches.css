@@ -1,22 +1,29 @@
 .switch {
   border: var(--border) solid #0000;
   color: var(--color-base-100);
-  @apply relative inline-grid shrink-0 cursor-pointer appearance-none place-content-center rounded-full align-middle select-none print:[outline:.25rem_solid];
+  @apply relative inline-grid shrink-0 cursor-pointer appearance-none place-content-center align-middle select-none print:[outline:.25rem_solid];
   grid-template-columns: 0fr 1fr 1fr;
-  padding: var(--toggle-p);
+  padding: var(--switch-p);
   box-shadow: 0 1px color-mix(in oklab, currentColor calc(var(--depth) * 10%), #0000) inset;
   background-color: var(--input-color);
+
+  --radius-selector-max: calc(var(--radius-selector) + var(--radius-selector) + var(--radius-selector));
+  border-radius: calc(
+    var(--radius-selector) + min(var(--switch-p), var(--radius-selector-max)) +
+      min(var(--border), var(--radius-selector-max))
+  );
+
   transition:
     color 0.3s,
     grid-template-columns 0.2s;
   --input-color: color-mix(in oklab, var(--color-neutral) 22%, #0000);
-  --toggle-p: 0.1875rem;
+  --switch-p: 0.1875rem;
   --size: calc(var(--size-selector, 0.25rem) * 6);
-  width: calc((var(--size) * 2) - (var(--border) + var(--toggle-p)) * 2);
+  width: calc((var(--size) * 2) - (var(--border) + var(--switch-p)) * 2);
   height: var(--size);
 
   &:before {
-    @apply relative start-0 col-start-2 row-start-1 aspect-square h-full rounded-full bg-current print:[outline:.25rem_solid] print:[outline-offset:-1rem];
+    @apply rounded-selector relative start-0 col-start-2 row-start-1 aspect-square h-full bg-current print:[outline:.25rem_solid] print:[outline-offset:-1rem];
     translate: 0;
     --tw-content: "";
     content: var(--tw-content);
@@ -158,7 +165,7 @@
 .switch-xs {
   &:is([type="checkbox"]),
   &:has([type="checkbox"]) {
-    --toggle-p: 0.0625rem;
+    --switch-p: 0.125rem;
     --size: calc(var(--size-selector, 0.25rem) * 4);
   }
 }
@@ -166,7 +173,7 @@
 .switch-sm {
   &:is([type="checkbox"]),
   &:has([type="checkbox"]) {
-    --toggle-p: 0.125rem;
+    --switch-p: 0.125rem;
     --size: calc(var(--size-selector, 0.25rem) * 5);
   }
 }
@@ -174,7 +181,7 @@
 .switch-md {
   &:is([type="checkbox"]),
   &:has([type="checkbox"]) {
-    --toggle-p: 0.1875rem;
+    --switch-p: 0.1875rem;
     --size: calc(var(--size-selector, 0.25rem) * 6);
   }
 }
@@ -182,7 +189,7 @@
 .switch-lg {
   &:is([type="checkbox"]),
   &:has([type="checkbox"]) {
-    --toggle-p: 0.25rem;
+    --switch-p: 0.25rem;
     --size: calc(var(--size-selector, 0.25rem) * 7);
   }
 }
@@ -190,7 +197,7 @@
 .switch-xl {
   &:is([type="checkbox"]),
   &:has([type="checkbox"]) {
-    --toggle-p: 0.3125rem;
+    --switch-p: 0.3125rem;
     --size: calc(var(--size-selector, 0.25rem) * 8);
   }
 }

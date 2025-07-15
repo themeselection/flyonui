@@ -1,6 +1,6 @@
 /*
  * HSRangeSlider
- * @version: 3.0.1
+ * @version: 3.1.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,14 +8,19 @@
 
 import type { cssClasses, target } from 'nouislider'
 
-import { IRangeSliderCssClassesObject, IRangeSlider, IRangeSliderOptions } from './interfaces'
+import { IRangeSlider, IRangeSliderCssClassesObject, IRangeSliderOptions } from './interfaces'
 
 import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
 
 class HSRangeSlider extends HSBasePlugin<IRangeSliderOptions> implements IRangeSlider {
   private readonly concatOptions: IRangeSliderOptions
+  private readonly wrapper: HTMLElement | null
+  private readonly currentValue: HTMLElement[] | null
   private format: any | null
+  private readonly icons: {
+    handle?: string
+  }
 
   constructor(el: HTMLElement, options?: IRangeSliderOptions, events?: {}) {
     super(el, options, events)
@@ -31,6 +36,12 @@ class HSRangeSlider extends HSBasePlugin<IRangeSliderOptions> implements IRangeS
         ...this.processClasses(dataOptions.cssClasses)
       }
     }
+
+    this.wrapper = this.concatOptions.wrapper || el.closest('.range-slider-wrapper') || null
+    this.currentValue = this.concatOptions.currentValue
+      ? Array.from(this.concatOptions.currentValue)
+      : Array.from(this.wrapper?.querySelectorAll('.range-slider-current-value') || [])
+    this.icons = this.concatOptions.icons || {}
 
     this.init()
   }
@@ -70,32 +81,44 @@ class HSRangeSlider extends HSBasePlugin<IRangeSliderOptions> implements IRangeS
       typeof this.concatOptions?.formatter === 'object'
         ? this.concatOptions?.formatter?.type === 'thousandsSeparatorAndDecimalPoints'
         : this.concatOptions?.formatter === 'thousandsSeparatorAndDecimalPoints'
-    )
+    ) {
       this.thousandsSeparatorAndDecimalPointsFormatter()
-    else if (
+    } else if (
       typeof this.concatOptions?.formatter === 'object'
         ? this.concatOptions?.formatter?.type === 'integer'
         : this.concatOptions?.formatter === 'integer'
-    )
+    ) {
       this.integerFormatter()
-    else if (
+    } else if (
       typeof this.concatOptions?.formatter === 'object' &&
       (this.concatOptions?.formatter?.prefix || this.concatOptions?.formatter?.postfix)
-    )
+    ) {
       this.prefixOrPostfixFormatter()
+    }
 
     noUiSlider.create(this.el, this.concatOptions)
 
+    if (this.currentValue && this.currentValue.length > 0) {
+      ;(this.el as target).noUiSlider.on('update', (values: (string | number)[]) => {
+        this.updateCurrentValue(values)
+      })
+    }
+
     if (this.concatOptions.disabled) this.setDisabled()
+    if (this.icons.handle) this.buildHandleIcon()
   }
 
   private formatValue(val: number | string) {
     let result = ''
 
     if (typeof this.concatOptions?.formatter === 'object') {
-      if (this.concatOptions?.formatter?.prefix) result += this.concatOptions?.formatter?.prefix
+      if (this.concatOptions?.formatter?.prefix) {
+        result += this.concatOptions?.formatter?.prefix
+      }
       result += val
-      if (this.concatOptions?.formatter?.postfix) result += this.concatOptions?.formatter?.postfix
+      if (this.concatOptions?.formatter?.postfix) {
+        result += this.concatOptions?.formatter?.postfix
+      }
     } else result += val
 
     return result
@@ -139,6 +162,34 @@ class HSRangeSlider extends HSBasePlugin<IRangeSliderOptions> implements IRangeS
     this.el.classList.add('disabled')
   }
 
+  private buildHandleIcon() {
+    if (!this.icons.handle) return false
+
+    const handle = this.el.querySelector('.noUi-handle')
+
+    if (!handle) return false
+
+    handle.innerHTML = this.icons.handle
+  }
+
+  private updateCurrentValue(values: (string | number)[]) {
+    if (!this.currentValue || this.currentValue.length === 0) return
+
+    values.forEach((value, index) => {
+      const element = this.currentValue?.[index]
+
+      if (!element) return
+
+      const formattedValue = this.format ? this.format.to(value).toString() : value.toString()
+
+      if (element instanceof HTMLInputElement) {
+        element.value = formattedValue
+      } else {
+        element.textContent = formattedValue
+      }
+    })
+  }
+
   // Public methods
   public destroy() {
     ;(this.el as target).noUiSlider.destroy()
@@ -160,13 +211,16 @@ class HSRangeSlider extends HSBasePlugin<IRangeSliderOptions> implements IRangeS
   static autoInit() {
     if (!window.$hsRangeSliderCollection) window.$hsRangeSliderCollection = []
 
-    if (window.$hsRangeSliderCollection)
+    if (window.$hsRangeSliderCollection) {
       window.$hsRangeSliderCollection = window.$hsRangeSliderCollection.filter(({ element }) =>
         document.contains(element.el)
       )
+    }
 
     document.querySelectorAll('[data-range-slider]:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
-      if (!window.$hsRangeSliderCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSRangeSlider(el)
+      if (!window.$hsRangeSliderCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) {
+        new HSRangeSlider(el)
+      }
     })
   }
 }

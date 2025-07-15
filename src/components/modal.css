@@ -1,13 +1,13 @@
 .modal {
-  @apply pointer-events-none fixed inset-0 z-80 m-0 grid size-full justify-items-center p-4 opacity-0 transition-all duration-500;
+  @apply pointer-events-none fixed inset-0 z-80 m-0 grid size-full justify-items-center overflow-x-hidden overflow-y-auto p-4 opacity-0 transition-all;
 }
 
 .modal-dialog {
-  @apply mx-auto w-full opacity-0 transition-all duration-500 sm:max-w-128;
+  @apply mx-auto w-full sm:max-w-128;
 }
 
 .modal-content {
-  @apply bg-base-100 pointer-events-auto flex transform flex-col rounded-lg shadow-xl transition duration-300 ease-out;
+  @apply bg-base-100 shadow-base-content/10 pointer-events-auto flex flex-col rounded-lg shadow-xl;
   max-height: calc(100vh - 2rem);
   overscroll-behavior: contain;
 }

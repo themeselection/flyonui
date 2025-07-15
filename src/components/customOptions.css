@@ -1,14 +1,12 @@
 /* custom option */
 .custom-soft-option,
 .custom-option {
-  @apply rounded-box w-full overflow-hidden border p-4 text-center;
+  @apply rounded-box w-full cursor-pointer overflow-hidden border p-4;
   border: var(--border) solid var(--input-color, color-mix(in oklab, var(--color-base-content) 40%, #0000));
-  transition:
-    border-color 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out;
+
   &:hover {
     border-color: var(--input-color, color-mix(in oklab, var(--color-base-content) 40%, #0000));
-    box-shadow: 0 0 0 1px var(--input-color, color-mix(in oklab, var(--color-base-content) 40%, #0000));
+    outline: 1px solid var(--input-color, color-mix(in oklab, var(--color-base-content) 40%, #0000));
   }
 
   & > .label-text {
@@ -19,7 +17,7 @@
 .custom-option {
   &:has(:checked) {
     border-color: var(--input-color, var(--color-primary));
-    box-shadow: 0 0 0 1px var(--input-color, var(--color-primary));
+    outline: 1px solid var(--input-color, var(--color-primary));
   }
 }
 
@@ -28,6 +26,6 @@
   &:has(:checked) {
     border-color: var(--input-color, var(--color-primary));
     background-color: color-mix(in oklab, var(--input-color, var(--color-primary)) 10%, #0000);
-    box-shadow: 0 0 0 1px var(--input-color, var(--color-primary));
+    outline: 1px solid var(--input-color, var(--color-primary));
   }
 }

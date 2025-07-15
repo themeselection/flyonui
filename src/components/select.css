@@ -9,6 +9,7 @@
   background-size: 1.3em;
   background-position: calc(100% - 0.5rem) center;
   background-repeat: no-repeat;
+  touch-action: manipulation;
   text-overflow: ellipsis;
   border: var(--border) solid #0000;
   border-color: var(--input-color);

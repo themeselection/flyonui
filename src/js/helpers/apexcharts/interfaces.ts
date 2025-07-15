@@ -21,14 +21,29 @@ export interface IBuildTooltipHelperOptions {
   labelClasses: string
   labelExtClasses: string
   hasCategory?: boolean
+  thousandsShortName?: string
+}
+
+export interface IBuildTooltipHelperSingleOptions {
+  valuePrefix: string
+  valuePostfix: string
+  divider: string
+  wrapperClasses: string
+  wrapperExtClasses: string
+  markerClasses: string
+  markerStyles: string
+  markerExtClasses: string
+  valueClasses: string
+  valueExtClasses: string
 }
 
 export interface IChartProps {
   dataPointIndex: number
+  seriesIndex: number
+  series: [][]
   ctx: {
     opts: ApexOptions
   }
-  series: [][]
 }
 
 export interface IChartPropsSeries {

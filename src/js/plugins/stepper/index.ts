@@ -1,6 +1,6 @@
 /*
  * HSStepper
- * @version: 3.0.1
+ * @version: 3.1.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,7 +8,7 @@
 
 import { dispatch } from '../../utils'
 
-import { IStepperOptions, IStepper, IStepperItem } from './interfaces'
+import { IStepper, IStepperItem, IStepperOptions } from './interfaces'
 
 import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
@@ -133,7 +133,6 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
   }
 
   private finishBtnClick() {
-    // Added in Flyonui
     this.fireEvent('beforeFinish', this.currentIndex)
     dispatch('beforeFinish.stepper', this.el, this.currentIndex)
 
@@ -142,6 +141,7 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
 
       return false
     }
+
     this.handleFinishButtonClick()
   }
 
@@ -209,7 +209,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
     if (isCompleted) el.classList.add('is-valid')
     if (isSkip) el.classList.add('skipped')
     if (isDisabled) {
-      if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') el.setAttribute('disabled', 'disabled')
+      if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
+        el.setAttribute('disabled', 'disabled')
+      }
 
       el.classList.add('disabled')
     }
@@ -403,7 +405,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
     this.setCurrentContentItem()
 
     this.checkForTheFirstStep()
-    if (this.completeStepBtn) this.changeTextAndDisableCompleteButtonIfStepCompleted()
+    if (this.completeStepBtn) {
+      this.changeTextAndDisableCompleteButtonIfStepCompleted()
+    }
 
     this.fireEvent('back', this.currentIndex)
     dispatch('back.stepper', this.el, this.currentIndex)
@@ -418,13 +422,17 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
   }
 
   private setToDisabled(el: HTMLElement) {
-    if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') el.setAttribute('disabled', 'disabled')
+    if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
+      el.setAttribute('disabled', 'disabled')
+    }
 
     el.classList.add('disabled')
   }
 
   private setToNonDisabled(el: HTMLElement) {
-    if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') el.removeAttribute('disabled')
+    if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
+      el.removeAttribute('disabled')
+    }
 
     el.classList.remove('disabled')
   }
@@ -470,7 +478,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
     this.setCurrentContentItem()
 
     this.checkForTheFirstStep()
-    if (this.completeStepBtn) this.changeTextAndDisableCompleteButtonIfStepCompleted()
+    if (this.completeStepBtn) {
+      this.changeTextAndDisableCompleteButtonIfStepCompleted()
+    }
 
     this.showSkipButton()
     this.showFinishButton()
@@ -586,8 +596,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
 
     const nonCompletedSteps = this.getUncompletedSteps()
 
-    if (nonCompletedSteps.length === 1) this.completeStepBtn.style.display = 'none'
-    else this.completeStepBtn.style.display = ''
+    if (nonCompletedSteps.length === 1) {
+      this.completeStepBtn.style.display = 'none'
+    } else this.completeStepBtn.style.display = ''
   }
 
   private handleCompleteStepButtonClick() {
@@ -600,7 +611,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
     this.showFinishButton()
     this.showCompleteStepButton()
     this.checkForTheFirstStep()
-    if (this.completeStepBtn) this.changeTextAndDisableCompleteButtonIfStepCompleted()
+    if (this.completeStepBtn) {
+      this.changeTextAndDisableCompleteButtonIfStepCompleted()
+    }
     this.showSkipButton()
   }
 
@@ -639,7 +652,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
     const uncompletedOrSkipSteps = this.getUncompletedSteps(true)
     const { el } = this.contentItems.find(({ isFinal }) => isFinal)
 
-    if (uncompletedSteps.length) uncompletedSteps.forEach(({ index }) => this.setCompleteItem(index))
+    if (uncompletedSteps.length) {
+      uncompletedSteps.forEach(({ index }) => this.setCompleteItem(index))
+    }
 
     this.currentIndex = this.totalSteps
 
@@ -750,6 +765,10 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
     }
   }
 
+  public goToFinish() {
+    this.handleFinishButtonClick()
+  }
+
   public disableButtons() {
     if (this.backBtn) this.setToDisabled(this.backBtn)
     if (this.nextBtn) this.setToDisabled(this.nextBtn)
@@ -774,7 +793,9 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
     this.el.querySelectorAll('[data-stepper-nav-item]').forEach(el => {
       el.classList.remove('active', 'is-valid', 'skipped', 'disabled', 'is-invalid')
 
-      if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') el.removeAttribute('disabled')
+      if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
+        el.removeAttribute('disabled')
+      }
     })
     this.el.querySelectorAll('[data-stepper-content-item]').forEach(el => {
       el.classList.remove('is-valid', 'skipped')
@@ -791,16 +812,29 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
     if (this.resetBtn) this.resetBtn.style.display = 'none'
 
     // Remove listeners
-    if (this.onNavItemClickListener.length)
+    if (this.onNavItemClickListener.length) {
       this.onNavItemClickListener.forEach(({ el, fn }) => {
         el.removeEventListener('click', fn)
       })
-    if (this.backBtn) this.backBtn.removeEventListener('click', this.onBackClickListener)
-    if (this.nextBtn) this.nextBtn.removeEventListener('click', this.onNextClickListener)
-    if (this.skipBtn) this.skipBtn.removeEventListener('click', this.onSkipClickListener)
-    if (this.completeStepBtn) this.completeStepBtn.removeEventListener('click', this.onCompleteStepBtnClickListener)
-    if (this.finishBtn) this.finishBtn.removeEventListener('click', this.onFinishBtnClickListener)
-    if (this.resetBtn) this.resetBtn.removeEventListener('click', this.onResetBtnClickListener)
+    }
+    if (this.backBtn) {
+      this.backBtn.removeEventListener('click', this.onBackClickListener)
+    }
+    if (this.nextBtn) {
+      this.nextBtn.removeEventListener('click', this.onNextClickListener)
+    }
+    if (this.skipBtn) {
+      this.skipBtn.removeEventListener('click', this.onSkipClickListener)
+    }
+    if (this.completeStepBtn) {
+      this.completeStepBtn.removeEventListener('click', this.onCompleteStepBtnClickListener)
+    }
+    if (this.finishBtn) {
+      this.finishBtn.removeEventListener('click', this.onFinishBtnClickListener)
+    }
+    if (this.resetBtn) {
+      this.resetBtn.removeEventListener('click', this.onResetBtnClickListener)
+    }
 
     window.$hsStepperCollection = window.$hsStepperCollection.filter(({ element }) => element.el !== this.el)
   }
@@ -817,11 +851,14 @@ class HSStepper extends HSBasePlugin<{}> implements IStepper {
   static autoInit() {
     if (!window.$hsStepperCollection) window.$hsStepperCollection = []
 
-    if (window.$hsStepperCollection)
+    if (window.$hsStepperCollection) {
       window.$hsStepperCollection = window.$hsStepperCollection.filter(({ element }) => document.contains(element.el))
+    }
 
     document.querySelectorAll('[data-stepper]:not(.--prevent-on-load-init)').forEach((el: HTMLElement) => {
-      if (!window.$hsStepperCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) new HSStepper(el)
+      if (!window.$hsStepperCollection.find(elC => (elC?.element?.el as HTMLElement) === el)) {
+        new HSStepper(el)
+      }
     })
   }
 }

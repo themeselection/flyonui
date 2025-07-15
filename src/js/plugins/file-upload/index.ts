@@ -1,6 +1,6 @@
 /*
  * HSFileUpload
- * @version: 3.0.1
+ * @version: 3.1.0
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -10,7 +10,7 @@ import { DropzoneFile } from 'dropzone'
 
 import { htmlToElement, classToClassList } from '../../utils'
 
-import { IFileUploadOptions, IFileUpload } from '../file-upload/interfaces'
+import { IFileUploadOptions, IFileUpload } from './interfaces'
 
 import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'

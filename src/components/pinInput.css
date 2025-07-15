@@ -19,19 +19,20 @@
     isolation: isolate;
   }
 
-  &.pin-input-underline {
-    @apply border-base-content/40 rounded-none border-0 border-b bg-transparent;
-
-    &:focus,
-    &:focus-within {
-      @apply border-primary border-b-2 shadow-none outline-none;
-    }
-  }
-
   &.disabled,
   &:disabled,
   &[disabled] {
     @apply border-base-content/25 bg-base-content/5 placeholder-base-content/40 text-base-content/50 pointer-events-none;
+  }
+}
+
+/* Variant */
+.pin-input-underline {
+  @apply border-base-content/40 rounded-none border-0 border-b bg-transparent;
+
+  &:focus,
+  &:focus-within {
+    @apply border-primary border-b-2 shadow-none outline-none;
   }
 }
 
