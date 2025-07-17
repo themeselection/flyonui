@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.1] - [17-July-2025]
+
+## Updated
+
+- **Modal & Drawer:** Adjusted shadow color for improved visual consistency.
+
 ## [2.3.0] - [15-July-2025]
 
 ## Added

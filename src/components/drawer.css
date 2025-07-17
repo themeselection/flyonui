@@ -1,5 +1,5 @@
 .drawer {
-  @apply bg-base-100 shadow-base-300/10 fixed z-80 flex size-full max-w-96 flex-col justify-between shadow-md;
+  @apply bg-base-100 shadow-base-300/20 fixed z-80 flex size-full max-w-96 flex-col justify-between shadow-md;
 }
 
 .drawer-header {

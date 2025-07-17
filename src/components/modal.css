@@ -7,7 +7,7 @@
 }
 
 .modal-content {
-  @apply bg-base-100 shadow-base-content/10 pointer-events-auto flex flex-col rounded-lg shadow-xl;
+  @apply bg-base-100 shadow-base-300/20 pointer-events-auto flex flex-col rounded-lg shadow-xl;
   max-height: calc(100vh - 2rem);
   overscroll-behavior: contain;
 }
