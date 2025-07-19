@@ -186,7 +186,7 @@ class HSScrollspy extends HSBasePlugin<IScrollspyOptions> implements IScrollspy 
   public destroy() {
     // Remove classes
     const activeLink = this.el.querySelector('[href].active')
-    activeLink.classList.remove('active')
+    activeLink?.classList.remove('active')
 
     // Remove listeners
     this.scrollable.removeEventListener('scroll', this.onScrollableScrollListener)
