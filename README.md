@@ -353,7 +353,7 @@ Join the FlyonUI community to discuss the library, ask questions, and share your
 
 Fix a bug, or add a new feature. You can make a pull request and see your code in the next version of FlyonUI.
 
-Before adding a pull request, please see the **[contributing guidelines](https://github.com/themeselection/flyonui/blob/main/.github/CONTRIBUTING.md)**.
+Before adding a pull request, please see the **[contributing guidelines](https://github.com/themeselection/flyonui/blob/main/CONTRIBUTING.md)**.
 
 ## Credits 🤘
 
