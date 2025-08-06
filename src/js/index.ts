@@ -1,5 +1,5 @@
 /*
- * @version: 3.1.0
+ * @version: 3.2.2
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -9,6 +9,12 @@ declare var _: any
 declare var DataTable: any
 declare var Dropzone: any
 declare var noUiSlider: any
+
+import HSAccessibilityObserver from './plugins/accessibility-manager'
+
+if (typeof window !== 'undefined') {
+  window.HSAccessibilityObserver = new HSAccessibilityObserver()
+}
 
 let HSDataTableModule
 let HSFileUploadModule

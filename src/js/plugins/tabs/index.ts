@@ -1,6 +1,6 @@
 /*
  * HSTabs
- * @version: 3.1.0
+ * @version: 3.2.2
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -8,14 +8,18 @@
 
 import { dispatch } from '../../utils'
 
-import { ITabs, ITabsOptions, ITabsOnChangePayload } from './interfaces'
+import { ITabs, ITabsOnChangePayload, ITabsOptions } from './interfaces'
 
-import { ICollectionItem } from '../../interfaces'
 import HSBasePlugin from '../base-plugin'
+import { ICollectionItem } from '../../interfaces'
+import { IAccessibilityComponent } from '../accessibility-manager/interfaces'
+import HSAccessibilityObserver from '../accessibility-manager'
 
-import { TABS_ACCESSIBILITY_KEY_SET, BREAKPOINTS } from '../../constants'
+import { BREAKPOINTS } from '../../constants'
 
 class HSTabs extends HSBasePlugin<ITabsOptions> implements ITabs {
+  private accessibilityComponent: IAccessibilityComponent
+
   private readonly eventType: 'click' | 'hover'
   private readonly preventNavigationResolution: string | number | null
 
@@ -110,6 +114,13 @@ class HSTabs extends HSBasePlugin<ITabsOptions> implements ITabs {
       this.onExtraToggleChangeListener = evt => this.extraToggleChange(evt)
       this.extraToggle.addEventListener('change', this.onExtraToggleChangeListener)
     }
+
+    if (typeof window !== 'undefined') {
+      if (!window.HSAccessibilityObserver) {
+        window.HSAccessibilityObserver = new HSAccessibilityObserver()
+      }
+      this.setupAccessibility()
+    }
   }
 
   private open(el: HTMLElement) {
@@ -151,8 +162,62 @@ class HSTabs extends HSBasePlugin<ITabsOptions> implements ITabs {
     const toggle: HTMLElement = document.querySelector(`[data-tab="${(evt.target as HTMLSelectElement).value}"]`)
 
     if (toggle) {
-      if (this.eventType === 'hover') toggle.dispatchEvent(new Event('mouseenter'))
-      else toggle.click()
+      if (this.eventType === 'hover') {
+        toggle.dispatchEvent(new Event('mouseenter'))
+      } else toggle.click()
+    }
+  }
+
+  // Accessibility methods
+  private setupAccessibility(): void {
+    this.accessibilityComponent = window.HSAccessibilityObserver.registerComponent(
+      this.el,
+      {
+        onArrow: (evt: KeyboardEvent) => {
+          if (evt.metaKey) return
+
+          const isVertical =
+            this.el.getAttribute('data-tabs-vertical') === 'true' ||
+            this.el.getAttribute('aria-orientation') === 'vertical'
+
+          switch (evt.key) {
+            case isVertical ? 'ArrowUp' : 'ArrowLeft':
+              this.onArrow(true)
+              break
+            case isVertical ? 'ArrowDown' : 'ArrowRight':
+              this.onArrow(false)
+              break
+            case 'Home':
+              this.onStartEnd(true)
+              break
+            case 'End':
+              this.onStartEnd(false)
+              break
+          }
+        }
+      },
+      true,
+      'Tabs',
+      '[role="tablist"]'
+    )
+  }
+
+  private onArrow(isOpposite = true) {
+    const toggles = isOpposite ? Array.from(this.toggles).reverse() : Array.from(this.toggles)
+    const focused = toggles.find(el => document.activeElement === el)
+    let focusedInd = toggles.findIndex((el: any) => el === focused)
+    focusedInd = focusedInd + 1 < toggles.length ? focusedInd + 1 : 0
+
+    toggles[focusedInd].focus()
+    toggles[focusedInd].click()
+  }
+
+  private onStartEnd(isOpposite = true) {
+    const toggles = isOpposite ? Array.from(this.toggles) : Array.from(this.toggles).reverse()
+
+    if (toggles.length) {
+      toggles[0].focus()
+      toggles[0].click()
     }
   }
 
@@ -162,8 +227,9 @@ class HSTabs extends HSBasePlugin<ITabsOptions> implements ITabs {
       const _toggle = this.onToggleHandler?.find(({ el }) => el === toggle)
 
       if (_toggle) {
-        if (this.eventType === 'click') toggle.removeEventListener('click', _toggle.fn)
-        else {
+        if (this.eventType === 'click') {
+          toggle.removeEventListener('click', _toggle.fn)
+        } else {
           toggle.removeEventListener('mouseenter', _toggle.fn)
           toggle.removeEventListener('click', _toggle.preventClickFn)
         }
@@ -174,6 +240,10 @@ class HSTabs extends HSBasePlugin<ITabsOptions> implements ITabs {
 
     if (this.extraToggle) {
       this.extraToggle.removeEventListener('change', this.onExtraToggleChangeListener)
+    }
+
+    if (typeof window !== 'undefined' && window.HSAccessibilityObserver) {
+      window.HSAccessibilityObserver.unregisterComponent(this.accessibilityComponent)
     }
 
     window.$hsTabsCollection = window.$hsTabsCollection.filter(({ element }) => element.el !== this.el)
@@ -191,12 +261,11 @@ class HSTabs extends HSBasePlugin<ITabsOptions> implements ITabs {
   static autoInit() {
     if (!window.$hsTabsCollection) {
       window.$hsTabsCollection = []
-
-      document.addEventListener('keydown', evt => HSTabs.accessibility(evt))
     }
 
-    if (window.$hsTabsCollection)
+    if (window.$hsTabsCollection) {
       window.$hsTabsCollection = window.$hsTabsCollection.filter(({ element }) => document.contains(element.el))
+    }
 
     document
       .querySelectorAll('[role="tablist"]:not(select):not(.--prevent-on-load-init)')
@@ -218,72 +287,8 @@ class HSTabs extends HSBasePlugin<ITabsOptions> implements ITabs {
         )
       : null
 
-    if (targetInCollection && !targetInCollection.classList.contains('active'))
+    if (targetInCollection && !targetInCollection.classList.contains('active')) {
       elInCollection.element.open(targetInCollection)
-  }
-
-  // Accessibility methods
-  static accessibility(evt: KeyboardEvent) {
-    const target = document.querySelector('[data-tab]:focus')
-
-    if (target && TABS_ACCESSIBILITY_KEY_SET.includes(evt.code) && !evt.metaKey) {
-      const isVertical = target.closest('[role="tablist"]')?.getAttribute('data-tabs-vertical')
-
-      evt.preventDefault()
-
-      switch (evt.code) {
-        case isVertical === 'true' ? 'ArrowUp' : 'ArrowLeft':
-          this.onArrow()
-          break
-        case isVertical === 'true' ? 'ArrowDown' : 'ArrowRight':
-          this.onArrow(false)
-          break
-        case 'Home':
-          this.onStartEnd()
-          break
-        case 'End':
-          this.onStartEnd(false)
-          break
-        default:
-          break
-      }
-    }
-  }
-
-  static onArrow(isOpposite = true) {
-    const target = document.querySelector('[data-tab]:focus')?.closest('[role="tablist"]')
-    if (!target) return
-
-    const targetInCollection = window.$hsTabsCollection.find(el => el.element.el === target)
-
-    if (targetInCollection) {
-      const toggles = isOpposite
-        ? Array.from(targetInCollection.element.toggles).reverse()
-        : Array.from(targetInCollection.element.toggles)
-      const focused = toggles.find(el => document.activeElement === el)
-      let focusedInd = toggles.findIndex((el: any) => el === focused)
-      focusedInd = focusedInd + 1 < toggles.length ? focusedInd + 1 : 0
-
-      toggles[focusedInd].focus()
-      toggles[focusedInd].click()
-    }
-  }
-
-  static onStartEnd(isOpposite = true) {
-    const target = document.querySelector('[data-tab]:focus')?.closest('[role="tablist"]')
-    if (!target) return
-
-    const targetInCollection = window.$hsTabsCollection.find(el => el.element.el === target)
-
-    if (targetInCollection) {
-      const toggles = isOpposite
-        ? Array.from(targetInCollection.element.toggles)
-        : Array.from(targetInCollection.element.toggles).reverse()
-
-      if (toggles.length) {
-        toggles[0].focus()
-        toggles[0].click()
-      }
     }
   }
 

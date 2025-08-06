@@ -26,6 +26,7 @@ import type HSToggleCount from './src/js/plugins/toggle-count'
 import type HSTogglePassword from './src/js/plugins/toggle-password'
 import type HSTooltip from './src/js/plugins/tooltip'
 import type HSTreeView from './src/js/plugins/tree-view'
+import type HSAccessibilityObserver from './src/js/plugins/accessibility-manager'
 
 declare global {
   var noUiSlider: typeof INoUiSlider
@@ -44,6 +45,7 @@ declare global {
     HS_CLIPBOARD_SELECTOR: string
 
     HSStaticMethods: IStaticMethods
+    HSAccessibilityObserver: HSAccessibilityObserver
 
     $hsCopyMarkupCollection: ICollectionItem<HSCopyMarkup>[]
     $hsAccordionCollection: ICollectionItem<HSAccordion>[]

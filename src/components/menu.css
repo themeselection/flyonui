@@ -48,7 +48,9 @@
   }
 
   /* menu focus and hover */
-  :where(.menu li:not(.menu-title, .menu-disabled) > *:not(ul, .collapse, .accordion-content, .menu-title)) {
+  :where(
+    .menu li:not(.menu-title, .menu-disabled) > *:not(ul, .collapse, .accordion-content, .dropdown-active, .menu-title)
+  ) {
     &:not(.btn):focus-visible {
       @apply cursor-pointer outline-none;
       color: var(--menu-hover-fg);

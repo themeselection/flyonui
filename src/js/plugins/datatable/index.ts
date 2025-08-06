@@ -1,6 +1,6 @@
 /*
  * HSDataTable
- * @version: 3.1.0
+ * @version: 3.2.2
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -127,9 +127,7 @@ class HSDataTable extends HSBasePlugin<IDataTableOptions> implements IDataTable 
           : document.querySelector('[data-datatable-row-selecting-all]')) ?? null
     if (this.concatOptions?.rowSelectingOptions)
       this.rowSelectingIndividual =
-        this.concatOptions?.rowSelectingOptions?.individualSelector ??
-        '[data-datatable-row-selecting-individual]' ??
-        null
+        this.concatOptions?.rowSelectingOptions?.individualSelector ?? '[data-datatable-row-selecting-individual]'
 
     if (this.pageEntitiesList.length) this.concatOptions.pageLength = parseInt(this.pageEntitiesList[0].value)
 

@@ -1,6 +1,6 @@
 /*
  * HSTooltip
- * @version: 3.1.0
+ * @version: 3.2.2
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -14,7 +14,6 @@ import { TTooltipOptionsScope } from './types'
 
 import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
-
 import { POSITIONS } from '../../constants'
 
 class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
@@ -23,7 +22,6 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
   readonly eventMode: string
   private readonly preventFloatingUI: string
   private readonly placement: string
-  private readonly interaction: string
   private readonly strategy: Strategy
   private readonly scope: TTooltipOptionsScope
 
@@ -31,6 +29,7 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
 
   private onToggleClickListener: () => void
   private onToggleFocusListener: () => void
+  private onToggleBlurListener: () => void
   private onToggleMouseEnterListener: () => void
   private onToggleMouseLeaveListener: () => void
   private onToggleHandleListener: () => void
@@ -44,7 +43,6 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
       this.eventMode = getClassProperty(this.el, '--trigger') || 'hover'
       this.preventFloatingUI = getClassProperty(this.el, '--prevent-popper', 'false')
       this.placement = getClassProperty(this.el, '--placement')
-      this.interaction = getClassProperty(this.el, '--interaction', 'true')
       this.strategy = getClassProperty(this.el, '--strategy') as Strategy
       this.scope = (getClassProperty(this.el, '--scope') as TTooltipOptionsScope) || 'parent'
     }
@@ -54,10 +52,6 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
 
   private toggleClick() {
     this.click()
-  }
-
-  private toggleFocus() {
-    this.focus()
   }
 
   private toggleMouseEnter() {
@@ -78,18 +72,18 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
   private init() {
     this.createCollection(window.$hsTooltipCollection, this)
 
+    this.onToggleFocusListener = () => this.enter()
+    this.onToggleBlurListener = () => this.hide()
+
+    this.toggle.addEventListener('focus', this.onToggleFocusListener)
+    this.toggle.addEventListener('blur', this.onToggleBlurListener)
+
     if (this.eventMode === 'click') {
       this.onToggleClickListener = () => this.toggleClick()
-
       this.toggle.addEventListener('click', this.onToggleClickListener)
-    } else if (this.eventMode === 'focus') {
-      this.onToggleFocusListener = () => this.toggleFocus()
-
-      this.toggle.addEventListener('click', this.onToggleFocusListener)
     } else if (this.eventMode === 'hover') {
       this.onToggleMouseEnterListener = () => this.toggleMouseEnter()
       this.onToggleMouseLeaveListener = () => this.toggleMouseLeave()
-
       this.toggle.addEventListener('mouseenter', this.onToggleMouseEnterListener)
       this.toggle.addEventListener('mouseleave', this.onToggleMouseLeaveListener)
     }
@@ -120,35 +114,6 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
       this.toggle.addEventListener('blur', this.onToggleHandleListener, true)
     }
   }
-
-  //  This is added in FlyonUI
-  private focus() {
-    this._show()
-    if (this.interaction === 'true') {
-      const handleClickInsidePopover = (event: MouseEvent) => {
-        if (this.content && this.content.contains(event.target as Node)) {
-          event.stopPropagation()
-        }
-      }
-
-      this.content?.addEventListener('click', handleClickInsidePopover)
-
-      const handleClickOutsidePopover = (event: MouseEvent) => {
-        if (!this.content?.contains(event.target as Node) && !this.el.contains(event.target as Node)) {
-          this.hide()
-        }
-      }
-      document.body.addEventListener('click', handleClickOutsidePopover)
-    } else {
-      const handle = () => {
-        this.hide()
-
-        this.toggle.removeEventListener('blur', handle, true)
-      }
-      this.toggle.addEventListener('blur', handle, true)
-    }
-  }
-
   private buildFloatingUI() {
     if (this.scope === 'window') document.body.appendChild(this.content)
     const position = POSITIONS[this.placement] ?? 'top'
@@ -190,7 +155,6 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
   private _show() {
     this.content.classList.remove('hidden')
     if (this.scope === 'window') this.content.classList.add('show')
-
     if (this.preventFloatingUI === 'false' && !this.cleanupAutoUpdate) {
       this.buildFloatingUI()
     }
@@ -205,16 +169,10 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
 
   // Public methods
   public show() {
-    switch (this.eventMode) {
-      case 'click':
-        this.click()
-        break
-      case 'focus':
-        this.focus()
-        break
-      default:
-        this.enter()
-        break
+    if (this.eventMode === 'click') {
+      this.click()
+    } else {
+      this.enter()
     }
 
     this.toggle.focus()
@@ -249,14 +207,17 @@ class HSTooltip extends HSBasePlugin<{}> implements ITooltip {
     this.content.classList.add('hidden')
 
     // Remove listeners
+    this.toggle.removeEventListener('focus', this.onToggleFocusListener)
+    this.toggle.removeEventListener('blur', this.onToggleBlurListener)
+
+    // Remove eventMode-specific listeners
     if (this.eventMode === 'click') {
       this.toggle.removeEventListener('click', this.onToggleClickListener)
-    } else if (this.eventMode === 'focus') {
-      this.toggle.removeEventListener('click', this.onToggleFocusListener)
     } else if (this.eventMode === 'hover') {
       this.toggle.removeEventListener('mouseenter', this.onToggleMouseEnterListener)
       this.toggle.removeEventListener('mouseleave', this.onToggleMouseLeaveListener)
     }
+
     this.toggle.removeEventListener('click', this.onToggleHandleListener, true)
     this.toggle.removeEventListener('blur', this.onToggleHandleListener, true)
 

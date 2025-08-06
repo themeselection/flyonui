@@ -1,31 +1,27 @@
 /*
  * HSSelect
- * @version: 3.1.0
+ * @version: 3.2.2
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import {
-  afterTransition,
-  classToClassList,
-  debounce,
-  dispatch,
-  htmlToElement,
-  isEnoughSpace,
-  isFocused
-} from '../../utils'
+import { afterTransition, classToClassList, debounce, dispatch, htmlToElement, isEnoughSpace } from '../../utils'
 
-import { IApiFieldMap, ISelect, ISelectOptions, ISingleOption, ISingleOptionOptions } from './interfaces'
+import { IApiFieldMap, ISelect, ISelectOptions, ISingleOption, ISingleOptionOptions } from '../select/interfaces'
 
 import { type Strategy, computePosition, autoUpdate, offset, flip } from '@floating-ui/dom'
 
 import HSBasePlugin from '../base-plugin'
 import { ICollectionItem } from '../../interfaces'
+import { IAccessibilityComponent } from '../accessibility-manager/interfaces'
+import HSAccessibilityObserver from '../accessibility-manager'
 
-import { POSITIONS, SELECT_ACCESSIBILITY_KEY_SET } from '../../constants'
+import { POSITIONS } from '../../constants'
 
 class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
+  private accessibilityComponent: IAccessibilityComponent
+
   value: string | string[] | null
   private readonly placeholder: string | null
   private readonly hasSearch: boolean
@@ -34,7 +30,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   private readonly mode: string | null
   private readonly viewport: HTMLElement | null
 
-  isOpened: boolean | null
+  private _isOpened: boolean | null
   isMultiple: boolean | null
   isDisabled: boolean | null
   selectedItems: string[]
@@ -120,6 +116,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   private tagsInputHelper: HTMLElement | null
 
   private remoteOptions: unknown[]
+  private disabledObserver: MutationObserver | null = null
 
   private optionId = 0
 
@@ -151,7 +148,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     this.mode = concatOptions?.mode || 'default'
     this.viewport =
       typeof concatOptions?.viewport !== 'undefined' ? document.querySelector(concatOptions?.viewport) : null
-    this.isOpened = Boolean(concatOptions?.isOpened) || false
+    this._isOpened = Boolean(concatOptions?.isOpened) || false
     this.isMultiple = this.el.hasAttribute('multiple') || false
     this.isDisabled = this.el.hasAttribute('disabled') || false
     this.selectedItems = []
@@ -227,7 +224,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     this.descriptionClasses = concatOptions?.descriptionClasses || null
     this.iconClasses = concatOptions?.iconClasses || null
     this.isAddTagOnEnter = concatOptions?.isAddTagOnEnter ?? true
-    this.isSelectedOptionOnTop = concatOptions?.isSelectedOptionOnTop ?? true
+    this.isSelectedOptionOnTop = concatOptions?.isSelectedOptionOnTop ?? false
 
     this.animationInProcess = false
 
@@ -235,6 +232,16 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     this.remoteOptions = []
 
     this.tagsInputHelper = null
+
+    this.disabledObserver = new MutationObserver(muts => {
+      if (muts.some(m => m.attributeName === 'disabled')) {
+        this.setDisabledState(this.el.hasAttribute('disabled'))
+      }
+    })
+    this.disabledObserver.observe(this.el, {
+      attributes: true,
+      attributeFilter: ['disabled']
+    })
 
     this.init()
   }
@@ -255,7 +262,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   }
 
   private tagsInputFocus() {
-    if (!this.isOpened) this.open()
+    if (!this._isOpened) this.open()
   }
 
   private tagsInputInput() {
@@ -309,9 +316,9 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
         existingTags.forEach(tag => tag.remove())
 
         this.setTagsItems()
-        this.reassignTagsInputPlaceholder(this.value.length ? '' : this.placeholder)
+        this.reassignTagsInputPlaceholder(this.hasValue() ? '' : this.placeholder)
       } else {
-        this.toggleTextWrapper.innerHTML = this.value.length ? this.stringFromValue() : this.placeholder
+        this.toggleTextWrapper.innerHTML = this.hasValue() ? this.stringFromValue() : this.placeholder
 
         this.unselectMultipleItems()
         this.selectMultipleItems()
@@ -326,10 +333,38 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     }
   }
 
+  private setDisabledState(isDisabled: boolean): void {
+    this.isDisabled = isDisabled
+
+    const target = this.mode === 'tags' ? this.wrapper : this.toggle
+
+    target?.classList.toggle('disabled', isDisabled)
+
+    if (isDisabled && this.isOpened()) this.close()
+  }
+
+  private hasValue(): boolean {
+    if (!this.isMultiple) {
+      return this.value !== null && this.value !== undefined && this.value !== ''
+    }
+    return (
+      Array.isArray(this.value) &&
+      this.value.length > 0 &&
+      this.value.some(val => val !== null && val !== undefined && val !== '')
+    )
+  }
+
   private init() {
     this.createCollection(window.$hsSelectCollection, this)
 
     this.build()
+
+    if (typeof window !== 'undefined') {
+      if (!window.HSAccessibilityObserver) {
+        window.HSAccessibilityObserver = new HSAccessibilityObserver()
+      }
+      this.setupAccessibility()
+    }
   }
 
   private build() {
@@ -363,15 +398,13 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     if (this.isMultiple) {
       const selectedOptions = Array.from(this.el.children).filter((el: HTMLOptionElement) => el.selected)
 
-      if (selectedOptions) {
-        const values: string[] = []
+      const values: string[] = []
 
-        selectedOptions.forEach((el: HTMLOptionElement) => {
-          values.push(el.value)
-        })
+      selectedOptions.forEach((el: HTMLOptionElement) => {
+        values.push(el.value)
+      })
 
-        this.value = values
-      }
+      this.value = values
     }
 
     this.buildWrapper()
@@ -384,6 +417,8 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   private buildWrapper() {
     this.wrapper = document.createElement('div')
     this.wrapper.classList.add('advance-select', 'relative')
+
+    this.setDisabledState(this.isDisabled)
 
     if (this.mode === 'tags') {
       this.onWrapperClickListener = evt => this.wrapperClick(evt)
@@ -442,7 +477,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     if (!this.isMultiple && icon) this.setToggleIcon()
     if (!this.isMultiple && title) this.setToggleTitle()
     if (this.isMultiple) {
-      this.toggleTextWrapper.innerHTML = this.value.length ? this.stringFromValue() : this.placeholder
+      this.toggleTextWrapper.innerHTML = this.hasValue() ? this.stringFromValue() : this.placeholder
     } else {
       this.toggleTextWrapper.innerHTML = this.getItemByValue(this.value as string)?.title || this.placeholder
     }
@@ -452,7 +487,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     if (this.wrapper) this.wrapper.append(this.toggle)
 
     if (this.toggle?.ariaExpanded) {
-      if (this.isOpened) this.toggle.ariaExpanded = 'true'
+      if (this._isOpened) this.toggle.ariaExpanded = 'true'
       else this.toggle.ariaExpanded = 'false'
     }
 
@@ -517,6 +552,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
 
   private buildTags() {
     if (this.isDisabled) this.wrapper.classList.add('disabled')
+    this.wrapper.setAttribute('tabindex', '0')
     this.buildTagsInput()
     this.setTagsItems()
   }
@@ -595,7 +631,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
       this.value = (this.value as string[]).filter(el => el !== val)
       this.selectedItems = this.selectedItems.filter(el => el !== val)
 
-      if (!this.value.length) {
+      if (!this.hasValue()) {
         this.reassignTagsInputPlaceholder(this.placeholder)
       }
 
@@ -622,14 +658,16 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
 
   private setTagsItems() {
     if (this.value) {
-      ;(this.value as string[]).forEach(val => {
+      const values = Array.isArray(this.value) ? this.value : this.value != null ? [this.value] : []
+
+      values.forEach(val => {
         if (!this.selectedItems.includes(val)) this.buildTagsItem(val)
 
         this.selectedItems = !this.selectedItems.includes(val) ? [...this.selectedItems, val] : this.selectedItems
       })
     }
 
-    if (this.isOpened && this.floatingUIInstance) {
+    if (this._isOpened && this.floatingUIInstance) {
       this.floatingUIInstance.update()
     }
   }
@@ -641,6 +679,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     if (this.tagsInputClasses) {
       classToClassList(this.tagsInputClasses, this.tagsInput)
     }
+    this.tagsInput.setAttribute('tabindex', '-1')
 
     this.onTagsInputFocusListener = () => this.tagsInputFocus()
     this.onTagsInputInputListener = () => this.tagsInputInput()
@@ -656,7 +695,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
 
     setTimeout(() => {
       this.adjustInputWidth()
-      this.reassignTagsInputPlaceholder(this.value.length ? '' : this.placeholder)
+      this.reassignTagsInputPlaceholder(this.hasValue() ? '' : this.placeholder)
     })
   }
 
@@ -674,7 +713,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     this.dropdown.tabIndex = -1
     this.dropdown.ariaOrientation = 'vertical'
 
-    if (!this.isOpened) this.dropdown.classList.add('hidden')
+    if (!this._isOpened) this.dropdown.classList.add('hidden')
 
     if (this.dropdownClasses) {
       classToClassList(this.dropdownClasses, this.dropdown)
@@ -688,6 +727,11 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     }
 
     if (this.apiUrl) this.optionsFromRemoteData()
+
+    if (!this.apiUrl) {
+      this.sortElements(this.el, 'option')
+      this.sortElements(this.dropdown, '[data-value]')
+    }
 
     if (this.dropdownScope === 'window') this.buildFloatingUI()
 
@@ -1023,44 +1067,34 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     else console.log('There is no data were responded!')
   }
 
-  private async apiRequest(val = '') {
+  private async apiRequest(val = ''): Promise<any> {
     try {
-      let url = this.apiUrl
-      const search = this.apiSearchQueryKey ? `${this.apiSearchQueryKey}=${val.toLowerCase()}` : null
-      const query = this.apiQuery || ''
-      const options = this.apiOptions || {}
-      const queryParams = new URLSearchParams(query)
-      const cleanQuery = queryParams.toString()
+      const url = new URL(this.apiUrl)
+      const queryParams = new URLSearchParams(this.apiQuery ?? '')
+      const options = this.apiOptions ?? {}
+      const key = this.apiSearchQueryKey ?? 'q'
+      const trimmed = (val ?? '').trim().toLowerCase()
+
+      if (trimmed !== '') queryParams.set(key, encodeURIComponent(trimmed))
 
       if (this.apiLoadMore) {
-        const paginationParam = (this.apiFieldsMap?.page || this.apiFieldsMap?.offset || 'page') as string
-        const isOffsetBased = !!this.apiFieldsMap?.offset
-        const limitParam = this.apiFieldsMap?.limit || 'limit'
         const perPage = typeof this.apiLoadMore === 'object' ? this.apiLoadMore.perPage : 10
+        const pageKey = this.apiFieldsMap?.page ?? this.apiFieldsMap?.offset ?? 'page'
+        const limitKey = this.apiFieldsMap?.limit ?? 'limit'
+        const isOffset = Boolean(this.apiFieldsMap?.offset)
 
-        queryParams.delete(paginationParam)
-        queryParams.delete(limitParam)
+        queryParams.delete(pageKey)
+        queryParams.delete(limitKey)
 
-        if (isOffsetBased) {
-          url += `?${paginationParam}=0`
-        } else {
-          url += `?${paginationParam}=1`
-        }
-        url += `&${limitParam}=${perPage}`
-      } else if (search || cleanQuery) {
-        url += `?${search || cleanQuery}`
+        queryParams.set(pageKey, isOffset ? '0' : '1')
+        queryParams.set(limitKey, String(perPage))
       }
 
-      if (search && cleanQuery) {
-        url += `&${cleanQuery}`
-      } else if (search && !cleanQuery && !this.apiLoadMore) {
-        url += `?${search}`
-      }
+      url.search = queryParams.toString()
+      const res = await fetch(url.toString(), options)
+      const json = await res.json()
 
-      const req = await fetch(url, options)
-      const res = await req.json()
-
-      return this.apiDataPart ? res[this.apiDataPart] : res
+      return this.apiDataPart ? json[this.apiDataPart] : json
     } catch (err) {
       console.error(err)
     }
@@ -1203,9 +1237,9 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     this.clearSelections()
 
     if (this.isMultiple) {
-      this.value = this.value.includes(val)
-        ? Array.from(this.value).filter(el => el !== val)
-        : [...Array.from(this.value), val]
+      if (!Array.isArray(this.value)) this.value = []
+
+      this.value = this.value.includes(val) ? this.value.filter(el => el !== val) : [...this.value, val]
 
       this.selectMultipleItems()
       this.setNewValue()
@@ -1235,11 +1269,11 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
       this.close(true)
     }
 
-    if (!this.value.length && this.mode === 'tags') {
+    if (!this.hasValue() && this.mode === 'tags') {
       this.reassignTagsInputPlaceholder(this.placeholder)
     }
 
-    if (this.isOpened && this.mode === 'tags' && this.tagsInput) {
+    if (this._isOpened && this.mode === 'tags' && this.tagsInput) {
       this.tagsInput.focus()
     }
 
@@ -1309,7 +1343,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
         const emptyOption = this.selectOptions.find((el: ISingleOption) => el.val === '')
         this.toggleTextWrapper.innerHTML = emptyOption?.title || this.placeholder
       } else {
-        if (this.value) {
+        if (this.hasValue()) {
           if (this.apiUrl) {
             const selectedItem = this.dropdown.querySelector(`[data-value="${this.value}"]`)
             if (selectedItem) {
@@ -1341,7 +1375,9 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
 
     options.forEach((el: ISingleOption) => {
       if (this.isMultiple) {
-        if (this.value.includes(el.val)) value.push(el.title)
+        if (Array.isArray(this.value) && this.value.includes(el.val)) {
+          value.push(el.title)
+        }
       } else {
         if (this.value === el.val) value.push(el.title)
       }
@@ -1398,7 +1434,9 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
       const dataTitleValue = el.getAttribute('data-title-value')
 
       if (this.isMultiple) {
-        if (this.value.includes(dataValue)) value.push(dataTitleValue)
+        if (Array.isArray(this.value) && this.value.includes(dataValue)) {
+          value.push(dataTitleValue)
+        }
       } else {
         if (this.value === dataValue) value.push(dataTitleValue)
       }
@@ -1436,9 +1474,14 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     )
 
     if (selectedItem) selectedItem.classList.add('selected')
+
+    this.sortElements(this.el, 'option')
+    this.sortElements(this.dropdown, '[data-value]')
   }
 
   private selectMultipleItems() {
+    if (!Array.isArray(this.value)) return
+
     Array.from(this.dropdown.children)
       .filter(el => this.value.includes(el.getAttribute('data-value')))
       .forEach(el => el.classList.add('selected'))
@@ -1446,11 +1489,17 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     Array.from(this.el.children)
       .filter(el => this.value.includes((el as HTMLOptionElement).value))
       .forEach(el => ((el as HTMLOptionElement).selected = true))
+
+    this.sortElements(this.el, 'option')
+    this.sortElements(this.dropdown, '[data-value]')
   }
 
   private unselectMultipleItems() {
     Array.from(this.dropdown.children).forEach(el => el.classList.remove('selected'))
     Array.from(this.el.children).forEach(el => ((el as HTMLOptionElement).selected = false))
+
+    this.sortElements(this.el, 'option')
+    this.sortElements(this.dropdown, '[data-value]')
   }
 
   private searchOptions(val: string) {
@@ -1536,8 +1585,120 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   }
 
   private toggleFn() {
-    if (this.isOpened) this.close()
+    if (this._isOpened) this.close()
     else this.open()
+  }
+
+  // Accessibility methods
+  private setupAccessibility(): void {
+    this.accessibilityComponent = window.HSAccessibilityObserver.registerComponent(
+      this.wrapper,
+      {
+        onEnter: () => {
+          if (!this._isOpened) {
+            this.open()
+          } else {
+            const highlighted = this.dropdown.querySelector('.select-option-highlighted')
+            if (highlighted) {
+              this.onSelectOption(highlighted.getAttribute('data-value') || '')
+              if (this._isOpened) {
+                ;(highlighted as HTMLElement).focus()
+              }
+            }
+          }
+        },
+        onSpace: () => {
+          if (!this._isOpened) {
+            this.open()
+          } else {
+            const highlighted = this.dropdown.querySelector('.select-option-highlighted')
+            if (highlighted) {
+              this.onSelectOption(highlighted.getAttribute('data-value') || '')
+              if (this._isOpened) {
+                ;(highlighted as HTMLElement).focus()
+              }
+            }
+          }
+        },
+        onEsc: () => {
+          if (this._isOpened) {
+            this.close(true)
+          }
+        },
+        onArrow: (evt: KeyboardEvent) => {
+          if (evt.metaKey) return
+
+          if (!this._isOpened && evt.key === 'ArrowDown') {
+            this.open()
+            return
+          }
+
+          if (this._isOpened) {
+            switch (evt.key) {
+              case 'ArrowDown':
+                this.focusMenuItem('next')
+                break
+              case 'ArrowUp':
+                this.focusMenuItem('prev')
+                break
+              case 'Home':
+                this.onStartEnd(true)
+                break
+              case 'End':
+                this.onStartEnd(false)
+                break
+            }
+          }
+        },
+        onHome: () => {
+          if (this._isOpened) this.onStartEnd(true)
+        },
+        onEnd: () => {
+          if (this._isOpened) this.onStartEnd(false)
+        },
+        onTab: () => {
+          if (this._isOpened) this.close()
+        }
+      },
+      this._isOpened,
+      'Select',
+      '.advance-select',
+      this.dropdown
+    )
+  }
+
+  private focusMenuItem(direction: 'next' | 'prev'): void {
+    const options = Array.from(this.dropdown.querySelectorAll(':scope > *:not(.hidden)')).filter(
+      (el: any) => !el.classList.contains('disabled')
+    )
+
+    if (!options.length) return
+
+    const current = this.dropdown.querySelector('.select-option-highlighted')
+    const currentIndex = current ? options.indexOf(current) : -1
+    const nextIndex =
+      direction === 'next' ? (currentIndex + 1) % options.length : (currentIndex - 1 + options.length) % options.length
+
+    if (current) current.classList.remove('select-option-highlighted')
+    options[nextIndex].classList.add('select-option-highlighted')
+    ;(options[nextIndex] as HTMLElement).focus()
+  }
+
+  private onStartEnd(isStart = true): void {
+    if (!this.dropdown) return
+
+    const options = Array.from(this.dropdown.querySelectorAll(':scope > *:not(.hidden)')).filter(
+      (el: any) => !el.classList.contains('disabled')
+    )
+
+    if (!options.length) return
+
+    const current = this.dropdown.querySelector('.select-option-highlighted')
+    if (current) current.classList.remove('select-option-highlighted')
+
+    const index = isStart ? 0 : options.length - 1
+    options[index].classList.add('select-option-highlighted')
+    ;(options[index] as HTMLElement).focus()
   }
 
   // Public methods
@@ -1567,12 +1728,14 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     parent.prepend(this.el)
     parent.querySelector('.advance-select').remove()
     this.wrapper = null
+    this.disabledObserver?.disconnect()
+    this.disabledObserver = null
 
     window.$hsSelectCollection = window.$hsSelectCollection.filter(({ element }) => element.el !== this.el)
   }
 
   public open() {
-    const currentlyOpened = window?.$hsSelectCollection?.find(el => el.element.isOpened) || null
+    const currentlyOpened = window?.$hsSelectCollection?.find(el => el.element.isOpened()) || null
 
     if (currentlyOpened) currentlyOpened.element.close()
     if (this.animationInProcess) return false
@@ -1603,7 +1766,11 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
       this.animationInProcess = false
     })
 
-    this.isOpened = true
+    this._isOpened = true
+
+    if (window.HSAccessibilityObserver && this.accessibilityComponent) {
+      window.HSAccessibilityObserver.updateComponentState(this.accessibilityComponent, this._isOpened)
+    }
   }
 
   public close(forceFocus = false) {
@@ -1627,17 +1794,28 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
       this.dropdown.classList.add('hidden')
       if (this.hasSearch) {
         this.search.value = ''
-        this.search.dispatchEvent(new Event('input', { bubbles: true }))
+
+        if (!this.apiUrl) {
+          this.search.dispatchEvent(new Event('input', { bubbles: true }))
+        }
+
         this.search.blur()
       }
 
-      if (forceFocus) this.toggle.focus()
+      if (forceFocus) {
+        if (this.mode?.includes('tags')) this.wrapper.focus()
+        else this.toggle.focus()
+      }
 
       this.animationInProcess = false
     })
 
     this.dropdown.querySelector('.select-option-highlighted')?.classList.remove('select-option-highlighted')
-    this.isOpened = false
+    this._isOpened = false
+
+    if (window.HSAccessibilityObserver && this.accessibilityComponent) {
+      window.HSAccessibilityObserver.updateComponentState(this.accessibilityComponent, this._isOpened)
+    }
   }
 
   public addOption(items: ISingleOption | ISingleOption[]) {
@@ -1662,6 +1840,9 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     } else {
       addOption(items)
     }
+
+    this.sortElements(this.el, 'option')
+    this.sortElements(this.dropdown, '[data-value]')
   }
 
   public removeOption(values: string | string[]) {
@@ -1691,6 +1872,9 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     }
 
     this.setNewValue()
+
+    this.sortElements(this.el, 'option')
+    this.sortElements(this.dropdown, '[data-value]')
   }
 
   public recalculateDirection() {
@@ -1733,6 +1917,14 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     }
   }
 
+  public isOpened(): boolean {
+    return this._isOpened || false
+  }
+
+  public containsElement(element: HTMLElement): boolean {
+    return this.wrapper?.contains(element) || false
+  }
+
   // Static methods
   private static findInCollection(target: HSSelect | HTMLElement | string): ICollectionItem<HSSelect> | null {
     return (
@@ -1762,8 +1954,6 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
 
         HSSelect.closeCurrentlyOpened(evtTarget as HTMLElement)
       })
-
-      document.addEventListener('keydown', evt => HSSelect.accessibility(evt))
     }
 
     if (window.$hsSelectCollection) {
@@ -1783,177 +1973,23 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   static open(target: HSSelect | HTMLElement | string) {
     const instance = HSSelect.findInCollection(target)
 
-    if (instance && !instance.element.isOpened) instance.element.open()
+    if (instance && !instance.element.isOpened()) instance.element.open()
   }
 
   static close(target: HSSelect | HTMLElement | string) {
     const instance = HSSelect.findInCollection(target)
 
-    if (instance && instance.element.isOpened) instance.element.close()
+    if (instance && instance.element.isOpened()) instance.element.close()
   }
 
   static closeCurrentlyOpened(evtTarget: HTMLElement | null = null) {
     if (!evtTarget.closest('.advance-select.active') && !evtTarget.closest('[data-select-dropdown].opened')) {
-      const currentlyOpened = window.$hsSelectCollection.filter(el => el.element.isOpened) || null
+      const currentlyOpened = window.$hsSelectCollection.filter(el => el.element.isOpened()) || null
 
       if (currentlyOpened) {
         currentlyOpened.forEach(el => {
           el.element.close()
         })
-      }
-    }
-  }
-
-  // Accessibility methods
-  static accessibility(evt: KeyboardEvent) {
-    const target = window.$hsSelectCollection.find(el => el.element.isOpened)
-
-    if (target && SELECT_ACCESSIBILITY_KEY_SET.includes(evt.code) && !evt.metaKey) {
-      switch (evt.code) {
-        case 'Escape':
-          evt.preventDefault()
-          this.onEscape()
-          break
-        case 'ArrowUp':
-          evt.preventDefault()
-          evt.stopImmediatePropagation()
-          this.onArrow()
-          break
-        case 'ArrowDown':
-          evt.preventDefault()
-          evt.stopImmediatePropagation()
-          this.onArrow(false)
-          break
-        case 'Tab':
-          evt.preventDefault()
-          evt.stopImmediatePropagation()
-          this.onTab(evt.shiftKey)
-          break
-        case 'Home':
-          evt.preventDefault()
-          evt.stopImmediatePropagation()
-          this.onStartEnd()
-          break
-        case 'End':
-          evt.preventDefault()
-          evt.stopImmediatePropagation()
-          this.onStartEnd(false)
-          break
-        case 'Enter':
-          evt.preventDefault()
-          this.onEnter(evt)
-          break
-        case 'Space':
-          if (isFocused(target.element.search)) break
-          evt.preventDefault()
-          this.onEnter(evt)
-          break
-        default:
-          break
-      }
-    }
-  }
-
-  static onEscape() {
-    const target = window.$hsSelectCollection.find(el => el.element.isOpened)
-
-    if (target) target.element.close()
-  }
-
-  static onArrow(isArrowUp = true) {
-    const target = window.$hsSelectCollection.find(el => el.element.isOpened)
-
-    if (target) {
-      const dropdown = target.element.dropdown
-
-      if (!dropdown) return false
-
-      const preparedOptions = isArrowUp
-        ? Array.from(dropdown.querySelectorAll(':scope > *:not(.hidden)')).reverse()
-        : Array.from(dropdown.querySelectorAll(':scope > *:not(.hidden)'))
-      const options = preparedOptions.filter((el: any) => !el.classList.contains('disabled'))
-      const current = dropdown.querySelector('.select-option-highlighted') || dropdown.querySelector('.selected')
-      if (!current) options[0].classList.add('select-option-highlighted')
-      let currentInd = options.findIndex((el: any) => el === current)
-
-      if (currentInd + 1 < options.length) {
-        currentInd++
-      }
-
-      ;(options[currentInd] as HTMLButtonElement).focus()
-      if (current) current.classList.remove('select-option-highlighted')
-      options[currentInd].classList.add('select-option-highlighted')
-    }
-  }
-
-  static onTab(isArrowUp = true) {
-    const target = window.$hsSelectCollection.find(el => el.element.isOpened)
-
-    if (target) {
-      const dropdown = target.element.dropdown
-
-      if (!dropdown) return false
-
-      const preparedOptions = isArrowUp
-        ? Array.from(dropdown.querySelectorAll(':scope >  *:not(.hidden)')).reverse()
-        : Array.from(dropdown.querySelectorAll(':scope >  *:not(.hidden)'))
-      const options = preparedOptions.filter((el: any) => !el.classList.contains('disabled'))
-      const current = dropdown.querySelector('.select-option-highlighted') || dropdown.querySelector('.selected')
-      if (!current) options[0].classList.add('select-option-highlighted')
-      let currentInd = options.findIndex((el: any) => el === current)
-
-      if (currentInd + 1 < options.length) {
-        currentInd++
-      } else {
-        if (current) current.classList.remove('select-option-highlighted')
-        target.element.close()
-        target.element.toggle.focus()
-
-        return false
-      }
-
-      ;(options[currentInd] as HTMLButtonElement).focus()
-      if (current) current.classList.remove('select-option-highlighted')
-      options[currentInd].classList.add('select-option-highlighted')
-    }
-  }
-
-  static onStartEnd(isStart = true) {
-    const target = window.$hsSelectCollection.find(el => el.element.isOpened)
-
-    if (target) {
-      const dropdown = target.element.dropdown
-
-      if (!dropdown) return false
-
-      const preparedOptions = isStart
-        ? Array.from(dropdown.querySelectorAll(':scope >  *:not(.hidden)'))
-        : Array.from(dropdown.querySelectorAll(':scope >  *:not(.hidden)')).reverse()
-      const options = preparedOptions.filter((el: any) => !el.classList.contains('disabled'))
-      const current = dropdown.querySelector('.select-option-highlighted')
-
-      if (options.length) {
-        ;(options[0] as HTMLButtonElement).focus()
-        if (current) current.classList.remove('select-option-highlighted')
-        options[0].classList.add('select-option-highlighted')
-      }
-    }
-  }
-
-  static onEnter(evt: Event) {
-    const select = (evt.target as HTMLElement).previousSibling
-
-    if (window.$hsSelectCollection.find(el => el.element.el === select)) {
-      const opened = window.$hsSelectCollection.find(el => el.element.isOpened)
-      const target = window.$hsSelectCollection.find(el => el.element.el === select)
-
-      opened.element.close()
-      if (opened !== target) target.element.open()
-    } else {
-      const target = window.$hsSelectCollection.find(el => el.element.isOpened)
-
-      if (target) {
-        target.element.onSelectOption((evt.target as HTMLElement).dataset.value || '')
       }
     }
   }
@@ -1976,7 +2012,7 @@ window.addEventListener('load', () => {
 document.addEventListener('scroll', () => {
   if (!window.$hsSelectCollection) return false
 
-  const target = window.$hsSelectCollection.find(el => el.element.isOpened)
+  const target = window.$hsSelectCollection.find(el => el.element.isOpened())
 
   if (target) target.element.recalculateDirection()
 })

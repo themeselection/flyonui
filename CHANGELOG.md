@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.0] - [06-August-2025]
+
+## Added
+
+**Sidebar** : [Collapsible sidebar](https://flyonui.com/docs/navigations/sidebar/#collapsible-sidebar)
+
+**Sidebar** : [collapsible with mini sidebar](https://flyonui.com/docs/navigations/sidebar/#collapsible-to-mini-icon-sidebar)
+
+**Dropdown** : [Scope Window](https://flyonui.com/docs/overlays/dropdown/#scope-window)
+
+## Updated
+
+- **Updated:** [Preline V3.2.0](https://preline.co/docs/changelog.html#v3_2_0)
+
+## Fixes and Improvements
+
+- **Themes:** Refined `--color-neutral` in the Corporate theme for better consistency.
+- **Improvements:** Introduced a centralized [Accessibility Management](https://flyonui.com/docs/getting-started/accessibility/) system with full keyboard navigation and interaction support across all UI components.
+- **Popover:** Removed the `--interaction` class option and focus example.
+- **Menu:** Fixed hover issue with `dropdown-active` when used in menus.
+
 ## [2.3.1] - [17-July-2025]
 
 ## Updated

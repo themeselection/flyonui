@@ -242,7 +242,7 @@ FlyonUI components offer native RTL support. Simply add the `dir="rtl"` attribut
 
 ## Available Components 🧩
 
-FlyonUI provides a robust library of UI components built with Tailwind CSS utility classes, enabling fast and efficient web development. Our library includes 78+ components, from basic elements like buttons and cards to more complex third-party integrations.
+FlyonUI provides a robust library of UI components built with Tailwind CSS utility classes, enabling fast and efficient web development. Our library includes 80+ components, from basic elements like buttons and cards to more complex third-party integrations.
 
 [Explore all components](https://flyonui.com/docs/components/accordion/)
 
@@ -353,7 +353,7 @@ Join the FlyonUI community to discuss the library, ask questions, and share your
 
 Fix a bug, or add a new feature. You can make a pull request and see your code in the next version of FlyonUI.
 
-Before adding a pull request, please see the **[contributing guidelines](https://github.com/themeselection/flyonui/blob/main/CONTRIBUTING.md)**.
+Before adding a pull request, please see the **[contributing guidelines](https://github.com/themeselection/flyonui/blob/main/.github/CONTRIBUTING.md)**.
 
 ## Credits 🤘
 

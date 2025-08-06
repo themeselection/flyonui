@@ -1,5 +1,5 @@
 /*
- * @version: 3.0.1
+ * @version: 3.2.2
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -34,7 +34,8 @@ function buildTooltip(props: IChartProps, options: IBuildTooltipHelperOptions) {
     valueClasses = '!font-medium text-base-content/80 !ms-auto',
     valueExtClasses = '',
     labelClasses = 'text-base-content',
-    labelExtClasses = ''
+    labelExtClasses = '',
+    thousandsShortName = 'k'
   } = options
   const { dataPointIndex } = props
   const { colors } = props.ctx.opts
@@ -51,10 +52,10 @@ function buildTooltip(props: IChartProps, options: IBuildTooltipHelperOptions) {
     const groupData = invertGroup
       ? {
           left: `${hasTextLabel ? label : ''}${labelDivider}`,
-          right: `${valuePrefix}${val >= 1000 && isValueDivided ? `${val / 1000}k` : val}${valuePostfix}`
+          right: `${valuePrefix}${val >= 1000 && isValueDivided ? `${val / 1000}${thousandsShortName}` : val}${valuePostfix}`
         }
       : {
-          left: `${valuePrefix}${val >= 1000 && isValueDivided ? `${val / 1000}k` : val}${valuePostfix}`,
+          left: `${valuePrefix}${val >= 1000 && isValueDivided ? `${val / 1000}${thousandsShortName}` : val}${valuePostfix}`,
           right: `${hasTextLabel ? label : ''}${labelDivider}`
         }
     const labelMarkup = `<span class="apexcharts-tooltip-text-y-label ${labelClasses} ${labelExtClasses}">${groupData.left}</span>`
@@ -72,7 +73,6 @@ function buildTooltip(props: IChartProps, options: IBuildTooltipHelperOptions) {
     </div>`
   })
 
-  // Return the final HTML for the tooltip
   return `<div class="${wrapperClasses} ${wrapperExtClasses}">
     <div class="apexcharts-tooltip-title ${titleClasses} ${titleExtClasses}">${title}</div>
     ${seriesGroups}
@@ -131,7 +131,8 @@ function buildTooltipCompareTwo(props: IChartProps, options: IBuildTooltipHelper
     valueClasses = '!font-medium text-base-content/80 !ms-auto',
     valueExtClasses = '',
     labelClasses = 'text-base-content !font-medium',
-    labelExtClasses = ''
+    labelExtClasses = '',
+    thousandsShortName = 'k'
   } = options
   const { dataPointIndex } = props
   const { categories } = props.ctx.opts.xaxis
@@ -145,9 +146,14 @@ function buildTooltipCompareTwo(props: IChartProps, options: IBuildTooltipHelper
   const newCategory = hasCategory
     ? `${category[0]}${category[1] ? ' ' : ''}${category[1] ? category[1].slice(0, 3) : ''}`
     : ''
-  const isGrowing = s0 > s1
-  const isDifferenceIsNull = s0 / s1 === 1
-  const difference = isDifferenceIsNull ? 0 : (s0 / s1) * 100
+  // const isGrowing = s0 > s1;
+  // const isDifferenceIsNull = s0 / s1 === 1;
+  // const difference = isDifferenceIsNull ? 0 : (s0 / s1) * 100;
+  // TODO: test this before deleting the code above
+  const isPrevZero = s1 === 0
+  const difference = isPrevZero ? 0 : ((s0 - s1) / Math.abs(s1)) * 100
+  const isDifferenceIsNull = difference === 0
+  const isGrowing = difference > 0
   const icon = isGrowing
     ? `<span class="icon-[tabler--trending-up] size-5"></span>`
     : `<span class="icon-[tabler--trending-down] size-5"></span>`
@@ -163,7 +169,7 @@ function buildTooltipCompareTwo(props: IChartProps, options: IBuildTooltipHelper
     const labelMarkup = `<span class="apexcharts-tooltip-text-y-label ${labelClasses} ${labelExtClasses}">${newCategory} ${label || ''}</span>`
     const valueMarkup =
       altValue ||
-      `<span class="apexcharts-tooltip-text-y-value ${valueClasses} ${valueExtClasses}">${valuePrefix}${val >= 1000 && isValueDivided ? `${val / 1000}k` : val}${valuePostfix}${labelDivider}</span>`
+      `<span class="apexcharts-tooltip-text-y-value ${valueClasses} ${valueExtClasses}">${valuePrefix}${val >= 1000 && isValueDivided ? `${val / 1000}${thousandsShortName}` : val}${valuePostfix}${labelDivider}</span>`
 
     seriesGroups += `<div class="apexcharts-tooltip-series-group ${seriesClasses} !flex order-${i + 1} ${seriesExtClasses}">
       <span class="flex items-center">
@@ -210,9 +216,9 @@ function buildTooltipCompareTwoAlt(props: IChartProps, options: IBuildTooltipHel
     valueClasses = '!font-medium text-base-content/80 !ms-auto',
     valueExtClasses = '',
     labelClasses = 'text-base-content !font-medium',
-    labelExtClasses = ''
+    labelExtClasses = '',
+    thousandsShortName = 'k'
   } = options
-
   const { dataPointIndex } = props
   const { categories } = props.ctx.opts.xaxis
   const { colors } = props.ctx.opts
@@ -225,9 +231,14 @@ function buildTooltipCompareTwoAlt(props: IChartProps, options: IBuildTooltipHel
   const newCategory = hasCategory
     ? `${category[0]}${category[1] ? ' ' : ''}${category[1] ? category[1].slice(0, 3) : ''}`
     : ''
-  const isGrowing = s0 > s1
-  const isDifferenceIsNull = s0 / s1 === 1
-  const difference = isDifferenceIsNull ? 0 : (s0 / s1) * 100
+  // const isGrowing = s0 > s1;
+  // const isDifferenceIsNull = s0 / s1 === 1;
+  // const difference = isDifferenceIsNull ? 0 : (s0 / s1) * 100;
+  // TODO: test this before deleting the code above
+  const isPrevZero = s1 === 0
+  const difference = isPrevZero ? 0 : ((s0 - s1) / Math.abs(s1)) * 100
+  const isDifferenceIsNull = difference === 0
+  const isGrowing = difference > 0
   const icon = isGrowing
     ? `<span class="icon-[tabler--trending-up] size-5"></span>`
     : `<span class="icon-[tabler--trending-down] size-5"></span>`
@@ -240,7 +251,7 @@ function buildTooltipCompareTwoAlt(props: IChartProps, options: IBuildTooltipHel
         : props.series[i][dataPointIndex])
 
     const label = series[i].name
-    const labelMarkup = `<span class="apexcharts-tooltip-text-y-label ${labelClasses} ${labelExtClasses}">${valuePrefix}${val >= 1000 && isValueDivided ? `${val / 1000}k` : val}${valuePostfix}</span>`
+    const labelMarkup = `<span class="apexcharts-tooltip-text-y-label ${labelClasses} ${labelExtClasses}">${valuePrefix}${val >= 1000 && isValueDivided ? `${val / 1000}${thousandsShortName}` : val}${valuePostfix}</span>`
 
     seriesGroups += `<div class="apexcharts-tooltip-series-group !flex ${seriesClasses} order-${i + 1} ${seriesExtClasses}">
       <span class="flex items-center">
@@ -272,7 +283,7 @@ function buildTooltipForDonut({ series, seriesIndex, w }: IChartDonutProps, text
   const { colors } = globals
 
   return `<div class="apexcharts-tooltip-series-group" style="background-color: ${colors[seriesIndex]}; display: block;">
-    <div class="apexcharts-tooltip-text" style="font-size: 12px;">
+    <div class="apexcharts-tooltip-text" style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;">
       <div class="apexcharts-tooltip-y-group" style="color: ${textColor[seriesIndex]}">
         <span class="apexcharts-tooltip-text-y-label">${globals.labels[seriesIndex]}: </span>
         <span class="apexcharts-tooltip-text-y-value">${series[seriesIndex]}</span>
@@ -391,8 +402,8 @@ function fullBarHoverEffect(
 
 export {
   buildChart,
-  buildTooltip,
   buildHeatmapTooltip,
+  buildTooltip,
   buildTooltipCompareTwo,
   buildTooltipCompareTwoAlt,
   buildTooltipForDonut,

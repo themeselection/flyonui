@@ -1,6 +1,6 @@
 /*
  * HSStaticMethods
- * @version: 3.1.0
+ * @version: 3.2.2
  * @author: Preline Labs Ltd.
  * @license: Licensed under MIT and Preline UI Fair Use License (https://preline.co/docs/license.html)
  * Copyright 2024 Preline Labs Ltd.
@@ -9,6 +9,7 @@
 import { getClassProperty, afterTransition } from '../utils'
 import { COLLECTIONS } from '../spa/index'
 import { IStaticMethods } from '../static/interfaces'
+import type HSAccessibilityObserver from '../plugins/accessibility-manager'
 import { ICollectionItem } from '../interfaces'
 import type HSCopyMarkup from '../plugins/copy-markup'
 import type HSAccordion from '../plugins/accordion'
@@ -36,6 +37,7 @@ import type HSTreeView from '../plugins/tree-view'
 declare global {
   interface Window {
     HSStaticMethods: IStaticMethods
+    HSAccessibilityObserver: HSAccessibilityObserver
     $hsCopyMarkupCollection: ICollectionItem<HSCopyMarkup>[]
     $hsAccordionCollection: ICollectionItem<HSAccordion>[]
     $hsCarouselCollection: ICollectionItem<HSCarousel>[]

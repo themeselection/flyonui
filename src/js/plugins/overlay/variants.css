@@ -18,6 +18,20 @@
   }
 }
 
+@custom-variant overlay-minified {
+  &.minified {
+    @slot;
+  }
+
+  .minified & {
+    @slot;
+  }
+
+  .overlay-minified & {
+    @slot;
+  }
+}
+
 @custom-variant overlay-backdrop-open {
   &.overlay-backdrop {
     @slot;
