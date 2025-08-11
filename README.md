@@ -240,6 +240,11 @@ To use FlyonUI, ensure that you have [Node.js](https://nodejs.org/en/) and [Tail
 
 FlyonUI components offer native RTL support. Simply add the `dir="rtl"` attribute to your HTML element to enable this feature.
 
+
+## Star History 🌟
+
+[![Star History Chart](https://api.star-history.com/svg?repos=themeselection/flyonui&type=Timeline)](https://www.star-history.com/#themeselection/flyonui&Timeline)
+
 ## Available Components 🧩
 
 FlyonUI provides a robust library of UI components built with Tailwind CSS utility classes, enabling fast and efficient web development. Our library includes 80+ components, from basic elements like buttons and cards to more complex third-party integrations.
