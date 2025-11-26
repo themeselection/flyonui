@@ -48,7 +48,6 @@
     --tw-shadow-color: color-mix(in oklab, var(--input-color) 30%, #0000);
     outline: 1px solid var(--input-color);
     border-color: var(--input-color);
-    isolation: isolate;
   }
   &:focus-visible {
     outline: unset;
