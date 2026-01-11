@@ -21,7 +21,7 @@
   @apply col-start-2 row-span-3 row-start-1 place-self-center justify-self-end;
 }
 .stat-title {
-  @apply text-base-content/80 col-start-1 whitespace-nowrap;
+  @apply text-base-content/80 col-start-1 text-base whitespace-nowrap;
 }
 .stat-value {
   @apply text-base-content col-start-1 text-3xl font-semibold whitespace-nowrap;
