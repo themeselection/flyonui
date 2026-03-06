@@ -376,9 +376,13 @@ These projects form the backbone of FlyonUI, allowing us to build a powerful and
 
 ## License ©
 
-- Copyright © [ThemeSelection](https://themeselection.com/)
-- Licensed under [MIT](https://github.com/themeselection/flyonui/blob/main/LICENSE)
-- FlyonUI is open-source software licensed under the MIT License.You can use our free items for personal as well as commercial purposes.
+**FlyonUI's original code is licensed under the MIT License.**
+
+**Bundled third-party components are governed by their respective licenses as detailed below.**
+
+FlyonUI bundles and redistributes components from [Preline UI](https://github.com/htmlstreamofficial/preline) and [daisyUI](https://github.com/saadeghi/daisyui). These bundled components are essential to FlyonUI's core JavaScript functionality and are distributed under explicit permission and their respective license terms.
+
+For more details, please refer: [License](https://github.com/themeselection/flyonui?tab=License-1-ov-file#readme)
 
 ## Useful Links 🎁
 
