@@ -30,6 +30,11 @@
   --alert-color: var(--color-primary);
 }
 
+.alert-secondary {
+  @apply text-secondary-content;
+  --alert-color: var(--color-secondary);
+}
+
 .alert-info {
   @apply text-info-content;
   --alert-color: var(--color-info);
