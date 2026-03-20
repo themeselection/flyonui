@@ -6,7 +6,7 @@
  * Copyright 2024 Preline Labs Ltd.
  */
 
-import { getClassProperty, dispatch } from '../../utils'
+import { getClassProperty, dispatch, stringToBoolean } from '../../utils'
 
 import { IScrollspy, IScrollspyOptions } from './interfaces'
 
@@ -160,11 +160,15 @@ class HSScrollspy extends HSBasePlugin<IScrollspyOptions> implements IScrollspy 
     const target: HTMLElement = document.querySelector(targetId)
     const globalOffset = parseInt(getClassProperty(this.el, '--scrollspy-offset', '0'))
     const userOffset = parseInt(getClassProperty(target, '--scrollspy-offset')) || globalOffset
+    const replaceHistory = stringToBoolean(getClassProperty(this.el, '--scrollspy-replace-history', 'true') || 'true')
     const scrollableParentOffset = this.scrollable === document ? 0 : (this.scrollable as HTMLElement).offsetTop
     const topOffset = target.offsetTop - userOffset - scrollableParentOffset
     const view = this.scrollable === document ? window : this.scrollable
     const scrollFn = () => {
-      window.history.replaceState(null, null, link.getAttribute('href'))
+      if (replaceHistory){
+        console.log('=== replacing history ===')
+        window.history.replaceState(null, null, link.getAttribute('href'))
+      }
 
       if ('scrollTo' in view) {
         view.scrollTo({
