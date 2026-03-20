@@ -105,6 +105,8 @@ export interface ISelectOptions {
   dropdownAutoPlacement?: boolean
 
   isSelectedOptionOnTop?: boolean
+
+  maxItems?: number
 }
 
 export interface ISelect {

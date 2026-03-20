@@ -113,22 +113,24 @@
     "@types/dropzone": "^5.7.9",
     "@types/jquery": "^3.5.32",
     "@types/lodash": "^4.17.18",
-    "dts-bundle-generator": "^9.5.1",
-    "source-map-loader": "^5.0.0",
-    "terser-webpack-plugin": "^5.3.12",
-    "ts-loader": "^9.5.2",
-    "typescript": "^5.8.2",
-    "webpack-cli": "^6.0.1",
     "apexcharts": "^5.2.0",
     "datatables.net": "^2.2.2",
+    "dts-bundle-generator": "^9.5.1",
     "lightningcss": "1.30.1",
+    "nouislider": "^15.8.1",
     "postcss": "^8.5.3",
     "postcss-js": "^4.0.1",
     "postcss-selector-parser": "^7.1.0",
+    "source-map-loader": "^5.0.0",
     "tailwindcss": "4.1.1",
-    "nouislider": "^15.8.1"
+    "terser-webpack-plugin": "^5.3.12",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.8.2",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "@floating-ui/dom": "^1.7.1"
-  }
+    "@floating-ui/dom": "^1.7.1",
+    "bun": "^1.2.23"
+  },
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

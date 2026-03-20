@@ -19,6 +19,7 @@ import HSAccessibilityObserver from '../accessibility-manager'
 
 import { POSITIONS } from '../../constants'
 
+
 class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   private accessibilityComponent: IAccessibilityComponent
 
@@ -119,6 +120,8 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   private disabledObserver: MutationObserver | null = null
 
   private optionId = 0
+
+  private readonly maxItems: number | null
 
   private onWrapperClickListener: (evt: Event) => void
   private onToggleClickListener: () => void
@@ -225,6 +228,7 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     this.iconClasses = concatOptions?.iconClasses || null
     this.isAddTagOnEnter = concatOptions?.isAddTagOnEnter ?? true
     this.isSelectedOptionOnTop = concatOptions?.isSelectedOptionOnTop ?? false
+    this.maxItems = concatOptions?.maxItems || null
 
     this.animationInProcess = false
 
@@ -736,6 +740,11 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     if (this.dropdownScope === 'window') this.buildFloatingUI()
 
     if (this.dropdown && this.apiLoadMore) this.setupInfiniteScroll()
+
+    // Apply initial filtering if max items already reached
+    if (this.isMaxItemsReached()) {
+      this.filterOptionsToSelected()
+    }
   }
 
   private setupInfiniteScroll() {
@@ -1119,6 +1128,12 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   }
 
   private async remoteSearch(val: string) {
+    // When max items reached, search only within selected items
+    if (this.isMaxItemsReached()) {
+      this.searchWithinSelected(val)
+      return
+    }
+
     if (val.length <= this.minSearchLength) {
       const res = await this.apiRequest('')
       this.remoteOptions = res
@@ -1234,6 +1249,8 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   }
 
   private onSelectOption(val: string) {
+    const wasMaxReached = this.isMaxItemsReached()
+
     this.clearSelections()
 
     if (this.isMultiple) {
@@ -1247,6 +1264,22 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
       this.value = val
       this.selectSingleItem()
       this.setNewValue()
+    }
+
+    const isMaxReached = this.isMaxItemsReached()
+
+    // If we just reached the max, filter to selected items
+    if (!wasMaxReached && isMaxReached) {
+      this.filterOptionsToSelected()
+    }
+
+    // If we just went below the max (deselected an item), show all options
+    if (wasMaxReached && !isMaxReached) {
+      this.showAllOptions()
+      // Re-apply any active search
+      if (this.search && this.search.value) {
+        this.searchOptions(this.search.value)
+      }
     }
 
     this.fireEvent('change', this.value)
@@ -1503,6 +1536,12 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
   }
 
   private searchOptions(val: string) {
+    // If max items reached, only search within selected items
+    if (this.isMaxItemsReached()) {
+      this.searchWithinSelected(val)
+      return
+    }
+
     if (val.length <= this.minSearchLength) {
       if (this.searchNoResult) {
         this.searchNoResult.remove()
@@ -1563,6 +1602,92 @@ class HSSelect extends HSBasePlugin<ISelectOptions> implements ISelect {
     })
 
     if (!hasItems) this.dropdown.append(this.searchNoResult)
+  }
+
+  /**
+   * Check if max items limit has been reached
+   */
+  private isMaxItemsReached(): boolean {
+    if (!this.maxItems || !this.isMultiple) return false
+    return Array.isArray(this.value) && this.value.length >= this.maxItems
+  }
+
+  /**
+   * Filter dropdown to show only selected items
+   */
+  private filterOptionsToSelected(): void {
+    if (!this.value || !Array.isArray(this.value)) return
+
+    const options = this.dropdown.querySelectorAll('[data-value]')
+    options.forEach(el => {
+      const dataValue = el.getAttribute('data-value')
+      if (this.value.includes(dataValue)) {
+        el.classList.remove('hidden')
+      } else {
+        el.classList.add('hidden')
+      }
+    })
+  }
+
+  /**
+   * Show all options in dropdown
+   */
+  private showAllOptions(): void {
+    const options = this.dropdown.querySelectorAll('[data-value]')
+    options.forEach(el => {
+      el.classList.remove('hidden')
+    })
+  }
+
+  /**
+   * Search only within selected items
+   */
+  private searchWithinSelected(val: string): void {
+    if (!this.value || !Array.isArray(this.value)) return
+
+    const options = this.dropdown.querySelectorAll('[data-value]')
+    let hasItems = false
+
+    options.forEach(el => {
+      const dataValue = el.getAttribute('data-value')
+      const isSelected = this.value.includes(dataValue)
+
+      // Hide non-selected items
+      if (!isSelected) {
+        el.classList.add('hidden')
+        return
+      }
+
+      // For selected items, apply search filter
+      if (val && val.length > this.minSearchLength) {
+        const optionVal = el.getAttribute('data-title-value').toLocaleLowerCase()
+        const matches = optionVal.includes(val.toLowerCase())
+
+        if (matches) {
+          el.classList.remove('hidden')
+          hasItems = true
+        } else {
+          el.classList.add('hidden')
+        }
+      } else {
+        // No search term, show all selected items
+        el.classList.remove('hidden')
+        hasItems = true
+      }
+    })
+
+    // Handle no results message
+    if (this.searchNoResult) {
+      this.searchNoResult.remove()
+      this.searchNoResult = null
+    }
+
+    if (val && val.length > this.minSearchLength && !hasItems) {
+      this.searchNoResult = htmlToElement(this.searchNoResultTemplate)
+      this.searchNoResult.innerText = this.searchNoResultText
+      classToClassList(this.searchNoResultClasses, this.searchNoResult)
+      this.dropdown.append(this.searchNoResult)
+    }
   }
 
   private eraseToggleIcon() {
